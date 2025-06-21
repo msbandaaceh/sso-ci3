@@ -2,6 +2,11 @@
 use \Firebase\JWT\JWT;
 use \Firebase\JWT\Key;
 
+/**
+ * @property CI_Config $config
+ * @property CI_Input $input
+ */
+
 class Api extends CI_Controller
 {
     private $jwt_key;

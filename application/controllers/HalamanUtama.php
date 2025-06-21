@@ -1,6 +1,11 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
+/**
+ * @property CI_Model $model
+ * @property CI_Session $session
+ */
+
 class HalamanUtama extends CI_Controller
 {
     function __construct()

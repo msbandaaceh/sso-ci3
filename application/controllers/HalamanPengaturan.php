@@ -1,5 +1,23 @@
 <?php
 
+/**
+ * @property CI_Config $config
+ * @property CI_Input $input
+ * @property CI_Model $model
+ * @property CI_Model $plh
+ * @property CI_Model $user
+ * @property CI_Model $pegawai
+ * @property CI_Model $jabatan
+ * @property CI_Model $pangkat
+ * @property CI_Model $pegawai
+ * @property CI_Model $notif
+ * @property CI_Upload $upload
+ * @property CI_Encryption $encryption
+ * @property CI_URI $uri
+ * @property CI_Session $session
+ * @property CI_Form_validation $form_validation
+ */
+
 class HalamanPengaturan extends CI_Controller
 {
     function __construct()
@@ -173,13 +191,11 @@ class HalamanPengaturan extends CI_Controller
 
         if ($password != 'xxxx') {
             $this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[8]');
-            $this->form_validation->set_message('min_length', '%s Tidak Boleh Kurang Dari %s Karakter');
+            $this->form_validation->set_message(['min_length' => '%s Tidak Boleh Kurang Dari %s Karakter'] );
         }
 
         $this->form_validation->set_rules('password', 'Password', 'trim|required');
-        $this->form_validation->set_message('required', '%s Tidak Boleh Kosong');
-        $this->form_validation->set_message('valid_email', '%s Tidak Sesuai Format');
-
+        $this->form_validation->set_message(['required' => '%s Tidak Boleh Kosong', 'valid_email' => '%s Tidak Sesuai Format'], );
 
         if ($this->form_validation->run() == FALSE) {
             //echo json_encode(array('st' => 0, 'msg' => 'Tidak Berhasil:<br/>'.validation_errors()));
@@ -204,7 +220,7 @@ class HalamanPengaturan extends CI_Controller
         } else {
             //$activation = $this->arr2md5(array($nama, $username, $email));
             $code_activation = md5(uniqid());
-            $password = $this->arr2md5(array($code_activation, $password));
+            $password = $this->hash_helper->arr2md5(array($code_activation, $password));
             //die(var_dump("masuk nang kene"));
             $dataPengguna = array(
                 'password' => $password,
@@ -293,8 +309,7 @@ class HalamanPengaturan extends CI_Controller
         $this->form_validation->set_rules('nohp', 'Nomor HP', 'trim|required|max_length[15]');
         $this->form_validation->set_rules('jenis', 'Jenis Pegawai', 'trim|required');
 
-        $this->form_validation->set_message('required', '%s Tidak Boleh Kosong');
-        $this->form_validation->set_message('max_length', '%s Tidak Boleh Melebihi %s Karakter');
+        $this->form_validation->set_message(['required' => '%s Tidak Boleh Kosong', 'max_length' => '%s Tidak Boleh Melebihi %s Karakter'] );
 
         if ($this->form_validation->run() == FALSE) {
             //echo json_encode(array('st' => 0, 'msg' => 'Tidak Berhasil:<br/>'.validation_errors()));

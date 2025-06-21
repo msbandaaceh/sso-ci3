@@ -1,5 +1,23 @@
 <?php
 
+/**
+ * @property CI_Config $config
+ * @property CI_Input $input
+ * @property CI_Model $model
+ * @property CI_Model $regis
+ * @property CI_Model $user
+ * @property CI_Model $pegawai
+ * @property CI_Model $jabatan
+ * @property CI_Model $pangkat
+ * @property CI_Model $pegawai
+ * @property CI_Model $notif
+ * @property CI_Upload $upload
+ * @property CI_Encryption $encryption
+ * @property CI_URI $uri
+ * @property CI_Session $session
+ * @property CI_Form_validation $form_validation
+ */
+
 class HalamanUser extends CI_Controller
 {
     function __construct()
@@ -109,13 +127,12 @@ class HalamanUser extends CI_Controller
         $this->form_validation->set_rules('pegawai', 'Pegawai', 'trim|required');
         if ($password != 'xxxx') {
             $this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[8]');
-            $this->form_validation->set_message('min_length', '%s Tidak Boleh Kurang Dari %s Karakter');
+            $this->form_validation->set_message(['min_length' => '%s Tidak Boleh Kurang Dari %s Karakter']);
         }
         $this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email');
         $this->form_validation->set_rules('blok', 'Status Blok User', 'trim|required');
 
-        $this->form_validation->set_message('required', '%s Tidak Boleh Kosong');
-        $this->form_validation->set_message('valid_email', '%s Tidak Sesuai Format');
+        $this->form_validation->set_message(['required' => '%s Tidak Boleh Kosong', 'valid_email' => '%s Tidak Sesuai Format']);
 
         if ($this->form_validation->run() == FALSE) {
             //echo json_encode(array('st' => 0, 'msg' => 'Tidak Berhasil:<br/>'.validation_errors()));

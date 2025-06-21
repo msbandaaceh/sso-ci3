@@ -1,5 +1,20 @@
 <?php
 
+/**
+ * @property CI_Config $config
+ * @property CI_Input $input
+ * @property CI_Model $model
+ * @property CI_Model $pegawai
+ * @property CI_Model $jabatan
+ * @property CI_Model $pangkat
+ * @property CI_Model $pegawai
+ * @property CI_Model $notif
+ * @property CI_Upload $upload
+ * @property CI_Encryption $encryption
+ * @property CI_Session $session
+ * @property CI_Form_validation $form_validation
+ */
+
 class HalamanPegawai extends CI_Controller
 {
     function __construct()
@@ -13,6 +28,7 @@ class HalamanPegawai extends CI_Controller
         $this->load->model('ModelPangkat', 'pangkat');
         $this->load->model('ModelUtama', 'model');
         $this->load->model('ModelNotifikasi', 'notif');
+        $this->load->library('image_lib');
 
         if (!$this->session->userdata('logged_in')) {
             redirect('keluar');
@@ -137,8 +153,7 @@ class HalamanPegawai extends CI_Controller
         $this->form_validation->set_rules('stat', 'Status Pegawai', 'trim|required');
         $this->form_validation->set_rules('jenis', 'Jenis Pegawai', 'trim|required');
 
-        $this->form_validation->set_message('required', '%s Tidak Boleh Kosong');
-        $this->form_validation->set_message('max_length', '%s Tidak Boleh Melebihi %s Karakter');
+        $this->form_validation->set_message(['required' => '%s Tidak Boleh Kosong', 'max_length' => '%s Tidak Boleh Melebihi %s Karakter'] );
 
         if ($this->form_validation->run() == FALSE) {
             //echo json_encode(array('st' => 0, 'msg' => 'Tidak Berhasil:<br/>'.validation_errors()));
@@ -324,7 +339,7 @@ class HalamanPegawai extends CI_Controller
             }
 
             //die(var_dump($cekJabatan->num_rows()));
-            if ($cekJabatan > 0) {
+            if ($cekJabatan->num_rows() > 0) {
                 $querySimpan = "Ada Pegawai Aktif Menjabat Jabatan Yang Anda Pilih, Silakan Cek Kembali";
             } else {
                 $dataPegawai += array(
@@ -366,13 +381,13 @@ class HalamanPegawai extends CI_Controller
                 $str[] = $item->id;
             }
             if (in_array($jabatan, $str)) {
-                $cekJabatan = $this->model->cek_jabatan_baru($jabatan);
+                $cekJabatan = $this->pegawai->cek_jabatan_baru_pegawai($jabatan);
             } else {
                 $cekJabatan = 0;
             }
 
             //die(var_dump($cekJabatan->num_rows()));
-            if ($cekJabatan > 0) {
+            if ($cekJabatan->num_rows() > 0) {
                 $querySimpan = "Ada Pegawai Aktif Menjabat Jabatan Yang Anda Pilih, Silakan Cek Kembali";
             } else {
                 $dataPegawai += array(

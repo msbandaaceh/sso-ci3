@@ -1,8 +1,25 @@
 <?php
 
+/**
+ * @property CI_Config $config
+ * @property CI_Input $input
+ * @property CI_Model $model
+ * @property CI_Model $regis
+ * @property CI_Model $user
+ * @property CI_Model $pegawai
+ * @property CI_Model $jabatan
+ * @property CI_Model $pangkat
+ * @property CI_Model $pegawai
+ * @property CI_Model $notif
+ * @property CI_Upload $upload
+ * @property CI_Encryption $encryption
+ * @property CI_URI $uri
+ * @property CI_Session $session
+ * @property CI_Form_validation $form_validation
+ */
+
 class HalamanRegistrasi extends CI_Controller
 {
-
     function __construct()
     {
         parent::__construct();
@@ -62,9 +79,7 @@ class HalamanRegistrasi extends CI_Controller
     public function validasi()
     {
         $this->form_validation->set_rules('nip', 'NIP Pengguna', 'trim|required|min_length[18]|max_length[18]');
-        $this->form_validation->set_message('required', '%s Tidak Boleh Kosong');
-        $this->form_validation->set_message('max_length', '%s Tidak Boleh Melebihi 18 Karakter');
-        $this->form_validation->set_message('min_length', '%s Tidak Boleh Kurang Dari 18 Karakter');
+        $this->form_validation->set_message(['required' => '%s Tidak Boleh Kosong', 'max_length' => '%s Tidak Boleh Melebihi 18 Karakter', 'min_length' => '%s Tidak Boleh Kurang Dari 18 Karakter']);
 
         if ($this->form_validation->run() == FALSE) {
             $this->session->set_flashdata('info', '3');
@@ -216,10 +231,12 @@ class HalamanRegistrasi extends CI_Controller
         $this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[8]');
         $this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email');
 
-        $this->form_validation->set_message('required', '%s Tidak Boleh Kosong');
-        $this->form_validation->set_message('valid_email', '%s Tidak Sesuai Format');
-        $this->form_validation->set_message('min_length', '%s Tidak Boleh Kurang Dari %s Karakter');
-        $this->form_validation->set_message('max_length', '%s Tidak Boleh Lebih Dari %s Karakter');
+        $this->form_validation->set_message([
+            'required' => '%s Tidak Boleh Kosong',
+            'valid_email' => '%s Tidak Sesuai Format',
+            'min_length' => '%s Tidak Boleh Kurang Dari %s Karakter',
+            'max_length' => '%s Tidak Boleh Lebih Dari %s Karakter'
+        ]);
 
         if ($this->form_validation->run() == FALSE) {
             //echo json_encode(array('st' => 0, 'msg' => 'Tidak Berhasil:<br/>'.validation_errors()));
@@ -301,10 +318,12 @@ class HalamanRegistrasi extends CI_Controller
         $this->form_validation->set_rules('pass', 'Password', 'trim|required|min_length[8]');
         $this->form_validation->set_rules('surel', 'Email', 'trim|required|valid_email');
 
-        $this->form_validation->set_message('required', '%s Tidak Boleh Kosong');
-        $this->form_validation->set_message('valid_email', '%s Tidak Sesuai Format');
-        $this->form_validation->set_message('min_length', '%s Tidak Boleh Kurang Dari %s Karakter');
-        $this->form_validation->set_message('max_length', '%s Tidak Boleh Lebih Dari %s Karakter');
+        $this->form_validation->set_message([
+            'required' => '%s Tidak Boleh Kosong',
+            'valid_email' => '%s Tidak Sesuai Format',
+            'min_length' => '%s Tidak Boleh Kurang Dari %s Karakter',
+            'max_length' => '%s Tidak Boleh Lebih Dari %s Karakter'
+        ]);
 
         if ($this->form_validation->run() == FALSE) {
             //echo json_encode(array('st' => 0, 'msg' => 'Tidak Berhasil:<br/>'.validation_errors()));
@@ -381,9 +400,11 @@ class HalamanRegistrasi extends CI_Controller
         $this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[8]');
         $this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email');
 
-        $this->form_validation->set_message('required', '%s Tidak Boleh Kosong');
-        $this->form_validation->set_message('valid_email', '%s Tidak Sesuai Format');
-        $this->form_validation->set_message('min_length', '%s Tidak Boleh Kurang Dari %s Karakter');
+        $this->form_validation->set_message([
+            'required' => '%s Tidak Boleh Kosong',
+            'valid_email' => '%s Tidak Sesuai Format',
+            'min_length' => '%s Tidak Boleh Kurang Dari %s Karakter'
+        ]);
 
         if ($this->form_validation->run() == FALSE) {
             $this->session->set_flashdata('info', '2');

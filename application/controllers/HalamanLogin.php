@@ -3,6 +3,17 @@
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 
+/**
+ * @property CI_Config $config
+ * @property CI_Input $input
+ * @property CI_Model $model
+ * @property CI_Model $pegawai
+ * @property CI_Model $notif
+ * @property CI_Encryption $encryption
+ * @property CI_Session $session
+ * @property CI_Form_validation $form_validation
+ */
+
 class HalamanLogin extends CI_Controller
 {
     function __construct()
@@ -33,8 +44,7 @@ class HalamanLogin extends CI_Controller
     {
         $this->form_validation->set_rules('username', 'Username Pengguna', 'trim|required|max_length[18]');
         $this->form_validation->set_rules('password', 'Password', 'trim|required');
-        $this->form_validation->set_message('required', '%s Tidak Boleh Kosong');
-        $this->form_validation->set_message('max_length', '%s Tidak Boleh Melebihi 18 Karakter');
+        $this->form_validation->set_message(['required' => '%s Tidak Boleh Kosong', 'max_length' => '%s Tidak Boleh Melebihi 18 Karakter']);
 
         if ($this->form_validation->run() == FALSE) {
             $this->load->view('form_login', validation_errors());
@@ -491,63 +501,62 @@ class HalamanLogin extends CI_Controller
     }
 
     public function simpan_tamu()
-	{
-		$this->form_validation->set_rules('nama_tamu', 'Nama Tamu', 'trim|required|max_length[40]');
-		$this->form_validation->set_rules('alamat', 'Alamat', 'trim|required|max_length[40]');
-		$this->form_validation->set_rules('ket', 'Keterangan', 'trim|max_length[40]');
-		$this->form_validation->set_rules('foto', 'Foto Diri', 'trim|required');
-		$this->form_validation->set_message('required', '%s Tidak Boleh Kosong');
-		$this->form_validation->set_message('max_length', '%s Tidak Boleh Melebihi 40 Karakter');
+    {
+        $this->form_validation->set_rules('nama_tamu', 'Nama Tamu', 'trim|required|max_length[40]');
+        $this->form_validation->set_rules('alamat', 'Alamat', 'trim|required|max_length[40]');
+        $this->form_validation->set_rules('ket', 'Keterangan', 'trim|max_length[40]');
+        $this->form_validation->set_rules('foto', 'Foto Diri', 'trim|required');
+        $this->form_validation->set_message(['required' => '%s Tidak Boleh Kosong', 'max_length' => '%s Tidak Boleh Melebihi 40 Karakter'] );
 
-		if ($this->form_validation->run() == FALSE) {
-			//echo json_encode(array('st' => 0, 'msg' => 'Tidak Berhasil:<br/>'.validation_errors()));
-			$this->session->set_flashdata('info', '2');
+        if ($this->form_validation->run() == FALSE) {
+            //echo json_encode(array('st' => 0, 'msg' => 'Tidak Berhasil:<br/>'.validation_errors()));
+            $this->session->set_flashdata('info', '2');
             $this->session->set_flashdata('pesan', validation_errors());
-			$this->load->view('form_login' );
-			return;
-		}
+            $this->load->view('form_login');
+            return;
+        }
 
-		$nama = strtoupper($this->input->post('nama_tamu'));
-		$alamat = strtoupper($this->input->post('alamat'));
-		$pekerjaan = $this->input->post('job');
-		$tujuan = $this->input->post('tujuan');
-		$pegawai = $this->input->post('pegawai');
-		$foto = $this->input->post('foto');
-		$ket = strtoupper($this->input->post('ket'));
+        $nama = strtoupper($this->input->post('nama_tamu'));
+        $alamat = strtoupper($this->input->post('alamat'));
+        $pekerjaan = $this->input->post('job');
+        $tujuan = $this->input->post('tujuan');
+        $pegawai = $this->input->post('pegawai');
+        $foto = $this->input->post('foto');
+        $ket = strtoupper($this->input->post('ket'));
 
-		$queryPegawai = $this->model->get_seleksi('pegawai', 'id', $pegawai);
-		$nama_gelar = $queryPegawai->row()->nama_gelar;
+        $queryPegawai = $this->model->get_seleksi('pegawai', 'id', $pegawai);
+        $nama_gelar = $queryPegawai->row()->nama_gelar;
 
-		$dataNotif = array(
-			'jenis_pesan' => 'tamu',
-			'pesan' => 'Assalamualaikum Wr. Wb., Yth. ' . $nama_gelar . ' Anda kedatangan tamu, atas nama ' . $nama . ' dari ' . $alamat . ' dengan tujuan berkunjung ' . $tujuan . '->' .$ket,
-			'id_tujuan' => $pegawai,
-			'created_by' => 'tamu',
-			'created_on' => date('Y-m-d H:i:s')
-		);
+        $dataNotif = array(
+            'jenis_pesan' => 'tamu',
+            'pesan' => 'Assalamualaikum Wr. Wb., Yth. ' . $nama_gelar . ' Anda kedatangan tamu, atas nama ' . $nama . ' dari ' . $alamat . ' dengan tujuan berkunjung ' . $tujuan . '->' . $ket,
+            'id_tujuan' => $pegawai,
+            'created_by' => 'tamu',
+            'created_on' => date('Y-m-d H:i:s')
+        );
 
-		$data = array(
-			'pegawai_id' => $pegawai,
-			'nama' => $nama,
-			'pekerjaan' => $pekerjaan,
-			'satker_alamat' => $alamat,
-			'tgl_kunjungan' => date('Y-m-d H:i:s'),
-			'tujuan_keperluan' => $tujuan,
-			'foto_tamu' => $foto,
-			'keterangan' => $ket,
-			'created_on' => date('Y-m-d H:i:s')
-		);
+        $data = array(
+            'pegawai_id' => $pegawai,
+            'nama' => $nama,
+            'pekerjaan' => $pekerjaan,
+            'satker_alamat' => $alamat,
+            'tgl_kunjungan' => date('Y-m-d H:i:s'),
+            'tujuan_keperluan' => $tujuan,
+            'foto_tamu' => $foto,
+            'keterangan' => $ket,
+            'created_on' => date('Y-m-d H:i:s')
+        );
 
-		$result = $this->model->tambahTamu($data, 'buku_tamu');
-		$notif = $this->notif->tambahNotif($dataNotif, 'sys_notif');
-		if ($result && $notif) {
-			$this->session->set_flashdata('info', '1');
-			$this->session->set_flashdata('pesan', 'Data Tamu Berhasil dimasukkan, Selamat Datang ' . $nama);
-			redirect('login');
-		} else {
-			$this->session->set_flashdata('info', '3');
-			$this->session->set_flashdata('pesan', 'Gagal Input Data Tamu, Periksa Kembali Data Anda');
-			redirect('login');
-		}
-	}
+        $result = $this->model->tambahTamu($data, 'buku_tamu');
+        $notif = $this->notif->tambahNotif($dataNotif, 'sys_notif');
+        if ($result && $notif) {
+            $this->session->set_flashdata('info', '1');
+            $this->session->set_flashdata('pesan', 'Data Tamu Berhasil dimasukkan, Selamat Datang ' . $nama);
+            redirect('login');
+        } else {
+            $this->session->set_flashdata('info', '3');
+            $this->session->set_flashdata('pesan', 'Gagal Input Data Tamu, Periksa Kembali Data Anda');
+            redirect('login');
+        }
+    }
 }

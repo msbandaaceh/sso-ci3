@@ -46,6 +46,17 @@ class ModelUtama extends CI_Model
         }
     }
 
+    public function get_seleksi2($tabel, $kolom_seleksi, $seleksi, $kolom_seleksi2, $seleksi2)
+    {
+        try {
+            $this->db->where($kolom_seleksi2, $seleksi2);
+            $this->db->where($kolom_seleksi, $seleksi);
+            return $this->db->get($tabel);
+        } catch (Exception $e) {
+            return 0;
+        }
+    }
+
     public function get_data($tabel)
     {
         try {
