@@ -191,7 +191,7 @@ class HalamanPengaturan extends CI_Controller
 
         if ($password != 'xxxx') {
             $this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[8]');
-            $this->form_validation->set_message(['min_length' => '%s Tidak Boleh Kurang Dari %s Karakter'] );
+            $this->form_validation->set_message(['min_length' => '%s Tidak Boleh Kurang Dari %s Karakter']);
         }
 
         $this->form_validation->set_rules('password', 'Password', 'trim|required');
@@ -270,7 +270,13 @@ class HalamanPengaturan extends CI_Controller
         if ($id == null) {
             redirect('user');
         } elseif ($this->session->userdata('status_plt') == '1' || $this->session->userdata('status_plh') == '1') {
-            redirect('plh');
+            if (in_array($this->session->userdata('jab_id'), ['0', '4', '11'])) {
+                redirect('plh');
+            } else {
+                $this->session->set_flashdata('info', '3');
+                $this->session->set_flashdata('pesan', 'Anda tidak memiliki hak akses');
+                redirect('');
+            }
         } else {
             $queryProfil = $this->pegawai->pegawai_data($id);
 
@@ -309,7 +315,7 @@ class HalamanPengaturan extends CI_Controller
         $this->form_validation->set_rules('nohp', 'Nomor HP', 'trim|required|max_length[15]');
         $this->form_validation->set_rules('jenis', 'Jenis Pegawai', 'trim|required');
 
-        $this->form_validation->set_message(['required' => '%s Tidak Boleh Kosong', 'max_length' => '%s Tidak Boleh Melebihi %s Karakter'] );
+        $this->form_validation->set_message(['required' => '%s Tidak Boleh Kosong', 'max_length' => '%s Tidak Boleh Melebihi %s Karakter']);
 
         if ($this->form_validation->run() == FALSE) {
             //echo json_encode(array('st' => 0, 'msg' => 'Tidak Berhasil:<br/>'.validation_errors()));

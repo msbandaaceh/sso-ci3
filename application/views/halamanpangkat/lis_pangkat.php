@@ -5,23 +5,41 @@
     <div class="container-xxl flex-grow-1 container-p-y">
         <div class="row">
             <div class="col-md-10">
-                <h4 class="fw-bold py-3 mb-4">Register Pangkat</h4>
-            </div>
-            <div class="col-md-2" style="display: grid; place-items: end;">
-                <button id="tambah"
-                    onclick="ModalPangkat('<?php echo base64_encode($this->encryption->encrypt(-1)); ?>')"
-                    class="btn btn-primary py-3 mb-4" data-bs-toggle="modal" data-bs-target="#tambahModal">
-                    Tambah Data
-                </button>
+                <h4 class="fw-bold py-3 mb-4">Daftar Data Pangkat</h4>
             </div>
         </div>
 
         <div class="row">
             <div class="col-md-12">
+                <ul class="nav nav-pills flex-column flex-md-row mb-3">
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?= site_url('daftar_pegawai'); ?>"><i class="bx bx-user me-1"></i>
+                            Daftar Data Pegawai</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?= site_url('daftar_user'); ?>"><i class="bx bx-user-check me-1"></i>
+                            Daftar Data User</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?= site_url('daftar_jabatan'); ?>"><i class="bx bx-briefcase me-1"></i>
+                            Daftar Data Jabatan</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active"><i class="bx bx-chart me-1"></i>
+                            Daftar Data Pangkat</a>
+                    </li>
+                </ul>
                 <!-- Bootstrap Table with Header - Footer -->
                 <div class="card">
                     <!-- /.card-header -->
                     <div class="card-body">
+                        <div class="card-title d-flex align-items-right">
+                            <button type="button" class="btn btn-primary"
+                                onclick="ModalPangkat('<?php echo base64_encode($this->encryption->encrypt(-1)); ?>')"
+                                data-bs-toggle="modal" data-bs-target="#tambahModal"><i
+                                    class="bx bx-plus me-1"></i>Tambah
+                                Data</button>
+                        </div>
                         <table id="tabel_pangkat" class="table table-bordered table-hover">
                             <thead>
                                 <tr>
@@ -105,14 +123,14 @@
                     <div class="col mb-3">
                         <label for="golongan" class="form-label">Golongan</label><code> *</code>
                         <input type="text" name="golongan" id="golongan" class="form-control"
-                            placeholder="Masukkan Nama Golongan" autocomplete="off"/>
+                            placeholder="Masukkan Nama Golongan" autocomplete="off" />
                     </div>
                 </div>
                 <div class="row g-2">
                     <div class="col mb-3">
                         <label for="pangkat" class="form-label">Pangkat</label><code> *</code>
                         <input type="text" name="pangkat" id="pangkat" class="form-control"
-                            placeholder="Masukkan Pangkat" autocomplete="off"/>
+                            placeholder="Masukkan Pangkat" autocomplete="off" />
                     </div>
                 </div>
                 <span class="form-label"><code><i>* Wajib Diisi</i></code></span>

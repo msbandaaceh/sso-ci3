@@ -103,6 +103,17 @@
 
 <!-- Page JS -->
 <script src="<?= site_url('assets/js/sso.js') ?>"></script>
+<script>
+    var info = "<?= $this->session->flashdata('info') ?? ''; ?>";
+    var pesan = "<?= $this->session->flashdata('pesan') ?>"
+    if (info === '1') {
+        sukses(pesan);
+    } else if (info === '2') {
+        warning(pesan);
+    } else if (info === '3') {
+        gagal(pesan);
+    }
+</script>
 
 <!-- Place this tag in your head or just before your close body tag. -->
 <script async defer src="https://buttons.github.io/buttons.js"></script>

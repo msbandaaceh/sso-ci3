@@ -111,13 +111,7 @@
                                         <li>
                                             <a class="dropdown-item" href="<?= site_url('daftar_pegawai'); ?>">
                                                 <i class="bx bx-list-ul me-2"></i>
-                                                <span class="align-middle">Daftar Pegawai</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item" href="<?= site_url('daftar_user'); ?>">
-                                                <i class="bx bx-list-ul me-2"></i>
-                                                <span class="align-middle">Daftar User</span>
+                                                <span class="align-middle">Manajemen Pengguna</span>
                                             </a>
                                         </li>
                                         <?php

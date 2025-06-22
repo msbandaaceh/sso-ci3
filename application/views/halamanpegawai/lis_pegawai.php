@@ -5,34 +5,40 @@
     <div class="container-xxl flex-grow-1 container-p-y">
         <div class="row">
             <div class="col-md-8">
-                <h4 class="fw-bold py-3 mb-4">Register Daftar Pegawai</h4>
+                <h4 class="fw-bold py-3 mb-4">Daftar Data Pegawai</h4>
             </div>
         </div>
 
         <div class="row">
             <div class="col-md-12">
+                <ul class="nav nav-pills flex-column flex-md-row mb-3">
+                    <li class="nav-item">
+                        <a class="nav-link active"><i class="bx bx-user me-1"></i>
+                            Daftar Data Pegawai</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?= site_url('daftar_user'); ?>"><i class="bx bx-user-check me-1"></i>
+                            Daftar Data User</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?= site_url('daftar_jabatan'); ?>"><i
+                                class="bx bx-briefcase me-1"></i>
+                            Daftar Data Jabatan</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?= site_url('daftar_pangkat'); ?>"><i class="bx bx-chart me-1"></i>
+                            Daftar Data Pangkat</a>
+                    </li>
+                </ul>
                 <!-- Bootstrap Table with Header - Footer -->
                 <div class="card">
                     <!-- /.card-header -->
                     <div class="card-body">
-                        <div class="card-title d-flex align-items-start justify-content-between">
-                            <h4 class="card-title">
-
-                            </h4>
-                            <div class="dropdown">
-                                <button class="btn btn-primary p-3" type="button" id="cardOpt3"
-                                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="bx bx-bookmark-plus"></i>
-                                </button>
-                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt3">
-                                    <a id="tambah" class="dropdown-item" href="javascript:void(0);"
-                                        data-bs-toggle="modal" data-bs-target="#tambahModal"
-                                        onclick="BukaModal('<?php echo base64_encode($this->encryption->encrypt(-1)); ?>')">Tambah
-                                        Pegawai</a>
-                                    <a class="dropdown-item" href="<?= site_url('daftar_jabatan') ?>">Daftar Jabatan</a>
-                                    <a class="dropdown-item" href="<?= site_url('daftar_pangkat') ?>">Daftar Pangkat</a>
-                                </div>
-                            </div>
+                        <div class="card-title d-flex align-items-right">
+                            <button type="button" class="btn btn-primary"
+                                onclick="BukaModal('<?php echo base64_encode($this->encryption->encrypt(-1)); ?>')"
+                                data-bs-toggle="modal" data-bs-target="#tambahModal"><i class="bx bx-plus me-1"></i>Tambah
+                                Data</button>
                         </div>
                         <table id="tabel_pegawai" class="table table-bordered table-hover">
                             <thead>
@@ -133,7 +139,8 @@
                 value="<?php echo $this->security->get_csrf_hash(); ?>">
             <div class="modal-header">
                 <h5 class="modal-title" id="judul"></h5>
-                <button type="button" id="btn-close" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" id="btn-close" class="btn-close" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
             </div>
             <div class="dropdown-divider"></div>
             <div class="modal-body">

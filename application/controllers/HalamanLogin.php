@@ -8,6 +8,7 @@ use Firebase\JWT\Key;
  * @property CI_Input $input
  * @property CI_Model $model
  * @property CI_Model $pegawai
+ * @property CI_Model $utama
  * @property CI_Model $notif
  * @property CI_Encryption $encryption
  * @property CI_Session $session
@@ -22,6 +23,7 @@ class HalamanLogin extends CI_Controller
         $this->jwt_key = $this->config->item('jwt_key');
         $this->load->model('ModelLogin', 'model');
         $this->load->model('ModelNotifikasi', 'notif');
+        $this->load->model('ModelUtama', 'utama');
         $this->load->model('pengaturan/ModelPegawai', 'pegawai');
         #$this->load->model('pengaturan/ModelUser', 'user');
         $queryNamaSatker = $this->model->get_konfigurasi('4');
@@ -291,7 +293,7 @@ class HalamanLogin extends CI_Controller
             $ttd = 'assets/dokumen/foto/1.webp';
         }
 
-        $queryPlh = $this->model->get_seleksi('v_users', 'jab_id', $id);
+        $queryPlh = $this->utama->get_seleksi2('v_users', 'jab_id', $id, 'status_pegawai', '1');
         if ($queryPlh->num_rows() > 0) {
             // Plh = Pejabat ada tapi berhalangan hadir
             $userid = $queryPlh->row()->userid;
@@ -389,8 +391,7 @@ class HalamanLogin extends CI_Controller
             'level_rapat' => in_array($jab_id, ['0', '5', '11', '34']) ? 'admin' : 'staf',
             'jwt' => $jwt,
             'nama_app' => $queryNamaApp->row()->value,
-            'title' => $queryNamaApp->row()->value . ' ' . $queryNamaSatker->row()->value,
-            'status_plh' => '0'
+            'title' => $queryNamaApp->row()->value . ' ' . $queryNamaSatker->row()->value
         ]);
 
         // Jika tidak ada redirect, arahkan ke dashboard sso

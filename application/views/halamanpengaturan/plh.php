@@ -29,7 +29,7 @@
                     ?>
 
                     <?php
-                    if (in_array($this->session->userdata("jab_id"), ['0', '1', '4', '5', '6', '7', '8', '9', '10', '11', '12'])) {
+                    if (in_array($this->session->userdata("jab_id"), ['0', '5', '11'])) {
                         ?>
                         <li class="nav-item">
                             <a class="nav-link active" href="<?php echo base_url(); ?>plh"><i class="bx bx-bell me-1"></i>
@@ -49,136 +49,74 @@
                     }
                     ?>
                 </ul>
-                <?php
-                if (in_array($this->session->userdata("jab_id"), ['0', '5', '11'])) {
-                    ?>
-                    <div class="card mb-4">
-                        <h5 class="card-header">Data Pelaksana Harian (Plh) Pejabat MS Banda Aceh</h5>
-                        <div class="card-body">
-                            <table id="example2" class="table table-bordered table-hover">
-                                <thead>
+
+                <div class="card mb-4">
+                    <h5 class="card-header">Data Pelaksana Harian (Plh) Pejabat MS Banda Aceh</h5>
+                    <div class="card-body">
+                        <table id="example2" class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>NAMA JABATAN PLH</th>
+                                    <th>NAMA PEGAWAI</th>
+                                    <th>AKSI</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                $plh_no = 1;
+                                foreach ($plh as $item) {
+                                    ?>
                                     <tr>
-                                        <th>No</th>
-                                        <th>NAMA JABATAN PLH</th>
-                                        <th>NAMA PEGAWAI</th>
-                                        <th>AKSI</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php
-                                    $plh_no = 1;
-                                    foreach ($plh as $item) {
-                                        ?>
-                                        <tr>
-                                            <td>
-                                                <?= $plh_no ?>
-                                            </td>
-                                            <td>
-                                                <?= $item->nama; ?>
-                                            </td>
-                                            <td>
-                                                <?php
-                                                if ($item->pegawai_id) {
-                                                    echo '<span class="badge rounded-pill bg-primary">'.$item->nama_pegawai.'</span>';
-                                                } else {
-                                                    echo '<span class="badge rounded-pill bg-secondary">Belum Ada Plh</span>';
-                                                }
-                                                ?>
-                                            </td>
-
-                                            <td>
-                                                <?php $idEncrypt = str_replace('/', '___', $this->encryption->encrypt($item->id)); ?>
-                                                <div class="dropdown">
-                                                    <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
-                                                        data-bs-toggle="dropdown">
-                                                        <i class="bx bx-dots-vertical-rounded"></i>
-                                                    </button>
-                                                    <div class="dropdown-menu">
-                                                        <button class="dropdown-item" data-bs-target="#tambahModal"
-                                                            data-bs-toggle="modal"
-                                                            onclick="BukaModalPlh('<?= base64_encode($this->encryption->encrypt($item->id)) ?>')"><i
-                                                                class="bx bx-edit-alt me-1"></i> Edit Plh</button>
-                                                        <a class="dropdown-item" id="hapus" href="#" data-bs-toggle="modal"
-                                                            data-bs-target="#hapusPPlh" data-id="<?= $idEncrypt; ?>"><i
-                                                                class="bx bx-trash me-1"></i> Hapus Plh</a>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <?php
-                                        $plh_no++;
-                                    } ?>
-                                </tbody>
-                                <tfoot>
-                                    <tr>
-                                        <th>No</th>
-                                        <th>NAMA JABATAN PLH</th>
-                                        <th>NAMA PEGAWAI</th>
-                                        <th>AKSI</th>
-                                    </tr>
-                                </tfoot>
-                            </table>
-                        </div>
-                        <?php
-                } else {
-
-                    ?>
-                        <div class="card mb-4">
-                            <h5 class="card-header">Detail Data User</h5>
-                            <!-- Account -->
-
-                            <div class="card-body">
-                                <form id="formUser" method="POST" action="<?= base_url() ?>simpan_plh">
-                                    <div class="row">
-                                        <div class="mb-3 col-md-12">
-                                            <label class="form-label" for="pegawai">Pilih
-                                                <?= $nama ?></label>
-                                            <input class="form-control" type="hidden" id="id" name="id"
-                                                value="<?= base64_encode($this->encryption->encrypt($id)) ?>" />
-                                            <select id="pegawai" name="pegawai" class="mb-3 select2 form-select">
-                                                <option value="">Pilih Pegawai</option>
-                                                <?php $no = 1;
-                                                $plh_aktif = 0;
-                                                $idEncrypt = str_replace('/', '___', $this->encryption->encrypt($id));
-                                                foreach ($pegawai as $item1) {
-                                                    if ($item1->id == $pegawai_id) {
-                                                        $plh_aktif = 1;
-                                                        ?>
-                                                        <option value="<?= $item1->id ?>" selected><?= $item1->nama_gelar ?>
-                                                        </option>
-                                                        <?php
-                                                    } else {
-                                                        ?>
-                                                        <option value="<?= $item1->id ?>"><?= $item1->nama_gelar ?></option>
-                                                        <?php
-                                                    }
-                                                    ?>
-                                                <?php }
-                                                $no++; ?>
-                                            </select>
-
-                                        </div>
-                                    </div>
-                                    <div class="mt-2">
-                                        <button type="submit" class="btn btn-primary me-2">Simpan Perubahan</button>
-
-                                        <?php
-                                        if ($plh_aktif == 1) {
-                                            ?>
-                                            <a class="btn btn-danger me-2" id="hapus" href="#" data-bs-toggle="modal"
-                                                data-bs-target="#hapusPPlh" data-id="<?= $idEncrypt; ?>"><i
-                                                    class="bx bx-trash me-1"></i> Hapus Plh</a>
+                                        <td>
+                                            <?= $plh_no ?>
+                                        </td>
+                                        <td>
+                                            <?= $item->nama; ?>
+                                        </td>
+                                        <td>
                                             <?php
-                                        }
-                                        ?>
-                                    </div>
-                                </form>
-                            </div>
-                            <!-- /Account -->
-                        </div>
-                        <?php
-                }
-                ?>
+                                            if ($item->pegawai_id) {
+                                                echo '<span class="badge rounded-pill bg-primary">' . $item->nama_pegawai . '</span>';
+                                            } else {
+                                                echo '<span class="badge rounded-pill bg-secondary">Belum Ada Plh</span>';
+                                            }
+                                            ?>
+                                        </td>
+
+                                        <td>
+                                            <?php $idEncrypt = str_replace('/', '___', $this->encryption->encrypt($item->id)); ?>
+                                            <div class="dropdown">
+                                                <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
+                                                    data-bs-toggle="dropdown">
+                                                    <i class="bx bx-dots-vertical-rounded"></i>
+                                                </button>
+                                                <div class="dropdown-menu">
+                                                    <button class="dropdown-item" data-bs-target="#tambahModal"
+                                                        data-bs-toggle="modal"
+                                                        onclick="BukaModalPlh('<?= base64_encode($this->encryption->encrypt($item->id)) ?>')"><i
+                                                            class="bx bx-edit-alt me-1"></i> Edit Plh</button>
+                                                    <a class="dropdown-item" id="hapus" href="#" data-bs-toggle="modal"
+                                                        data-bs-target="#hapusPPlh" data-id="<?= $idEncrypt; ?>"><i
+                                                            class="bx bx-trash me-1"></i> Hapus Plh</a>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <?php
+                                    $plh_no++;
+                                } ?>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th>No</th>
+                                    <th>NAMA JABATAN PLH</th>
+                                    <th>NAMA PEGAWAI</th>
+                                    <th>AKSI</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
