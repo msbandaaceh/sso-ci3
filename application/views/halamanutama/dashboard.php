@@ -3,7 +3,7 @@
     <div class="container-xxl flex-grow-1 container-p-y">
 
         <div class="row row-cols-1 row-cols-md-3 g-6 mb-12">
-            <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12 mb-3">
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 mb-3">
                 <div class="card h-100">
                     <a href="http://hadir-in.ms-bandaaceh.local"><img class="card-img-top"
                             src="<?= site_url('assets/img/hadir-in.webp') ?>" alt="Card image cap"></a>
@@ -15,7 +15,7 @@
                 </div>
             </div>
 
-            <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12 mb-3">
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 mb-3">
                 <div class="card h-100">
                     <a href="http://paylink.local?sso_token=<?php echo urlencode($jwt); ?>"><img class="card-img-top"
                             src="<?= site_url('assets/img/paylink.webp') ?>" alt="Card image cap"></a>
@@ -27,7 +27,7 @@
                 </div>
             </div>
 
-            <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12 mb-3">
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 mb-3">
                 <div class="card h-100">
                     <a href="http://sias.local?sso_token=<?php echo urlencode($jwt); ?>"><img class="card-img-top"
                             src="<?= site_url('assets/img/sias.webp') ?>" alt="Card image cap"></a>
@@ -41,7 +41,7 @@
         </div>
 
         <div class="row row-cols-1 row-cols-md-3 g-6 mb-12">
-            <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12 mb-3">
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 mb-3">
                 <div class="card h-100">
                     <a href="http://seudati.local?sso_token=<?php echo urlencode($jwt); ?>"><img class="card-img-top"
                             src="<?= site_url('assets/img/seudati.webp') ?>" alt="Card image cap"></a>
@@ -53,7 +53,7 @@
                 </div>
             </div>
 
-            <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12 mb-3">
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 mb-3">
                 <div class="card h-100">
                     <a href="http://agam.local?sso_token=<?php echo urlencode($jwt); ?>"><img class="card-img-top"
                             src="<?= site_url('assets/img/agam.webp') ?>" alt="Card image cap"></a>
@@ -65,7 +65,7 @@
                 </div>
             </div>
 
-            <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12 mb-3">
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 mb-3">
                 <div class="card h-100">
                     <a href="http://e-guest.local?sso_token=<?php echo urlencode($jwt); ?>"><img class="card-img-top"
                             src="<?= site_url('assets/img/e-guest.webp') ?>" alt="Card image cap"></a>
