@@ -48,6 +48,7 @@
                                 <tr>
                                     <th>No</th>
                                     <th>NAMA JABATAN</th>
+                                    <th>STATUS JABATAN</th>
                                     <th>AKSI</th>
                                 </tr>
                             </thead>
@@ -62,6 +63,15 @@
                                         </td>
                                         <td>
                                             <?= $item->nama_jabatan; ?>
+                                        </td>
+                                        <td>
+                                            <?php
+                                            if ($item->struktural == '1') {
+                                                echo "STRUKTURAL";
+                                            } else {
+                                                echo "NON-STRUKTURAL";
+                                            }
+                                            ?>
                                         </td>
                                         <td>
                                             <?php $idEncrypt = str_replace('/', '___', $this->encryption->encrypt($item->id)); ?>
@@ -91,6 +101,7 @@
                                 <tr>
                                     <th>No</th>
                                     <th>NAMA JABATAN</th>
+                                    <th>STATUS JABATAN</th>
                                     <th>AKSI</th>
                                 </tr>
                             </tfoot>
@@ -122,6 +133,11 @@
                         <label for="nama_jabatan" class="form-label">Nama Jabatan</label><code> *</code>
                         <input type="text" name="nama_jabatan" id="nama_jabatan" class="form-control"
                             placeholder="Masukkan Nama Jabatan" autocomplete="off" />
+                    </div>
+                    <div class="form-group">
+                        <label for="struktural" class="form-label">Jabatan Struktural</label><code> *</code>
+                        <div id="struktural_">
+                        </div>
                     </div>
                 </div>
                 <span class="form-label"><code><i>* Wajib Diisi</i></code></label>

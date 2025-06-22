@@ -46,9 +46,12 @@
         $("#judul").html("");
         $("#id").val('');
         $("#nama_jabatan").val('');
+        $("#struktural_").html("");
+
         $("#judul").append(json.judul);
         $("#id").val(json.id);
         $("#nama_jabatan").val(json.nama_jabatan);
+        $("#struktural_").append(json.struktural);
       } else if (json.st == 0) {
         pesan('PERINGATAN', json.msg, '');
         $('#table_pegawai').DataTable().ajax.reload();

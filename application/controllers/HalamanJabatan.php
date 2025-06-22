@@ -1,6 +1,16 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
+/**
+ * @property CI_Config $config
+ * @property CI_Input $input
+ * @property CI_Model $model
+ * @property CI_Model $jabatan
+ * @property CI_URI $uri
+ * @property CI_Encryption $encryption
+ * @property CI_Session $session
+ * @property CI_Form_validation $form_validation
+ */
 class HalamanJabatan extends CI_Controller
 {
 
@@ -28,24 +38,25 @@ class HalamanJabatan extends CI_Controller
     public function simpan()
     {
         $this->form_validation->set_rules('nama_jabatan', 'Nama Jabatan', 'trim|required|max_length[100]');
+        $this->form_validation->set_rules('struktural', 'Status Jabatan Struktural', 'trim|required');
 
-        $this->form_validation->set_message('required', '%s Tidak Boleh Kosong');
-        $this->form_validation->set_message('max_length', '%s Tidak Boleh Melebihi 100 Karakter');
+        $this->form_validation->set_message(['required' => '%s Tidak Boleh Kosong', 'max_length' => '%s Tidak Boleh Melebihi 100 Karakter']);
 
         if ($this->form_validation->run() == FALSE) {
             //echo json_encode(array('st' => 0, 'msg' => 'Tidak Berhasil:<br/>'.validation_errors()));
             $this->session->set_flashdata('info', '2');
-            $this->session->set_flashdata('pesan_gagal', 'Gagal Simpan Jabatan, ' . form_error('nama_jabatan'));
-            redirect('daftar_jabatan', validation_errors());
-            return;
+            $this->session->set_flashdata('pesan', validation_errors());
+            redirect('daftar_jabatan' );
         }
 
         $id = $this->input->post('id');
         $nama_jabatan = strtoupper($this->input->post('nama_jabatan'));
+        $struktural = $this->input->post('struktural');
 
         if ($id) {
             $data = array(
                 'nama_jabatan' => $nama_jabatan,
+                'struktural' => $struktural,
                 'modified_by' => $this->session->userdata('fullname'),
                 'modified_on' => date('Y-m-d H:i:s')
             );
@@ -53,6 +64,7 @@ class HalamanJabatan extends CI_Controller
         } else {
             $data = array(
                 'nama_jabatan' => $nama_jabatan,
+                'struktural' => $struktural,
                 'created_by' => $this->session->userdata('fullname'),
                 'created_on' => date('Y-m-d H:i:s')
             );
@@ -80,15 +92,21 @@ class HalamanJabatan extends CI_Controller
         $id = $this->encryption->decrypt(base64_decode($this->input->post('id')));
 
         $nama_jabatan = "";
+        $struktural = array('' => "Pilih", '1' => 'Ya', '0' => 'Tidak');
+
 
         if ($id == '-1') {
             $judul = "TAMBAH DATA JABATAN";
             $id = '';
+            $jenis = form_dropdown('struktural', $struktural, '', 'class="form-select" id="struktural"');
+            
         } else {
             $judul = "EDIT DATA JABATAN";
             $query = $this->model->get_seleksi('ref_jabatan', 'id', $id);
 
             $nama_jabatan = $query->row()->nama_jabatan;
+            $struktural_ = $query->row()->struktural;
+            $jenis = form_dropdown('struktural', $struktural, $struktural_, 'class="form-select" id="struktural"');
         }
 
 
@@ -97,6 +115,7 @@ class HalamanJabatan extends CI_Controller
                 'st' => 1,
                 'judul' => $judul,
                 'id' => $id,
+                'struktural' => $jenis,
                 'nama_jabatan' => $nama_jabatan
             )
         );
