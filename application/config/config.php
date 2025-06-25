@@ -3,8 +3,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 date_default_timezone_set('Asia/Jakarta');
 
-$config['base_url'] = 'https://' .$_SERVER['SERVER_NAME'].'/';
-$config['captcha'] = '';
+$config['base_url'] = 'http://' .$_SERVER['SERVER_NAME'].'/';
+$config['captcha'] = '6LfWeOMpAAAAAMNB5EZUMoRRQGrrs7Zk9R0vwBl6';
 
 $config['index_page'] = '';
 $config['uri_protocol']	= 'REQUEST_URI';
@@ -30,10 +30,10 @@ $config['log_date_format'] = 'Y-m-d H:i:s';
 $config['error_views_path'] = '';
 $config['cache_path'] = '';
 $config['cache_query_string'] = FALSE;
-$config['encryption_key'] = '';
+$config['encryption_key'] = 'Brisingr@3234';
 
 $config['sess_driver'] = 'files';
-$config['sess_cookie_name'] = 'ci_session';
+$config['sess_cookie_name'] = 'sso_session';
 $config['sess_samesite'] = 'Lax';
 $config['sess_expiration'] = 7200;
 $config['sess_save_path'] = NULL;
@@ -42,7 +42,7 @@ $config['sess_time_to_update'] = 300;
 $config['sess_regenerate_destroy'] = FALSE;
 
 $config['cookie_prefix']	= '';
-$config['cookie_domain']	= '';
+$config['cookie_domain']	= '.ms-bandaaceh.local';
 $config['cookie_path']		= '/';
 $config['cookie_secure']	= FALSE;
 $config['cookie_httponly'] 	= TRUE;
@@ -63,6 +63,6 @@ $config['time_reference'] = 'local';
 $config['rewrite_short_tags'] = FALSE;
 $config['proxy_ips'] = '';
 
-$config['jwt_key'] = '';
-$config['jwt_issuer'] = '';
+$config['jwt_key'] = 'Brisingr@3234#saPPhire3234';
+$config['jwt_issuer'] = 'sso.local';
 $config['jwt_expire_time'] = 3600; // 1 jam
