@@ -8,29 +8,40 @@
         <div class="row">
             <div class="col-md-12">
                 <ul class="nav nav-pills flex-column flex-md-row mb-3">
-                    <li class="nav-item">
-                        <a class="nav-link active"><i class="bx bx-user me-1"></i>
-                            Data Pegawai</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="<?= site_url('user'); ?>"><i class="bx bx-bell me-1"></i> Data
-                            User</a>
-                    </li>
                     <?php
-                    if (in_array($this->session->userdata("jab_id"), ['0', '1', '5', '11'])) {
+                    if ($userid != '1') {
+                        if ($plh != '1') {
+                            if ($plt != '1') {
+                                ?>
+                                <li class="nav-item">
+                                    <a class="nav-link active" href="javascript:void(0);"><i class="bx bx-user me-1"></i>
+                                        Data Pegawai</a>
+                                </li>
+                            <?php }
+                        }
+                    }
+                    if ($plh != '1') {
+                        if ($plt != '1') {
+                            ?>
+                            <li class="nav-item">
+                                <a class="nav-link" href="<?= site_url('user'); ?>" data-loader><i class="bx bx-bell me-1"></i>
+                                    Data User</a>
+                            </li>
+                        <?php }
+                    }
+                    if (in_array($role, ['super', 'admin_satker', 'validator_kepeg_satker'])) {
                         ?>
                         <li class="nav-item">
-                            <a class="nav-link" href="<?= site_url('plh'); ?>"><i class="bx bx-bell me-1"></i>
+                            <a class="nav-link" href="<?= site_url('plh'); ?>" data-loader><i class="bx bx-bell me-1"></i>
                                 Pengaturan Plh</a>
                         </li>
                         <?php
                     }
-                    ?>
-                    <?php
-                    if (in_array($this->session->userdata("jab_id"), ['0', '5'])) {
+
+                    if (in_array($role, ['super', 'admin_satker', 'validator_kepeg_satker'])) {
                         ?>
                         <li class="nav-item">
-                            <a class="nav-link" href="<?= site_url('app'); ?>"><i class="bx bx-wrench me-1"></i>
+                            <a class="nav-link" href="<?= site_url('app'); ?>" data-loader><i class="bx bx-wrench me-1"></i>
                                 Pengaturan Aplikasi</a>
                         </li>
                         <?php
@@ -77,7 +88,7 @@
                     <hr class="my-0" />
                     <div class="card-body">
                         <form id="formAccountSettings" action="<?= site_url('simpan_data_profil') ?>" method="POST"
-                            enctype="multipart/form-data">
+                            onsubmit="return showLoaderSweetalert2(this)" enctype="multipart/form-data">
                             <input hidden type="file" id="foto" name="foto" class="account-file-input"
                                 accept="image/png" <?php if ($this->session->userdata('status_plh') == '1') { ?>readonly<?php } ?> />
                             <input hidden type="file" id="ttd" name="ttd" class="account-file-input"
@@ -137,9 +148,9 @@
                                 <div class="mb-3 col-md-6">
                                     <label for="alamat" class="form-label">ALAMAT</label>
                                     <input type="text" class="form-control" id="alamat" name="alamat"
-                                        placeholder="Alamat" value="<?= $alamat; ?>" autocomplete="off"/>
+                                        placeholder="Alamat" value="<?= $alamat; ?>" autocomplete="off" />
                                 </div>
-                                
+
                                 <div class="mb-3 col-md-6">
                                     <label for="jk" class="form-label">JENIS KELAMIN</label>
                                     <select id="jk" name="jk" class="select2 form-select">
@@ -162,7 +173,7 @@
                                         ?>
                                     </select>
                                 </div>
-                                
+
                                 <div class="mb-3 col-md-6">
                                     <label class="form-label" for="pangkat">PANGKAT | GOLONGAN</label>
                                     <select id="pangkat" name="pangkat" class="select2 form-select">

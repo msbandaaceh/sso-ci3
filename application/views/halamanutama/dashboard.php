@@ -5,7 +5,7 @@
         <div class="row row-cols-1 row-cols-md-3 g-6 mb-12">
             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 mb-3">
                 <div class="card h-100">
-                    <a href="http://hadir-in.ms-bandaaceh.local"><img class="card-img-top"
+                    <a href="http://hadir-in.ms-bandaaceh.local" data-loader><img class="card-img-top"
                             src="<?= site_url('assets/img/hadir-in.webp') ?>" alt="Card image cap"></a>
                     <div class="card-body text-center">
                         <div class="btn btn-primary">
@@ -17,7 +17,7 @@
 
             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 mb-3">
                 <div class="card h-100">
-                    <a href="http://paylink.local?sso_token=<?php echo urlencode($jwt); ?>"><img class="card-img-top"
+                    <a href="http://paylink.ms-bandaaceh.local"><img class="card-img-top"
                             src="<?= site_url('assets/img/paylink.webp') ?>" alt="Card image cap"></a>
                     <div class="card-body text-center">
                         <div class="btn btn-primary">
@@ -29,7 +29,7 @@
 
             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 mb-3">
                 <div class="card h-100">
-                    <a href="http://sias.local?sso_token=<?php echo urlencode($jwt); ?>"><img class="card-img-top"
+                    <a href="http://sias.ms-bandaaceh.local"><img class="card-img-top"
                             src="<?= site_url('assets/img/sias.webp') ?>" alt="Card image cap"></a>
                     <div class="card-body text-center">
                         <div class="btn btn-primary">
@@ -43,7 +43,7 @@
         <div class="row row-cols-1 row-cols-md-3 g-6 mb-12">
             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 mb-3">
                 <div class="card h-100">
-                    <a href="http://seudati.local?sso_token=<?php echo urlencode($jwt); ?>"><img class="card-img-top"
+                    <a href="http://seudati.ms-bandaaceh.local"><img class="card-img-top"
                             src="<?= site_url('assets/img/seudati.webp') ?>" alt="Card image cap"></a>
                     <div class="card-body text-center">
                         <div class="btn btn-primary">
@@ -55,7 +55,7 @@
 
             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 mb-3">
                 <div class="card h-100">
-                    <a href="http://agam.local?sso_token=<?php echo urlencode($jwt); ?>"><img class="card-img-top"
+                    <a href="http://agam.ms-bandaaceh.local"><img class="card-img-top"
                             src="<?= site_url('assets/img/agam.webp') ?>" alt="Card image cap"></a>
                     <div class="card-body text-center">
                         <div class="btn btn-primary">
@@ -67,7 +67,7 @@
 
             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 mb-3">
                 <div class="card h-100">
-                    <a href="http://e-guest.local?sso_token=<?php echo urlencode($jwt); ?>"><img class="card-img-top"
+                    <a href="http://e-guest.ms-bandaaceh.local"><img class="card-img-top"
                             src="<?= site_url('assets/img/e-guest.webp') ?>" alt="Card image cap"></a>
                     <div class="card-body text-center">
                         <div class="btn btn-primary">
@@ -91,14 +91,63 @@
 <script src="<?= site_url('assets/js/menu.js'); ?>"></script>
 <!-- endbuild -->
 
+<script src="<?= site_url('assets/libs/sweetalert2/js/sweetalert2.min.js') ?>"></script>
+
+<!-- Vendors JS -->
+<!-- jquery-validation -->
+<script src="<?= site_url('assets/libs/jquery-validation/jquery.validate.min.js') ?>"></script>
+<script src="<?= site_url('assets/libs/jquery-validation/additional-methods.min.js') ?>"></script>
+
 <!-- Main JS -->
 <script src="<?= site_url('assets/js/main.js') ?>"></script>
 
+<?php if ($page == 'app') { ?>
+    <!-- Moment Plugin Js -->
+    <script src="<?= site_url('assets/libs/momentjs/moment.js') ?>"></script>
+
+    <!-- Bootstrap Material Datetime Picker Plugin Js -->
+    <script
+        src="<?= site_url('assets/libs/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js') ?> "></script>
+    <script>
+        $('.timepicker').bootstrapMaterialDatePicker({
+            format: 'HH:mm',
+            clearButton: true,
+            date: false
+        });
+    </script>
+<?php } ?>
+
 <script>
-    var pegawai_plh = "<?= $this->session->userdata('pegawai_plh') ?? ''; ?>";
-    if (pegawai_plh === '1') {
-        infoPlh();
-    }
+    $(function () {
+        $('#formUser').validate({
+            rules: {
+                passKonfirm: {
+                    equalTo: "#password"
+                },
+            },
+            messages: {
+                passKonfirm: {
+                    equalTo: "Password Tidak Sesuai"
+                },
+            },
+            errorElement: 'span',
+            errorPlacement: function (error, element) {
+                error.addClass('invalid-feedback');
+                element.closest('.form-group').append(error);
+            },
+            highlight: function (element, errorClass, validClass) {
+                $(element).addClass('is-invalid');
+            },
+            unhighlight: function (element, errorClass, validClass) {
+                $(element).removeClass('is-invalid');
+            }
+        });
+    });
+
+    $(document).on("click", "#hapus", function () {
+        var id = $(this).data('id');
+        $('#hapusPlh').attr('href', '<?= base_url() ?>hapus_plh/' + id);
+    })
 </script>
 
 <!-- Page JS -->
@@ -112,6 +161,11 @@
         warning(pesan);
     } else if (info === '3') {
         gagal(pesan);
+    }
+
+    var pegawai_plh = "<?= $this->session->flashdata('pegawai_plh') ?>";
+    if (pegawai_plh == '1') {
+        infoPlh();
     }
 </script>
 

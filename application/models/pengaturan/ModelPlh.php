@@ -20,18 +20,12 @@ class ModelPlh extends CI_Model
         }
     }
 
-    public function plh_data($jab_id)
+    public function plh_data()
     {
-        if (in_array($jab_id, ['0', '5', '11'])) {
-            $this->db->select('pl.id AS id, pl.nama AS nama, pl.pegawai_id AS pegawai_id, p.nama_gelar AS nama_pegawai');
-            $this->db->from('ref_plh pl');
-            $this->db->join('pegawai p', 'pl.pegawai_id = p.id', 'left');
-            return $this->db->get()->result();
-        } else {
-            $this->db->order_by('id', 'ASC');
-            $this->db->where('plh_id_jabatan', $jab_id);
-            return $this->db->select('*')->from('ref_plh')->get();
-        }
+        $this->db->select('pl.id AS id, pl.nama AS nama, pl.pegawai_id AS pegawai_id, p.nama_gelar AS nama_pegawai');
+        $this->db->from('ref_plh pl');
+        $this->db->join('pegawai p', 'pl.pegawai_id = p.id', 'left');
+        return $this->db->get()->result();
     }
 
     public function update_plh($data, $id)

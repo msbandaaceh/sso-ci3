@@ -39,10 +39,12 @@ class HalamanPegawai extends CI_Controller
     public function index()
     {
         $data['pegawai'] = $this->pegawai->all_pegawai_data();
+        $data['page'] = 'daftar';
+        $data['role'] = $this->session->userdata('role');
+        $data['userid'] = $this->session->userdata('userid');
 
-        $this->load->view('halamanpegawai/header');
-        $this->load->view('halamanpegawai/lis_pegawai', $data);
-        $this->load->view('halamanpegawai/footer');
+        $this->load->view('header', $data);
+        $this->load->view('halamanpegawai/lis_pegawai');
     }
 
     public function show()
@@ -88,6 +90,12 @@ class HalamanPegawai extends CI_Controller
         if ($id == '-1') {
             $id = '';
             $judul = "TAMBAH DATA PEGAWAI";
+            $queryGolongan = $this->pangkat->pilih_pangkat();
+            $golongan = array();
+            $golongan['0'] = "Pilih Pangkat Golongan";
+            foreach ($queryGolongan->result() as $row) {
+                $golongan[$row->id] = $row->golongan . " | " . $row->pangkat;
+            }
             $golongan = form_dropdown('pangkat', $golongan, '', 'class="form-select" id="pangkat"');
             $jabatan = form_dropdown('jabatan', $jabatan, '', 'class="form-select" id="jabatan"');
             $aktif = form_dropdown('stat', $blok, '', 'class="form-select" id="aktif"');
@@ -153,7 +161,7 @@ class HalamanPegawai extends CI_Controller
         $this->form_validation->set_rules('stat', 'Status Pegawai', 'trim|required');
         $this->form_validation->set_rules('jenis', 'Jenis Pegawai', 'trim|required');
 
-        $this->form_validation->set_message(['required' => '%s Tidak Boleh Kosong', 'max_length' => '%s Tidak Boleh Melebihi %s Karakter'] );
+        $this->form_validation->set_message(['required' => '%s Tidak Boleh Kosong', 'max_length' => '%s Tidak Boleh Melebihi %s Karakter']);
 
         if ($this->form_validation->run() == FALSE) {
             //echo json_encode(array('st' => 0, 'msg' => 'Tidak Berhasil:<br/>'.validation_errors()));

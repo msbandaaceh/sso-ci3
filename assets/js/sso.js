@@ -10,6 +10,14 @@ function infoPlh() {
         cancelButtonText: "Tidak!"
     }).then((result) => {
         if (result.isConfirmed) {
+            Swal.fire({
+                title: 'Mohon Tunggu...',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+
             $.post('hapus_plh_js', function (response) {
                 var json = jQuery.parseJSON(response);
                 if (json.st == 1) {
@@ -89,5 +97,50 @@ function BukaModalPlh(id) {
             pesan('PERINGATAN', json.msg, '');
             $('#table_pegawai').DataTable().ajax.reload();
         }
+
+        $("#tambahModal").modal('show');
+
+        $("#pegawai").select2({
+            width: '100%',
+            dropdownParent: $('#formPegawai')
+        });
     });
 }
+
+function showLoaderSweetalert2(form) {
+    Swal.fire({
+        title: 'Memproses...',
+        html: 'Mohon tunggu, sedang proses.',
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading();
+        }
+    });
+
+    // Tunggu sebentar agar loader terlihat (opsional)
+    setTimeout(() => {
+        form.submit(); // submit manual
+    }, 800); // bisa kamu ubah, misalnya 500ms
+
+    return false; // cegah submit langsung
+}
+
+$(document).on('click', 'a[data-loader]', function (e) {
+    e.preventDefault(); // cegah pindah langsung
+
+    const href = $(this).attr('href');
+
+    Swal.fire({
+        title: 'Mohon Tunggu...',
+        html: 'Sedang memuat halaman.',
+        allowOutsideClick: false,
+        showConfirmButton: false,
+        didOpen: () => {
+            Swal.showLoading();
+        }
+    });
+
+    setTimeout(() => {
+        window.location.href = href;
+    }, 500);
+});

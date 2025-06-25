@@ -10,35 +10,39 @@
             <div class="col-md-12">
                 <ul class="nav nav-pills flex-column flex-md-row mb-3">
                     <?php
-                    if ($this->session->userdata('status_plh') == '1' || $this->session->userdata('status_plt') == '1') {
-                    } else {
-                        if ($this->session->userdata("satker_id") == 0) {
-                        } else {
+                    if ($userid != '1') {
+                        if ($plh != '1') {
+                            if ($plt != '1') {
+                                ?>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="<?= site_url('profil'); ?>" data-loader><i
+                                            class="bx bx-user me-1"></i>
+                                        Data Pegawai</a>
+                                </li>
+                            <?php }
+                        }
+                    }
+
+                    if ($plh != '1') {
+                        if ($plt != '1') {
                             ?>
                             <li class="nav-item">
-                                <a class="nav-link" href="<?= site_url('profil'); ?>"><i class="bx bx-user me-1"></i>
-                                    Data Pegawai</a>
+                                <a class="nav-link" href="<?= site_url('user'); ?>" data-loader><i class="bx bx-bell me-1"></i>
+                                    Data User</a>
                             </li>
                         <?php }
-                        ?>
-                        <li class="nav-item">
-                            <a class="nav-link" href="<?= site_url('user'); ?>"><i class="bx bx-bell me-1"></i> Data
-                                User</a>
-                        </li>
-
-                        <?php
                     }
-                    if (in_array($this->session->userdata("jab_id"), ['0', '1', '4', '5', '6', '7', '8', '9', '10', '11', '12'])) {
+
+                    if (in_array($role, ['super', 'admin_satker', 'validator_kepeg_satker'])) {
                         ?>
                         <li class="nav-item">
-                            <a class="nav-link" href="<?= site_url('plh'); ?>"><i class="bx bx-bell me-1"></i>
+                            <a class="nav-link" href="<?= site_url('plh'); ?>" data-loader><i class="bx bx-bell me-1"></i>
                                 Pengaturan Plh</a>
                         </li>
                         <?php
                     }
-                    ?>
-                    <?php
-                    if (in_array($this->session->userdata("jab_id"), ['0', '5'])) {
+
+                    if (in_array($role, ['super', 'admin_satker', 'validator_kepeg_satker'])) {
                         ?>
                         <li class="nav-item">
                             <a class="nav-link active" href="javascript:void(0);"><i class="bx bx-wrench me-1"></i>
@@ -55,7 +59,8 @@
 
                     <div class="card-body">
                         <div class="row">
-                            <form id="formUser" method="POST" action="<?= site_url('simpan_config') ?>">
+                            <form id="formUser" method="POST" action="<?= site_url('simpan_config') ?>"
+                                onsubmit="return showLoaderSweetalert2(this)">
                                 <div class="row">
                                     <input class="form-control" type="hidden" id="id_nama" name="id"
                                         value="<?= base64_encode($this->encryption->encrypt($nama_app->row()->id)) ?>" />
@@ -74,7 +79,8 @@
                             </form>
                         </div>
                         <div class="row">
-                            <form id="formUser" method="POST" action="<?= site_url('simpan_config') ?>">
+                            <form id="formUser" method="POST" action="<?= site_url('simpan_config') ?>"
+                                onsubmit="return showLoaderSweetalert2(this)">
                                 <div class="row">
                                     <input class="form-control" type="hidden" id="id_title" name="id"
                                         value="<?= base64_encode($this->encryption->encrypt($title_app->row()->id)) ?>" />
@@ -93,7 +99,8 @@
                             </form>
                         </div>
                         <div class="row">
-                            <form id="formUser" method="POST" action="<?= site_url('simpan_config') ?>">
+                            <form id="formUser" method="POST" action="<?= site_url('simpan_config') ?>"
+                                onsubmit="return showLoaderSweetalert2(this)">
                                 <div class="row">
                                     <input class="form-control" type="hidden" id="id_kode" name="id"
                                         value="<?= base64_encode($this->encryption->encrypt($kode_satker->row()->id)) ?>" />
@@ -112,7 +119,8 @@
                             </form>
                         </div>
                         <div class="row">
-                            <form id="formUser" method="POST" action="<?= site_url('simpan_config') ?>">
+                            <form id="formUser" method="POST" action="<?= site_url('simpan_config') ?>"
+                                onsubmit="return showLoaderSweetalert2(this)">
                                 <div class="row">
                                     <input class="form-control" type="hidden" id="id_nama" name="id"
                                         value="<?= base64_encode($this->encryption->encrypt($nama_satker->row()->id)) ?>" />
@@ -131,7 +139,8 @@
                             </form>
                         </div>
                         <div class="row">
-                            <form id="formUser" method="POST" action="<?= site_url('simpan_config') ?>">
+                            <form id="formUser" method="POST" action="<?= site_url('simpan_config') ?>"
+                                onsubmit="return showLoaderSweetalert2(this)">
                                 <div class="row">
                                     <input class="form-control" type="hidden" id="id_alamat" name="id"
                                         value="<?= base64_encode($this->encryption->encrypt($alamat_satker->row()->id)) ?>" />
@@ -152,7 +161,7 @@
                         <div class="row">
                             <div class="col-lg-6 col-md-6 col-sm-12">
                                 <form id="formUser" method="POST" action="<?= site_url('simpan_config') ?>"
-                                    enctype="multipart/form-data">
+                                    onsubmit="return showLoaderSweetalert2(this)" enctype="multipart/form-data">
                                     <div class="row mb-3">
                                         <label for="alamat_satker" class="form-label">LOGO SATUAN KERJA</label>
                                         <input class="form-control" type="hidden" id="id_logo" name="id"
@@ -178,7 +187,7 @@
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-12">
                                 <form id="formUser" method="POST" action="<?= site_url('simpan_config') ?>"
-                                    enctype="multipart/form-data">
+                                    onsubmit="return showLoaderSweetalert2(this)" enctype="multipart/form-data">
                                     <div class="row mb-3">
                                         <label for="foto" class="form-label">FOTO SATUAN KERJA</label>
                                         <input class="form-control" type="hidden" id="id_foto" name="id"
@@ -205,7 +214,7 @@
                         </div>
                         <div class="row">
                             <form id="formUser" method="POST" action="<?= site_url('simpan_config') ?>"
-                                enctype="multipart/form-data">
+                                onsubmit="return showLoaderSweetalert2(this)" enctype="multipart/form-data">
                                 <div class="row mb-3">
                                     <label for="kop" class="form-label">KOP SURAT SATUAN KERJA</label>
                                     <input class="form-control" type="hidden" id="id_kop" name="id"
@@ -230,7 +239,8 @@
                             </form>
                         </div>
                         <div class="row">
-                            <form id="formUser" method="POST" action="<?= site_url('simpan_config') ?>">
+                            <form id="formUser" method="POST" action="<?= site_url('simpan_config') ?>"
+                                onsubmit="return showLoaderSweetalert2(this)">
                                 <div class="row">
                                     <input class="form-control" type="hidden" id="id_jam_mulai_apel_pagi" name="id"
                                         value="<?= base64_encode($this->encryption->encrypt($mulai_apel_senin->row()->id)) ?>" />
@@ -250,7 +260,8 @@
                             </form>
                         </div>
                         <div class="row">
-                            <form id="formUser" method="POST" action="<?= site_url('simpan_config') ?>">
+                            <form id="formUser" method="POST" action="<?= site_url('simpan_config') ?>"
+                                onsubmit="return showLoaderSweetalert2(this)">
                                 <div class="row">
                                     <input class="form-control" type="hidden" id="id_jam_selesai_apel_pagi" name="id"
                                         value="<?= base64_encode($this->encryption->encrypt($selesai_apel_senin->row()->id)) ?>" />
@@ -270,7 +281,8 @@
                             </form>
                         </div>
                         <div class="row">
-                            <form id="formUser" method="POST" action="<?= site_url('simpan_config') ?>">
+                            <form id="formUser" method="POST" action="<?= site_url('simpan_config') ?>"
+                                onsubmit="return showLoaderSweetalert2(this)">
                                 <div class="row">
                                     <input class="form-control" type="hidden" id="id_jam_mulai_apel_sore" name="id"
                                         value="<?= base64_encode($this->encryption->encrypt($mulai_apel_jumat->row()->id)) ?>" />
@@ -290,7 +302,8 @@
                             </form>
                         </div>
                         <div class="row">
-                            <form id="formUser" method="POST" action="<?= site_url('simpan_config') ?>">
+                            <form id="formUser" method="POST" action="<?= site_url('simpan_config') ?>"
+                                onsubmit="return showLoaderSweetalert2(this)">
                                 <div class="row">
                                     <input class="form-control" type="hidden" id="id_jam_selesai_apel_sore" name="id"
                                         value="<?= base64_encode($this->encryption->encrypt($selesai_apel_jumat->row()->id)) ?>" />
@@ -300,6 +313,27 @@
                                         <div class="form-group">
                                             <input type="text" class="form-control timepicker" id="selesai_apel_sore"
                                                 name="app" value="<?= $selesai_apel_jumat->row()->value ?>" />
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3 col-md-2 col-sm-12 text-center">
+                                        <button type="submit" class="btn btn-primary me-2">Simpan</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="row">
+                            <form id="formUser" method="POST" action="<?= site_url('simpan_config') ?>"
+                                onsubmit="return showLoaderSweetalert2(this)">
+                                <div class="row">
+                                    <input class="form-control" type="hidden" id="id_ip_kantor" name="id"
+                                        value="<?= base64_encode($this->encryption->encrypt($ip_kantor->row()->id)) ?>" />
+                                    <label for="selesai_apel_sore" class="form-label">ALAMAT IP JARINGAN KANTOR</label>
+                                    <div class="mb-3 col-md-10">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control timepicker" id="selesai_apel_sore"
+                                                name="app" value="<?= $ip_kantor->row()->value ?>" />
                                         </div>
                                     </div>
 

@@ -9,40 +9,46 @@
         <div class="row">
             <div class="col-md-12">
                 <ul class="nav nav-pills flex-column flex-md-row mb-3">
-                    <?php if ($this->session->userdata('status_plh') == '1' || $this->session->userdata('status_plt') == '1') {
-                    } else {
-                        if ($this->session->userdata("satker_id") == 0) {
-                        } else {
+                    <?php
+                    echo $plh;
+                    echo $plt;
+                    if ($userid != '1') {
+                        if ($plh != '1') {
+                            if ($plt != '1') {
+                                ?>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="<?= site_url('profil'); ?>" data-loader><i
+                                            class="bx bx-user me-1"></i>
+                                        Data Pegawai</a>
+                                </li>
+                            <?php }
+                        }
+                    }
+
+                    if ($plh != '1') {
+                        if ($plt != '1') {
                             ?>
                             <li class="nav-item">
-                                <a class="nav-link" href="<?php echo base_url(); ?>profil"><i class="bx bx-user me-1"></i>
-                                    Data Pegawai</a>
+                                <a class="nav-link" href="<?= site_url('user'); ?>" data-loader><i class="bx bx-bell me-1"></i>
+                                    Data User</a>
                             </li>
-                        <?php }
-                        ?>
-                        <li class="nav-item">
-                            <a class="nav-link" href="<?php echo base_url(); ?>user"><i class="bx bx-bell me-1"></i> Data
-                                User</a>
-                        </li>
                         <?php
+                        }
                     }
-                    ?>
 
-                    <?php
-                    if (in_array($this->session->userdata("jab_id"), ['0', '5', '11'])) {
+                    if (in_array($role, ['super', 'admin_satker', 'validator_kepeg_satker'])) {
                         ?>
                         <li class="nav-item">
-                            <a class="nav-link active" href="<?php echo base_url(); ?>plh"><i class="bx bx-bell me-1"></i>
+                            <a class="nav-link active"><i class="bx bx-bell me-1"></i>
                                 Pengaturan Plh</a>
                         </li>
                         <?php
                     }
-                    ?>
-                    <?php
-                    if (in_array($this->session->userdata("jab_id"), ['0', '5'])) {
+
+                    if (in_array($role, ['super', 'admin_satker', 'validator_kepeg_satker'])) {
                         ?>
                         <li class="nav-item">
-                            <a class="nav-link" href="<?php echo base_url(); ?>app"><i class="bx bx-wrench me-1"></i>
+                            <a class="nav-link" href="<?= site_url('app'); ?>" data-loader><i class="bx bx-wrench me-1"></i>
                                 Pengaturan Aplikasi</a>
                         </li>
                         <?php
@@ -65,7 +71,7 @@
                             <tbody>
                                 <?php
                                 $plh_no = 1;
-                                foreach ($plh as $item) {
+                                foreach ($plh_data as $item) {
                                     ?>
                                     <tr>
                                         <td>
@@ -92,13 +98,12 @@
                                                     <i class="bx bx-dots-vertical-rounded"></i>
                                                 </button>
                                                 <div class="dropdown-menu">
-                                                    <button class="dropdown-item" data-bs-target="#tambahModal"
-                                                        data-bs-toggle="modal"
+                                                    <button class="dropdown-item"
                                                         onclick="BukaModalPlh('<?= base64_encode($this->encryption->encrypt($item->id)) ?>')"><i
                                                             class="bx bx-edit-alt me-1"></i> Edit Plh</button>
                                                     <a class="dropdown-item" id="hapus" href="#" data-bs-toggle="modal"
-                                                        data-bs-target="#hapusPPlh" data-id="<?= $idEncrypt; ?>"><i
-                                                            class="bx bx-trash me-1"></i> Hapus Plh</a>
+                                                        data-bs-target="#hapusPPlh" data-id="<?= $idEncrypt; ?>"
+                                                        data-loader><i class="bx bx-trash me-1"></i> Hapus Plh</a>
                                                 </div>
                                             </div>
                                         </td>
@@ -129,7 +134,7 @@
     <!-- Modal Hapus Pejabat Plh -->
     <div class="modal fade" id="hapusPPlh" data-bs-backdrop="static" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
-            <form method="POST" id="formPengguna" class="modal-content">
+            <form method="POST" id="formPengguna" class="modal-content" onsubmit="return showLoaderSweetalert2(this)">
                 <div class="modal-header">
                     <h5 class="modal-title" id="backDropModalTitle">HAPUS DATA PLH</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -151,7 +156,8 @@
     <!-- Modal Tambah/Edit Plh -->
     <div class="modal fade" id="tambahModal" data-bs-backdrop="static">
         <div class="modal-dialog modal-lg">
-            <form method="POST" id="formPegawai" action="<?= site_url('simpan_plh') ?>" class="modal-content">
+            <form method="POST" id="formPegawai" action="<?= site_url('simpan_plh') ?>" class="modal-content"
+                onsubmit="return showLoaderSweetalert2(this)">
                 <div class="modal-header">
                     <h5 class="modal-title" id="judul"></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -161,7 +167,7 @@
                     <input type="hidden" name="id" id="id" class="form-control" />
                     <div class="row g-2">
                         <div class="col mb-3">
-                            <label for="nameBackdrop" class="form-label">PILIH PEGAWAI</label><code> *</code>
+                            <label for="pegawai" class="form-label">PILIH PEGAWAI</label><code> *</code>
                             <div id="pegawai_"></div>
                         </div>
                     </div>

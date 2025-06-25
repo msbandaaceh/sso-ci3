@@ -9,35 +9,42 @@
             <div class="col-md-12">
                 <ul class="nav nav-pills flex-column flex-md-row mb-3">
                     <?php
-                    if ($this->session->userdata("userid") == 1) {
-                    } else {
-                        ?>
-                        <li class="nav-item">
-                            <a class="nav-link" href="<?= site_url('profil'); ?>"><i class="bx bx-user me-1"></i>
-                                Data Pegawai</a>
-                        </li>
-                    <?php }
-                    ?>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="javascript:void(0);"><i class="bx bx-bell me-1"></i> Data
-                            User</a>
-                    </li>
+                    if ($userid != '1') {
+                        if ($plh != '1') {
+                            if ($plt != '1') {
+                                ?>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="<?= site_url('profil'); ?>" data-loader><i
+                                            class="bx bx-user me-1"></i>
+                                        Data Pegawai</a>
+                                </li>
+                            <?php }
+                        }
+                    }
 
-                    <?php
-                    if (in_array($this->session->userdata("jab_id"), ['0', '1', '5', '11'])) {
+                    if ($plh != '1') {
+                        if ($plt != '1') {
+                            ?>
+                            <li class="nav-item">
+                                <a class="nav-link active" href="javascript:void(0);"><i class="bx bx-bell me-1"></i>
+                                    Data User</a>
+                            </li>
+                        <?php }
+                    }
+
+                    if (in_array($role, ['super', 'admin_satker', 'validator_kepeg_satker'])) {
                         ?>
                         <li class="nav-item">
-                            <a class="nav-link" href="<?= site_url('plh'); ?>"><i class="bx bx-bell me-1"></i>
+                            <a class="nav-link" href="<?= site_url('plh'); ?>" data-loader><i class="bx bx-bell me-1"></i>
                                 Pengaturan Plh</a>
                         </li>
                         <?php
                     }
-                    ?>
-                    <?php
-                    if (in_array($this->session->userdata("jab_id"), ['0', '5'])) {
+
+                    if (in_array($role, ['super', 'admin_satker', 'validator_kepeg_satker'])) {
                         ?>
                         <li class="nav-item">
-                            <a class="nav-link" href="<?= site_url('app'); ?>"><i class="bx bx-wrench me-1"></i>
+                            <a class="nav-link" href="<?= site_url('app'); ?>" data-loader><i class="bx bx-wrench me-1"></i>
                                 Pengaturan Aplikasi</a>
                         </li>
                         <?php
@@ -50,7 +57,8 @@
                     <!-- Account -->
 
                     <div class="card-body">
-                        <form id="formUser" method="POST" action="<?= site_url('simpan_data_user') ?>">
+                        <form id="formUser" method="POST" action="<?= site_url('simpan_data_user') ?>"
+                            onsubmit="return showLoaderSweetalert2(this)">
                             <input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>"
                                 value="<?php echo $this->security->get_csrf_hash(); ?>">
                             <div class="row">

@@ -29,10 +29,11 @@ class HalamanJabatan extends CI_Controller
     public function index()
     {
         $data['jabatan'] = $this->jabatan->all_jabatan_data();
+        $data['page'] = 'daftar';
+        $data['role'] = $this->session->userdata('role');
 
-        $this->load->view('halamanjabatan/header');
-        $this->load->view('halamanjabatan/lis_jabatan', $data);
-        $this->load->view('halamanjabatan/footer');
+        $this->load->view('header', $data);
+        $this->load->view('halamanjabatan/lis_jabatan');
     }
 
     public function simpan()
@@ -46,7 +47,7 @@ class HalamanJabatan extends CI_Controller
             //echo json_encode(array('st' => 0, 'msg' => 'Tidak Berhasil:<br/>'.validation_errors()));
             $this->session->set_flashdata('info', '2');
             $this->session->set_flashdata('pesan', validation_errors());
-            redirect('daftar_jabatan' );
+            redirect('daftar_jabatan');
         }
 
         $id = $this->input->post('id');
@@ -99,7 +100,7 @@ class HalamanJabatan extends CI_Controller
             $judul = "TAMBAH DATA JABATAN";
             $id = '';
             $jenis = form_dropdown('struktural', $struktural, '', 'class="form-select" id="struktural"');
-            
+
         } else {
             $judul = "EDIT DATA JABATAN";
             $query = $this->model->get_seleksi('ref_jabatan', 'id', $id);

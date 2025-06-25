@@ -42,24 +42,17 @@ class HalamanPengaturan extends CI_Controller
 
     public function get_plh_data()
     {
-        $jab_id = $this->session->userdata('jab_id');
-
-        $data['jab_id'] = $jab_id;
-        $dataPLH = $this->plh->plh_data($jab_id);
-        if (in_array($jab_id, ['0', '5', '11'])) {
-            $data['plh'] = $this->plh->plh_data($jab_id);
-        } else {
-            $data['id'] = $dataPLH->row()->id;
-            $data['nama'] = $dataPLH->row()->nama;
-            $data['pegawai_id'] = $dataPLH->row()->pegawai_id;
-            $data['pegawai'] = $this->pegawai->pilih_pegawai_tamu();
-        }
-
+        $data['plh_data'] = $this->plh->plh_data();
         $data["page"] = 'plh';
+        $data['userid'] = $this->session->userdata('userid');
+        $data['role'] = $this->session->userdata('role');
+        $data['plh'] = $this->session->userdata('status_plh');
+        $data['plt'] = $this->session->userdata('status_plt');
 
-        $this->load->view('halamanpengaturan/header', $data);
+
+        $this->load->view('header', $data);
         $this->load->view('halamanpengaturan/plh');
-        $this->load->view('halamanpengaturan/footer');
+        $this->load->view('footer');
     }
 
     public function edit_plh()
@@ -77,7 +70,7 @@ class HalamanPengaturan extends CI_Controller
         $query = $this->model->get_seleksi('ref_plh', 'id', $id);
         $id_pegawai = $query->row()->pegawai_id;
 
-        $pegawai = form_dropdown('pegawai', $pegawai, $id_pegawai, 'class="form-select"  id="pegawai"');
+        $pegawai = form_dropdown('pegawai', $pegawai, $id_pegawai, 'class="select2"  id="pegawai"');
 
         echo json_encode(
             array(
@@ -158,6 +151,34 @@ class HalamanPengaturan extends CI_Controller
         }
     }
 
+    public function hapus_plh_js()
+    {
+        $id = $this->session->userdata('userid');
+        $jab_id = $this->model->get_seleksi('v_users', 'userid', $id)->row()->jab_id;
+        $dataPlh = array(
+            'pegawai_id' => null,
+            'modified_by' => $this->session->userdata('fullname'),
+            'modified_on' => date('Y-m-d H:i:s')
+        );
+        $querySimpan = $this->model->pembaharuan_data('ref_plh', $dataPlh, 'plh_id_jabatan', $jab_id);
+
+        if ($querySimpan == 1) {
+            echo json_encode(
+                array(
+                    'st' => 1
+                )
+            );
+        } else {
+            echo json_encode(
+                array(
+                    'st' => 0
+                )
+            );
+        }
+
+        return;
+    }
+
     #                                #   
     #   PENGATURAN PLH/PLT PEGAWAI   #
     #                                #
@@ -168,18 +189,33 @@ class HalamanPengaturan extends CI_Controller
 
     public function get_user_data()
     {
-        $id = $this->session->userdata('userid');
+        $plt = $this->session->userdata('status_plt');
+        $role = $this->session->userdata('role');
+        if ($plt != '1') {
+            $id = $this->session->userdata('userid');
 
-        $queryUser = $this->user->get_user_data($id);
-        $data['atasan'] = $this->pegawai->atasan_aktif();
-        $data['page'] = 'user';
-        $data['userid'] = $queryUser[0]->userid;
-        $data['atasan_id'] = $queryUser[0]->atasan_id;
-        $data['email'] = $queryUser[0]->email;
+            $queryUser = $this->user->get_user_data($id);
+            $data['atasan'] = $this->pegawai->atasan_aktif();
+            $data['page'] = 'user';
+            $data['role'] = $role;
+            $data['plh'] = $this->session->userdata('status_plh');
+            $data['plt'] = $plt;
 
-        $this->load->view('halamanpengaturan/header', $data);
+            $data['userid'] = $queryUser[0]->userid;
+            $data['atasan_id'] = $queryUser[0]->atasan_id;
+            $data['email'] = $queryUser[0]->email;
+
+        } else {
+            if ($role != 'admin_satker' || $role != 'validator_kepeg_satker') {
+                $this->session->set_flashdata('info', '2');
+                $this->session->set_flashdata('pesan', 'Anda tidak memiliki otoriasi untuk membuka menu ini, hanya untuk Admin Satker dan Kepegawaian Satker');
+                redirect('/');
+            }
+        }
+
+        $this->load->view('header', $data);
         $this->load->view('halamanpengaturan/user');
-        $this->load->view('halamanpengaturan/footer');
+        $this->load->view('footer');
 
     }
 
@@ -255,22 +291,24 @@ class HalamanPengaturan extends CI_Controller
 
     public function get_profil_data()
     {
-        if ($this->session->userdata('status_plh')) {
+        if ($this->session->userdata('status_plt') == '1' || $this->session->userdata('status_plh') == '1') {
             $queryPlh = $this->model->get_seleksi('v_plh', 'plh_id_jabatan', $this->session->userdata('id_jabatan'));
             if ($queryPlh->row()->pegawai_id != null) {
                 $query = $this->model->get_seleksi2('v_pegawai', 'jab_id', $this->session->userdata('id_jabatan'), 'status_pegawai', '1');
                 $id = $query->row()->id;
             } else {
-                $id = $this->session->userdata('pegawai_id');
+                $query = $this->model->get_seleksi('v_users', 'userid', $this->session->userdata('userid'));
+                $id = $query->row()->pegawai_id;
             }
         } else {
-            $id = $this->session->userdata('pegawai_id');
+            $query = $this->model->get_seleksi('v_users', 'userid', $this->session->userdata('userid'));
+            $id = $query->row()->pegawai_id;
         }
 
-        if ($id == null) {
+        if ($this->session->userdata('role') == 'super') {
             redirect('user');
         } elseif ($this->session->userdata('status_plt') == '1' || $this->session->userdata('status_plh') == '1') {
-            if (in_array($this->session->userdata('jab_id'), ['0', '4', '11'])) {
+            if (in_array($this->session->userdata('role'), ['super', 'admin_satker', 'validator_kepeg_satker'])) {
                 redirect('plh');
             } else {
                 $this->session->set_flashdata('info', '3');
@@ -291,14 +329,19 @@ class HalamanPengaturan extends CI_Controller
             $data['id_grup'] = $queryProfil[0]->id_grup;
             $data['tmt'] = $queryProfil[0]->tmt;
             $data['nohp'] = $queryProfil[0]->nohp;
+            $this->session->set_userdata('ttd', site_url($queryProfil[0]->ttd));
 
             $data['jabatan'] = $this->jabatan->all_jabatan_data();
             $data['pangkat'] = $this->pangkat->all_pangkat_data();
+            $data['role'] = $this->session->userdata('role');
+            $data['userid'] = $this->session->userdata('userid');
+            $data['plh'] = $this->session->userdata('status_plh');
+            $data['plt'] = $this->session->userdata('status_plt');
             $data['page'] = 'profil';
 
-            $this->load->view('halamanpengaturan/header', $data);
+            $this->load->view('header', $data);
             $this->load->view('halamanpengaturan/profil');
-            $this->load->view('halamanpengaturan/footer');
+            $this->load->view('footer');
         }
     }
 
@@ -532,6 +575,12 @@ class HalamanPengaturan extends CI_Controller
 
     public function get_app_data()
     {
+        $data['userid'] = $this->session->userdata('userid');
+        $data['role'] = $this->session->userdata('role');
+        $data['plh'] = $this->session->userdata('status_plh');
+        $data['plt'] = $this->session->userdata('status_plt');
+
+
         $data['nama_app'] = $this->model->get_konfigurasi('1');
         $data['title_app'] = $this->model->get_konfigurasi('2');
         $data['kode_satker'] = $this->model->get_konfigurasi('3');
@@ -544,11 +593,12 @@ class HalamanPengaturan extends CI_Controller
         $data['selesai_apel_senin'] = $this->model->get_konfigurasi('31');
         $data['mulai_apel_jumat'] = $this->model->get_konfigurasi('32');
         $data['selesai_apel_jumat'] = $this->model->get_konfigurasi('33');
+        $data['ip_kantor'] = $this->model->get_konfigurasi('34');
         $data['page'] = 'app';
 
-        $this->load->view('halamanpengaturan/header', $data);
+        $this->load->view('header', $data);
         $this->load->view('halamanpengaturan/app');
-        $this->load->view('halamanpengaturan/footer');
+        $this->load->view('footer');
     }
 
     public function simpan_config()

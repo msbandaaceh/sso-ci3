@@ -37,10 +37,11 @@ class HalamanUser extends CI_Controller
     public function index()
     {
         $data['user'] = $this->user->all_user_data();
+        $data['role'] = $this->session->userdata('role');
+        $data['page'] = 'daftar';
 
-        $this->load->view('halamanuser/header');
-        $this->load->view('halamanuser/lis_user', $data);
-        $this->load->view('halamanuser/footer');
+        $this->load->view('header', $data);
+        $this->load->view('halamanuser/lis_user');
     }
 
     public function get_pegawai_nip()

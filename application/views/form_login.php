@@ -85,7 +85,8 @@
                             </div>
                         <?php } ?>
 
-                        <form action="validasi" id="loginForm" method="POST">
+                        <form action="validasi" id="loginForm" method="POST"
+                            onsubmit="return showLoaderSweetalert2(this)">
                             <div class="mb-3">
                                 <label for="username" class="form-label">Username</label>
                                 <code><?php echo form_error('username'); ?></code>
@@ -146,7 +147,8 @@
 
     <div class="modal fade" id="tamuModal" data-bs-backdrop="static" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered modal-lg">
-            <form method="POST" id="formTamu" action="simpan_tamu" class="modal-content">
+            <form method="POST" id="formTamu" action="simpan_tamu" class="modal-content"
+                onsubmit="return showLoaderSweetalert2(this)">
                 <div class="modal-header">
                     <h5 class="modal-title" id="judul">ISI BUKU TAMU</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>

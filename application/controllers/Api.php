@@ -26,7 +26,8 @@ class Api extends CI_Controller
                 'status' => 'success',
                 'user' => [
                     'userid' => $decoded->userid,
-                    'status_plh' => $decoded->status_plh
+                    'status_plh' => $decoded->status_plh,
+                    'status_plt' => $decoded->status_plt
                 ]
             ]);
         } catch (Exception $e) {

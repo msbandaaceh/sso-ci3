@@ -65,7 +65,8 @@
                                 REGISTRASI PEGAWAI
                             </div>
                             <div class="card-body">
-                                <form action="<?= site_url('reg_validasi'); ?>" method="POST">
+                                <form action="<?= site_url('reg_validasi'); ?>" method="POST"
+                                    onsubmit="return showLoaderSweetalert2(this)">
                                     <label for="nip"><code><?php echo form_error('nip'); ?></code></label>
                                     <div class="mb-3">
                                         <input type="text" class="form-control" id="nip" name="nip"
@@ -98,7 +99,8 @@
         <!-- Modal Tambah/Edit User -->
         <div class="modal fade" id="daftarPPNPN" data-bs-backdrop="static">
             <div class="modal-dialog modal-lg">
-                <form method="POST" id="formPegawai" action="<?= site_url('simpan_ppnpn') ?>" class="modal-content">
+                <form method="POST" id="formPegawai" action="<?= site_url('simpan_ppnpn') ?>" class="modal-content"
+                    onsubmit="return showLoaderSweetalert2(this)">
                     <div class="modal-body">
                         <div class="row g-2">
                             <div class="divider">
@@ -214,7 +216,8 @@
     <!-- endbuild -->
 
     <!-- Vendors JS -->
-    <!-- jquery-validation -->
+    <script src="<?= site_url('assets/libs/sweetalert2/js/sweetalert2.min.js') ?>"></script>
+
     <!-- jquery-validation -->
     <script src="<?= site_url('assets/libs/jquery-validation/jquery.validate.min.js') ?>"></script>
     <script src="<?= site_url('assets/libs/jquery-validation/additional-methods.min.js') ?>"></script>

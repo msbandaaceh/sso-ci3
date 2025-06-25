@@ -38,7 +38,6 @@ class HalamanLogin extends CI_Controller
 
     public function index()
     {
-        #$data['redirect_to'] = $this->input->get('redirect_to'); // simpan redirect jika ada
         $this->load->view('form_login');
     }
 
@@ -113,12 +112,24 @@ class HalamanLogin extends CI_Controller
             if ($pass == $passHash) {
                 $this->session->sess_regenerate();
 
+                $queryNamaSatker = $this->model->get_konfigurasi('4');
+                $queryLogoSatker = $this->model->get_konfigurasi('22');
+                $queryNamaApp = $this->model->get_konfigurasi('1');
+                $queryKopSatker = $this->model->get_konfigurasi('15');
+
+                $this->session->set_userdata([
+                    'logged_in' => TRUE,
+                    'logo_satker' => site_url('assets/dokumen/' . $queryLogoSatker->row()->value),
+                    'kop_satker' => site_url('assets/dokumen/' . $queryKopSatker->row()->value),
+                    'nama_app' => $queryNamaApp->row()->value,
+                    'title' => $queryNamaApp->row()->value . ' ' . $queryNamaSatker->row()->value,
+                ]);
+
                 # Cek apakah user merupakan plh/plt
                 $cekPlh = $this->model->get_seleksi('v_plh', 'pegawai_id', $queryUser->row()->pegawai_id);
 
                 if ($cekPlh->num_rows() > 0) {
                     $this->session->set_userdata([
-                        'logged_in' => TRUE,
                         'userid' => $queryUser->row()->userid,
                         'fullname' => $queryUser->row()->fullname,
                         'id_plh' => $cekPlh->row()->plh_id_jabatan,
@@ -128,20 +139,17 @@ class HalamanLogin extends CI_Controller
                     redirect('pilih_role');
                 } else {
                     # Periksa apakah ada pegawai lain yang ditunjuk sebagai plh/plt dari jabatan anda
+                    #die(var_dump($queryUser->row()->jab_id));
                     $cekPegawaiPlh = $this->model->get_seleksi('ref_plh', 'plh_id_jabatan', $queryUser->row()->jab_id);
-                    if ($cekPegawaiPlh->num_rows() > 0) {
+                    if ($cekPegawaiPlh->row()->pegawai_id) {
                         $this->session->set_flashdata('pegawai_plh', '1');
                     }
-
-                    $queryNamaSatker = $this->model->get_konfigurasi('4');
-                    $queryLogoSatker = $this->model->get_konfigurasi('22');
-                    $queryNamaApp = $this->model->get_konfigurasi('1');
-                    $queryKopSatker = $this->model->get_konfigurasi('15');
 
                     $payload = [
                         'iss' => base_url(),
                         'userid' => $queryUser->row()->userid,
                         'status_plh' => '0',
+                        'status_plt' => '0',
                         'iat' => time(),
                         'exp' => time() + 3600
                     ];
@@ -165,55 +173,21 @@ class HalamanLogin extends CI_Controller
                         ]
                     );
 
-                    if (in_array($queryUser->row()->jab_id, ['0', '5', '11', '34'])) {
-                        $level_izin = 'admin_1';
-                    } elseif (in_array($queryUser->row()->jab_id, ['1', '2', '4'])) {
-                        $level_izin = 'admin_2';
-                    } else {
-                        $level_izin = 'staf';
-                    }
-
-                    if ($queryUser->row()->ttd) {
-                        $ttd = $queryUser->row()->ttd;
-                    } else {
-                        $ttd = 'assets/dokumen/foto/1.webp';
-                    }
-
-                    $hari = $this->tanggalhelper->getSelisihHari($queryUser->row()->tmt, date('Y-m-d'));
-                    $masa_kerja_tahun = $this->tanggalhelper->konversiMasaKerjaTahun($hari);
-
                     $data_login = array(
                         'userid' => $queryUser->row()->userid,
                         'host_address' => $this->input->ip_address(),
                         'user_agent' => $this->input->user_agent()
                     );
-                    $queryLogin = $this->model->log_online($data_login);
+
+                    $this->model->log_online($data_login);
                     $this->model->last_online($queryUser->row()->userid, array('last_login' => date('Y-m-d H:i:s')));
-                    $this->session->set_userdata('login_id', $queryLogin);
 
                     $this->session->set_userdata([
-                        'logged_in' => TRUE,
                         'userid' => $queryUser->row()->userid,
-                        'username' => $queryUser->row()->username,
                         'fullname' => $queryUser->row()->fullname,
-                        'jabatan' => $queryUser->row()->jabatan,
-                        'jab_id' => $queryUser->row()->jab_id,
-                        'id_grup' => $queryUser->row()->id_grup,
+                        'username' => $queryUser->row()->username,
                         'foto' => site_url($queryUser->row()->foto),
-                        'ttd' => site_url($ttd),
-                        'masa_kerja' => $masa_kerja_tahun,
-                        'logo_satker' => site_url('assets/dokumen/' . $queryLogoSatker->row()->value),
-                        'kop_satker' => site_url('assets/dokumen/' . $queryKopSatker->row()->value),
-                        'pegawai_id' => $queryUser->row()->pegawai_id,
-                        'level' => in_array($queryUser->row()->jab_id, ['0', '5', '11']) ? 'admin' : 'staf',
-                        'level_keu' => in_array($queryUser->row()->jab_id, ['0', '5', '10']) ? 'admin' : 'staf',
-                        'level_surat' => in_array($queryUser->row()->jab_id, ['0', '1', '2', '4', '5', '6', '7', '8', '9', '10', '11', '12', '33']) ? 'admin' : 'staf',
-                        'level_izin' => $level_izin,
-                        'level_rapat' => in_array($queryUser->row()->jab_id, ['0', '5', '11', '34']) ? 'admin' : 'staf',
-                        'jwt' => $jwt,
-                        'nama_app' => $queryNamaApp->row()->value,
-                        'title' => $queryNamaApp->row()->value . ' ' . $queryNamaSatker->row()->value,
-                        'status_plh' => '0'
+                        'role' => $queryUser->row()->role
                     ]);
 
                     // Jika tidak ada redirect, arahkan ke dashboard sso
@@ -285,52 +259,42 @@ class HalamanLogin extends CI_Controller
         $queryUser = $this->model->get_seleksi('v_plh', 'plh_id_jabatan', $id);
 
         $queryPegawai = $this->model->get_seleksi('v_users', 'pegawai_id', $queryUser->row()->pegawai_id);
-        $pegawai_id = $queryUser->row()->pegawai_id;
         $foto = $queryPegawai->row()->foto;
-        $ttd = $queryPegawai->row()->ttd;
-
-        if (!$ttd) {
-            $ttd = 'assets/dokumen/foto/1.webp';
-        }
 
         $queryPlh = $this->utama->get_seleksi2('v_users', 'jab_id', $id, 'status_pegawai', '1');
         if ($queryPlh->num_rows() > 0) {
             // Plh = Pejabat ada tapi berhalangan hadir
             $userid = $queryPlh->row()->userid;
             $jabatan = $queryPlh->row()->jabatan;
+            $role = $queryPlh->row()->role;
             $fullname = "Plh " . $jabatan;
             $username = $queryPlh->row()->username;
-            $jab_id = $queryPlh->row()->jab_id;
-            $id_grup = $queryPlh->row()->id_grup;
-            $status_satker = $queryPlh->row()->status_pegawai;
+            $plh = '1';
+            $plt = '0';
             $this->session->set_userdata('nama_pegawai_plh', $queryUser->row()->nama_pegawai);
             $this->session->set_userdata('status_plh', '1');
             $this->session->set_userdata('jabatan', "Plh " . $jabatan);
         } else {
             //Plt = Jabatan kosong (tidak ada pegawai yang menjabat)
-            $jab_id = $id;
-            $cekJabatan = $this->model->get_seleksi('ref_jabatan', 'id', $jab_id);
+            $cekJabatan = $this->model->get_seleksi('ref_jabatan', 'id', $id);
             $jabatan = $cekJabatan->row()->nama_jabatan;
+            $role = $cekJabatan->row()->role;
             $this->session->set_userdata('status_plt', '1');
             $userid = '-99';
             $fullname = 'Plt ' . $jabatan;
-            $username = '-';
-            $id_grup = null;
-            $status_satker = '1';
+            $username = $this->model->get_seleksi('v_users', 'userid', $id)->row()->username;
+            $plh = '0';
+            $plt = '1';
             $this->session->set_userdata('nama_pegawai_plh', $queryUser->row()->nama_pegawai);
-            $this->session->set_userdata('status_plh', '1');
+            $this->session->set_userdata('status_plh', '0');
             $this->session->set_userdata('jabatan', "Plt " . $jabatan);
         }
-
-        $queryNamaSatker = $this->model->get_konfigurasi('4');
-        $queryLogoSatker = $this->model->get_konfigurasi('22');
-        $queryNamaApp = $this->model->get_konfigurasi('1');
-        $queryKopSatker = $this->model->get_konfigurasi('15');
 
         $payload = [
             'iss' => base_url(),
             'userid' => $userid,
-            'status_plh' => '0',
+            'status_plh' => $plh,
+            'status_plt' => $plt,
             'iat' => time(),
             'exp' => time() + 3600
         ];
@@ -354,44 +318,21 @@ class HalamanLogin extends CI_Controller
             ]
         );
 
-        if (in_array($jab_id, ['0', '5', '11', '34'])) {
-            $level_izin = 'admin_1';
-        } elseif (in_array($jab_id, ['1', '2', '4'])) {
-            $level_izin = 'admin_2';
-        } else {
-            $level_izin = 'staf';
-        }
-
         $data_login = array(
             'userid' => $userid,
             'host_address' => $this->input->ip_address(),
             'user_agent' => $this->input->user_agent()
         );
-        $queryLogin = $this->model->log_online($data_login);
+        $this->model->log_online($data_login);
         $this->model->last_online($userid, array('last_login' => date('Y-m-d H:i:s')));
-        $this->session->set_userdata('login_id', $queryLogin);
 
         $this->session->set_userdata([
-            'logged_in' => TRUE,
             'userid' => $userid,
-            'username' => $username,
             'fullname' => $fullname,
+            'username' => $username,
             'jabatan' => $jabatan,
-            'jab_id' => $jab_id,
-            'id_grup' => $id_grup,
             'foto' => site_url($foto),
-            'ttd' => site_url($ttd),
-            'logo_satker' => site_url('assets/dokumen/' . $queryLogoSatker->row()->value),
-            'kop_satker' => site_url('assets/dokumen/' . $queryKopSatker->row()->value),
-            'pegawai_id' => $pegawai_id,
-            'level' => in_array($jab_id, ['0', '5', '11']) ? 'admin' : 'staf',
-            'level_keu' => in_array($jab_id, ['0', '5', '10']) ? 'admin' : 'staf',
-            'level_surat' => in_array($jab_id, ['0', '1', '2', '4', '5', '6', '7', '8', '9', '10', '11', '12', '33']) ? 'admin' : 'staf',
-            'level_izin' => $level_izin,
-            'level_rapat' => in_array($jab_id, ['0', '5', '11', '34']) ? 'admin' : 'staf',
-            'jwt' => $jwt,
-            'nama_app' => $queryNamaApp->row()->value,
-            'title' => $queryNamaApp->row()->value . ' ' . $queryNamaSatker->row()->value
+            'role' => $role
         ]);
 
         // Jika tidak ada redirect, arahkan ke dashboard sso
@@ -409,15 +350,11 @@ class HalamanLogin extends CI_Controller
 
         $queryUser = $this->model->get_seleksi_user('v_users', 'userid', $id);
 
-        $queryNamaSatker = $this->model->get_konfigurasi('4');
-        $queryLogoSatker = $this->model->get_konfigurasi('22');
-        $queryNamaApp = $this->model->get_konfigurasi('1');
-        $queryKopSatker = $this->model->get_konfigurasi('15');
-
         $payload = [
             'iss' => base_url(),
             'userid' => $queryUser->row()->userid,
             'status_plh' => '0',
+            'status_plt' => '0',
             'iat' => time(),
             'exp' => time() + 3600
         ];
@@ -441,55 +378,20 @@ class HalamanLogin extends CI_Controller
             ]
         );
 
-        if (in_array($queryUser->row()->jab_id, ['0', '5', '11', '34'])) {
-            $level_izin = 'admin_1';
-        } elseif (in_array($queryUser->row()->jab_id, ['1', '2', '4'])) {
-            $level_izin = 'admin_2';
-        } else {
-            $level_izin = 'staf';
-        }
-
-        if ($queryUser->row()->ttd) {
-            $ttd = $queryUser->row()->ttd;
-        } else {
-            $ttd = 'assets/dokumen/foto/1.webp';
-        }
-
-        $hari = $this->tanggalhelper->getSelisihHari($queryUser->row()->tmt, date('Y-m-d'));
-        $masa_kerja_tahun = $this->tanggalhelper->konversiMasaKerjaTahun($hari);
-
         $data_login = array(
             'userid' => $queryUser->row()->userid,
             'host_address' => $this->input->ip_address(),
             'user_agent' => $this->input->user_agent()
         );
-        $queryLogin = $this->model->log_online($data_login);
+        $this->model->log_online($data_login);
         $this->model->last_online($queryUser->row()->userid, array('last_login' => date('Y-m-d H:i:s')));
-        $this->session->set_userdata('login_id', $queryLogin);
 
         $this->session->set_userdata([
-            'logged_in' => TRUE,
             'userid' => $queryUser->row()->userid,
-            'username' => $queryUser->row()->username,
             'fullname' => $queryUser->row()->fullname,
             'jabatan' => $queryUser->row()->jabatan,
-            'jab_id' => $queryUser->row()->jab_id,
-            'id_grup' => $queryUser->row()->id_grup,
             'foto' => site_url($queryUser->row()->foto),
-            'ttd' => site_url($ttd),
-            'masa_kerja' => $masa_kerja_tahun,
-            'logo_satker' => site_url('assets/dokumen/' . $queryLogoSatker->row()->value),
-            'kop_satker' => site_url('assets/dokumen/' . $queryKopSatker->row()->value),
-            'pegawai_id' => $queryUser->row()->pegawai_id,
-            'level' => in_array($queryUser->row()->jab_id, ['0', '5', '11']) ? 'admin' : 'staf',
-            'level_keu' => in_array($queryUser->row()->jab_id, ['0', '5', '10']) ? 'admin' : 'staf',
-            'level_surat' => in_array($queryUser->row()->jab_id, ['0', '1', '2', '4', '5', '6', '7', '8', '9', '10', '11', '12', '33']) ? 'admin' : 'staf',
-            'level_izin' => $level_izin,
-            'level_rapat' => in_array($queryUser->row()->jab_id, ['0', '5', '11', '34']) ? 'admin' : 'staf',
-            'jwt' => $jwt,
-            'nama_app' => $queryNamaApp->row()->value,
-            'title' => $queryNamaApp->row()->value . ' ' . $queryNamaSatker->row()->value,
-            'status_plh' => '0'
+            'role' => $queryUser->row()->role
         ]);
 
         // Jika tidak ada redirect, arahkan ke dashboard sso
@@ -507,7 +409,7 @@ class HalamanLogin extends CI_Controller
         $this->form_validation->set_rules('alamat', 'Alamat', 'trim|required|max_length[40]');
         $this->form_validation->set_rules('ket', 'Keterangan', 'trim|max_length[40]');
         $this->form_validation->set_rules('foto', 'Foto Diri', 'trim|required');
-        $this->form_validation->set_message(['required' => '%s Tidak Boleh Kosong', 'max_length' => '%s Tidak Boleh Melebihi 40 Karakter'] );
+        $this->form_validation->set_message(['required' => '%s Tidak Boleh Kosong', 'max_length' => '%s Tidak Boleh Melebihi 40 Karakter']);
 
         if ($this->form_validation->run() == FALSE) {
             //echo json_encode(array('st' => 0, 'msg' => 'Tidak Berhasil:<br/>'.validation_errors()));

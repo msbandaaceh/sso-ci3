@@ -98,7 +98,8 @@
         <!-- Modal Tambah Pegawai dan User -->
         <div class="modal fade" id="daftarPegawai" data-bs-backdrop="static">
             <div class="modal-dialog modal-lg">
-                <form method="POST" id="formPegawai" action="<?= site_url('simpan_peg') ?>" class="modal-content">
+                <form method="POST" id="formPegawai" action="<?= site_url('simpan_peg') ?>" class="modal-content"
+                    onsubmit="return showLoaderSweetalert2(this)">
                     <div class="modal-body">
                         <div class="row g-2">
                             <div class="divider">
@@ -219,7 +220,8 @@
         <!-- Modal Tambah User -->
         <div class="modal fade" id="daftarUser" data-bs-backdrop="static">
             <div class="modal-dialog modal-lg">
-                <form method="POST" id="formUser" action="<?= site_url('save_user') ?>" class="modal-content">
+                <form method="POST" id="formUser" action="<?= site_url('save_user') ?>" class="modal-content"
+                    onsubmit="return showLoaderSweetalert2(this)">
                     <div class="modal-body">
                         <input hidden readonly type="text" name="id" id="id" class="form-control" value="<?= $id ?>" />
                         <input hidden readonly type="text" name="fullname" id="fulllname" class="form-control"
@@ -312,6 +314,7 @@
     <script src="<?= site_url('assets/js/main.js'); ?>"></script>
 
     <!-- Page JS -->
+    <script src="<?= site_url('assets/libs/sweetalert2/js/sweetalert2.min.js') ?>"></script>
 
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>

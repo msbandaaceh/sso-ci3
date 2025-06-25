@@ -20,6 +20,7 @@
 
     <!-- Icons. Uncomment required icon fonts -->
     <link rel="stylesheet" href="<?= site_url('assets/fonts/boxicons.css') ?>" />
+    <link rel="stylesheet" href="<?= site_url('assets/libs/sweetalert2/css/sweetalert2.min.css') ?>" />
 
     <!-- Core CSS -->
     <link rel="stylesheet" href="<?= site_url('assets/css/core.css') ?>" class="template-customizer-core-css" />
@@ -82,7 +83,8 @@
                                         </h4>
                                         <div class="row mt-sm-4 mt-3">
                                             <div class="col-12">
-                                                <form method="POST" action="<?= site_url('role_plh') ?>">
+                                                <form method="POST" action="<?= site_url('role_plh') ?>"
+                                                    onsubmit="return showLoaderSweetalert2(this)">
                                                     <input type="hidden" name="userid"
                                                         value="<?= base64_encode($this->encryption->encrypt($this->session->userdata('id_plh'))) ?>">
                                                     <button class="btn btn-warning d-grid w-100" type="submit">Masuk
@@ -92,7 +94,8 @@
                                         </div>
                                         <div class="row mt-sm-4 mt-3">
                                             <div class="col-12">
-                                                <form method="POST" action="<?= site_url('role_user') ?>">
+                                                <form method="POST" action="<?= site_url('role_user') ?>"
+                                                    onsubmit="return showLoaderSweetalert2(this)">
                                                     <input type="hidden" name="userid"
                                                         value="<?= base64_encode($this->encryption->encrypt($this->session->userdata('userid'))) ?>">
                                                     <button class="btn btn-warning d-grid w-100" type="submit">Masuk
@@ -120,6 +123,9 @@
     <!-- Main JS -->
     <script src="<?= site_url('assets/js/main.js') ?>"></script>
     <!-- Page JS -->
+
+    <script src="<?= site_url('assets/libs/sweetalert2/js/sweetalert2.min.js') ?>"></script>
+    <script src="<?= site_url('assets/js/sso.js') ?>"></script>
 
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>

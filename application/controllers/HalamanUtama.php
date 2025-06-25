@@ -30,25 +30,10 @@ class HalamanUtama extends CI_Controller
         #die(var_dump($hasil));
 
         $data['hasil'] = $hasil;
+        $data['page'] = 'dashboard';
+        $data['role'] = $this->session->userdata('role');
 
-        $this->load->view('halamanutama/header');
-        $this->load->view('halamanutama/dashboard', $data);
-    }
-
-    public function get_user_data()
-    {
-        $this->load->view('halamanutama/header');
-        $this->load->view('halamanutama/user');
-        $this->load->view('halamanutama/footer');
-    }
-
-    public function get_list_user()
-    {
-
-        $data['user'] = $this->model->all_user_data();
-
-        $this->load->view('halamanutama/header');
-        $this->load->view('lis_user', $data);
-        $this->load->view('halamanutama/footer');
+        $this->load->view('header', $data);
+        $this->load->view('halamanutama/dashboard');
     }
 }

@@ -18,10 +18,11 @@ class HalamanPangkat extends CI_Controller
     public function index()
     {
         $data['pangkat'] = $this->pangkat->all_pangkat_data();
+        $data['page'] = 'daftar';
+        $data['role'] = $this->session->userdata('role');
 
-        $this->load->view('halamanpangkat/header');
-        $this->load->view('halamanpangkat/lis_pangkat', $data);
-        $this->load->view('halamanpangkat/footer');
+        $this->load->view('header', $data);
+        $this->load->view('halamanpangkat/lis_pangkat');
     }
 
     public function simpan()
@@ -120,7 +121,7 @@ class HalamanPangkat extends CI_Controller
         );
 
         $hapus = $this->model->pembaharuan_data('ref_pangkat', $data, 'id', $idDecrypt);
-        
+
         if ($hapus) {
             $this->session->set_flashdata('info', '1');
             $this->session->set_flashdata('pesan', 'Data Golongan Pangkat Berhasil di hapus');
