@@ -190,6 +190,10 @@ class HalamanLogin extends CI_Controller
                         'role' => $queryUser->row()->role
                     ]);
 
+                    if($queryUser->row()->userid == '1') {
+                        $this->session->set_userdata('super', TRUE);
+                    }
+
                     // Jika tidak ada redirect, arahkan ke dashboard sso
                     if ($redirect) {
                         $redirect_url = urldecode($redirect);
