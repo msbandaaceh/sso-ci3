@@ -293,7 +293,7 @@ INSERT INTO `sys_config` (`id`, `category`, `name`, `value`, `ordering`) VALUES
 (1, 'system', 'SiteName', 'LITERASI', 0),
 (2, 'system', 'SiteTitle', 'APLIKASI INTERNAL TERINTEGRASI', 0),
 (3, 'system', 'KodePN', '401591', 0),
-(4, 'system', 'NamaPN', 'MAHKAMAH SYAR\'IYAH BANDA ACEH', 0),
+(4, 'system', 'NamaPN', 'MAHKAMAH SYARIYAH BANDA ACEH', 0),
 (5, 'system', 'AlamatPN', 'Jl. RSUD MEURAXA, Gp. MIBO, Kec. BANDA RAYA, BANDA ACEH', 0),
 (6, 'system', 'KetuaPNNama', NULL, 0),
 (7, 'system', 'KetuaPNNIP', NULL, 0),
@@ -365,7 +365,7 @@ CREATE TABLE `sys_users` (
 --
 
 INSERT INTO `sys_users` (`userid`, `pegawai_id`, `fullname`, `username`, `password`, `old_password`, `atasan_id`, `email`, `alternative_email`, `allow_concurrent_login`, `has_change_password`, `enable_change_password`, `last_change_password`, `attemp_count`, `attemp_time`, `last_login`, `block`, `activation`, `code_activation`, `params`, `created_by`, `created_on`, `modified_by`, `modified_on`, `ip_add`, `token_pres`) VALUES
-(1, 1, 'Super Administrator', 'admin', '1603f052761d67ccdab9e45f4548062b', '9e24d23de65f136b32ef8ffaad9d2086;9e24d23de65f136b3', 0, 'mskotabandaaceh@gmail.com', '', -1, 0, 1, NULL, 0, NULL, '2025-06-24 10:32:16', 0, 'b1a9d413781b40e7961c8c48a024f24e', 'bde991c0780e847610f79ff9309ff178', '', NULL, NULL, 'Super Administrator', '2025-06-20 08:11:56', NULL, 'e60ac6a33d2879a2742b2d25958a4b7b');
+(1, 1, 'Super Administrator', 'admin', 'd96683df9b4dc1d5869000e159ecf959', '9e24d23de65f136b32ef8ffaad9d2086;9e24d23de65f136b3', 0, 'mskotabandaaceh@gmail.com', '', -1, 0, 1, NULL, 0, NULL, '2025-06-24 10:32:16', 0, 'b1a9d413781b40e7961c8c48a024f24e', '504996f145394801bc14a143164308bf', '', NULL, NULL, 'Super Administrator', '2025-06-20 08:11:56', NULL, 'e60ac6a33d2879a2742b2d25958a4b7b');
 
 -- --------------------------------------------------------
 
