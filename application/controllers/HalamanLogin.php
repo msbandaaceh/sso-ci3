@@ -190,7 +190,7 @@ class HalamanLogin extends CI_Controller
                         'role' => $queryUser->row()->role
                     ]);
 
-                    if($queryUser->row()->userid == '1') {
+                    if ($queryUser->row()->userid == '1') {
                         $this->session->set_userdata('super', TRUE);
                     }
 
@@ -269,29 +269,24 @@ class HalamanLogin extends CI_Controller
         if ($queryPlh->num_rows() > 0) {
             // Plh = Pejabat ada tapi berhalangan hadir
             $userid = $queryPlh->row()->userid;
-            $jabatan = $queryPlh->row()->jabatan;
+            $jabatan = "Plh " . $queryPlh->row()->jabatan;
             $role = $queryPlh->row()->role;
-            $fullname = "Plh " . $jabatan;
+            $fullname = $queryUser->row()->nama_pegawai;
             $username = $queryPlh->row()->username;
             $plh = '1';
             $plt = '0';
-            $this->session->set_userdata('nama_pegawai_plh', $queryUser->row()->nama_pegawai);
             $this->session->set_userdata('status_plh', '1');
-            $this->session->set_userdata('jabatan', "Plh " . $jabatan);
         } else {
             //Plt = Jabatan kosong (tidak ada pegawai yang menjabat)
             $cekJabatan = $this->model->get_seleksi('ref_jabatan', 'id', $id);
-            $jabatan = $cekJabatan->row()->nama_jabatan;
+            $jabatan = "Plt " . $cekJabatan->row()->nama_jabatan;
             $role = $cekJabatan->row()->role;
-            $this->session->set_userdata('status_plt', '1');
             $userid = '-99';
-            $fullname = 'Plt ' . $jabatan;
+            $fullname = $queryUser->row()->nama_pegawai;
             $username = $this->model->get_seleksi('v_users', 'userid', $id)->row()->username;
             $plh = '0';
             $plt = '1';
-            $this->session->set_userdata('nama_pegawai_plh', $queryUser->row()->nama_pegawai);
-            $this->session->set_userdata('status_plh', '0');
-            $this->session->set_userdata('jabatan', "Plt " . $jabatan);
+            $this->session->set_userdata('status_plt', '1');
         }
 
         $payload = [
@@ -334,6 +329,7 @@ class HalamanLogin extends CI_Controller
             'userid' => $userid,
             'fullname' => $fullname,
             'username' => $username,
+            'jab_id' => $id,
             'jabatan' => $jabatan,
             'foto' => site_url($foto),
             'role' => $role

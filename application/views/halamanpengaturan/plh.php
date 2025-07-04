@@ -101,7 +101,7 @@
                                                     <button class="dropdown-item"
                                                         onclick="BukaModalPlh('<?= base64_encode($this->encryption->encrypt($item->id)) ?>')"><i
                                                             class="bx bx-edit-alt me-1"></i> Edit Plh</button>
-                                                    <a class="dropdown-item" id="hapus" href="#" data-bs-toggle="modal"
+                                                    <button class="dropdown-item" id="hapus" href="#" data-bs-toggle="modal"
                                                         data-bs-target="#hapusPPlh" data-id="<?= $idEncrypt; ?>"
                                                         data-loader><i class="bx bx-trash me-1"></i> Hapus Plh</a>
                                                 </div>
@@ -154,9 +154,9 @@
     </div>
 
     <!-- Modal Tambah/Edit Plh -->
-    <div class="modal fade" id="tambahModal" data-bs-backdrop="static">
+    <div class="modal fade" id="plhModal" data-bs-backdrop="static">
         <div class="modal-dialog modal-lg">
-            <form method="POST" id="formPegawai" action="<?= site_url('simpan_plh') ?>" class="modal-content"
+            <form method="POST" id="formPegawaiPlh" action="<?= site_url('simpan_plh') ?>" class="modal-content"
                 onsubmit="return showLoaderSweetalert2(this)">
                 <div class="modal-header">
                     <h5 class="modal-title" id="judul"></h5>

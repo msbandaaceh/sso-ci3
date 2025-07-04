@@ -98,16 +98,23 @@ function BukaModalPlh(id) {
             $('#table_pegawai').DataTable().ajax.reload();
         }
 
-        $("#tambahModal").modal('show');
+        $("#plhModal").modal('show');
 
         $("#pegawai").select2({
             width: '100%',
-            dropdownParent: $('#formPegawai')
+            dropdownParent: $('#formPegawaiPlh')
         });
     });
 }
 
 function showLoaderSweetalert2(form) {
+    const isInsideModal = $(form).closest('#plhModal').length > 0;
+
+    // Jika form ini berasal dari modal, tutup modal terlebih dahulu
+    if (isInsideModal) {
+        $('#plhModal').modal('hide');
+    }
+
     Swal.fire({
         title: 'Memproses...',
         html: 'Mohon tunggu, sedang proses.',
