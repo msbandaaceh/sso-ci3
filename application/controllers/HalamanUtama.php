@@ -4,6 +4,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 /**
  * @property CI_Model $model
  * @property CI_Session $session
+ * @property CI_Input $input
  */
 
 class HalamanUtama extends CI_Controller
@@ -13,6 +14,11 @@ class HalamanUtama extends CI_Controller
         parent::__construct();
 
         $this->load->model('ModelUtama', 'model');
+        $token = $this->input->cookie('sso_token');
+        if (!$token) {
+            $this->session->sess_destroy();
+        }
+        
         if (!$this->session->userdata('logged_in')) {
             redirect('keluar');
         }

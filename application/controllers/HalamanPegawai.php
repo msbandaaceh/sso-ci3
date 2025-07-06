@@ -29,6 +29,10 @@ class HalamanPegawai extends CI_Controller
         $this->load->model('ModelUtama', 'model');
         $this->load->model('ModelNotifikasi', 'notif');
         $this->load->library('image_lib');
+        $token = $this->input->cookie('sso_token');
+        if (!$token) {
+            $this->session->sess_destroy();
+        }
 
         if (!$this->session->userdata('logged_in')) {
             redirect('keluar');

@@ -10,6 +10,11 @@ class HalamanPangkat extends CI_Controller
         $this->load->model('ModelPangkat', 'pangkat');
         $this->load->model('ModelUtama', 'model');
 
+        $token = $this->input->cookie('sso_token');
+        if (!$token) {
+            $this->session->sess_destroy();
+        }
+
         if (!$this->session->userdata('logged_in')) {
             redirect('keluar');
         }

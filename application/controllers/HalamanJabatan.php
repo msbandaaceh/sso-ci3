@@ -20,7 +20,10 @@ class HalamanJabatan extends CI_Controller
 
         $this->load->model('ModelJabatan', 'jabatan');
         $this->load->model('ModelUtama', 'model');
-
+        $token = $this->input->cookie('sso_token');
+        if (!$token) {
+            $this->session->sess_destroy();
+        }
         if (!$this->session->userdata('logged_in')) {
             redirect('keluar');
         }
