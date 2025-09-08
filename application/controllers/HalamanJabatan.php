@@ -56,11 +56,13 @@ class HalamanJabatan extends CI_Controller
         $id = $this->input->post('id');
         $nama_jabatan = strtoupper($this->input->post('nama_jabatan'));
         $struktural = $this->input->post('struktural');
+        $role = $this->input->post('peran');
 
         if ($id) {
             $data = array(
                 'nama_jabatan' => $nama_jabatan,
                 'struktural' => $struktural,
+                'role' => $role,
                 'modified_by' => $this->session->userdata('fullname'),
                 'modified_on' => date('Y-m-d H:i:s')
             );
@@ -69,6 +71,7 @@ class HalamanJabatan extends CI_Controller
             $data = array(
                 'nama_jabatan' => $nama_jabatan,
                 'struktural' => $struktural,
+                'role' => $role,
                 'created_by' => $this->session->userdata('fullname'),
                 'created_on' => date('Y-m-d H:i:s')
             );
@@ -97,20 +100,29 @@ class HalamanJabatan extends CI_Controller
 
         $nama_jabatan = "";
         $struktural = array('' => "Pilih", '1' => 'Ya', '0' => 'Tidak');
+        $role = [
+            '' => 'Pilih Peran Jabatan',
+            'admin_satker' => 'Administrator Satuan Kerja',
+            'validator_uk_satker' => 'Validator Bagian Umum dan Keuangan',
+            'validator_kepeg_satker' => 'Validator Bagian Kepegawaian',
+            'validator_ptip_satker' => 'Validator Bagian PTIP',
+        ];
 
 
         if ($id == '-1') {
             $judul = "TAMBAH DATA JABATAN";
             $id = '';
             $jenis = form_dropdown('struktural', $struktural, '', 'class="form-select" id="struktural"');
-
+            $role_ = form_dropdown('peran', $role, '', 'class="form-select" id="peran"');
         } else {
             $judul = "EDIT DATA JABATAN";
             $query = $this->model->get_seleksi('ref_jabatan', 'id', $id);
 
             $nama_jabatan = $query->row()->nama_jabatan;
             $struktural_ = $query->row()->struktural;
+            $peran = $query->row()->role;
             $jenis = form_dropdown('struktural', $struktural, $struktural_, 'class="form-select" id="struktural"');
+            $role_ = form_dropdown('peran', $role, $peran, 'class="form-select" id="peran"');
         }
 
 
@@ -119,6 +131,7 @@ class HalamanJabatan extends CI_Controller
                 'st' => 1,
                 'judul' => $judul,
                 'id' => $id,
+                'peran' => $role_,
                 'struktural' => $jenis,
                 'nama_jabatan' => $nama_jabatan
             )

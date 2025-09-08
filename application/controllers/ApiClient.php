@@ -55,6 +55,28 @@ class ApiClient extends CI_Controller
         }
     }
 
+    public function get_data_seleksi2()
+    {
+        $tabel = $this->input->get('tabel');
+        $kolom_seleksi = $this->input->get('kolom_seleksi');
+        $seleksi = $this->input->get('seleksi');
+        $kolom_seleksi2 = $this->input->get('kolom_seleksi2');
+        $seleksi2 = $this->input->get('seleksi2');
+
+        $data = $this->api->get_seleksi2($tabel, $kolom_seleksi, $seleksi, $kolom_seleksi2, $seleksi2);
+        if ($data->num_rows() > 0) {
+            echo json_encode([
+                'status' => 'success',
+                'data' => $data->result_array()
+            ]);
+        } else {
+            echo json_encode([
+                'status' => 'error',
+                'message' => 'Data tidak ditemukan.'
+            ]);
+        }
+    }
+
     public function get_data_tabel()
     {
         $tabel = $this->input->get('tabel');
@@ -98,6 +120,38 @@ class ApiClient extends CI_Controller
             } else {
                 http_response_code(500);
                 echo json_encode(['status' => false, 'message' => 'Gagal Update Data']);
+            }
+
+        } catch (Exception $e) {
+            http_response_code(500);
+            echo json_encode(['status' => false, 'message' => 'Error: ' . $e->getMessage()]);
+        }
+    }
+
+    public function simpan_data()
+    {
+        header('Content-Type: application/json');
+
+        $input = json_decode(trim(file_get_contents("php://input")), true);
+
+        // Validasi input minimal
+        if (!isset($input['tabel'], $input['data'])) {
+            http_response_code(400);
+            echo json_encode(['status' => false, 'message' => $input]);
+            return;
+        }
+
+        $tabel = $input['tabel'];
+        $data = $input['data'];
+
+        try {
+            $query = $this->api->simpan_data($tabel, $data);
+
+            if ($query) {
+                echo json_encode(['status' => true, 'message' => 'Simpan Data Berhasil']);
+            } else {
+                http_response_code(500);
+                echo json_encode(['status' => false, 'message' => 'Gagal Simpan Data']);
             }
 
         } catch (Exception $e) {

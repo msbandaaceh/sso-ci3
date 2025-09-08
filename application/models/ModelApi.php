@@ -27,6 +27,13 @@ class ModelApi extends CI_Model
         return $this->db->get($tabel);
     }
 
+    public function get_seleksi2($tabel, $kolom_seleksi, $seleksi, $kolom_seleksi2, $seleksi2)
+    {
+        $this->db->where($kolom_seleksi2, $seleksi2);
+        $this->db->where($kolom_seleksi, $seleksi);
+        return $this->db->get($tabel);
+    }
+
     public function get_data_tabel($tabel)
     {
         return $this->db->get($tabel);
@@ -36,5 +43,10 @@ class ModelApi extends CI_Model
     {
         $this->db->where($kunci, $id);
         return $this->db->update($tabel, $data);
+    }
+
+    public function simpan_data($tabel, $data)
+    {
+        return $this->db->insert($tabel, $data);
     }
 }

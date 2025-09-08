@@ -66,3 +66,6 @@ $route['get_nip'] = 'HalamanUser/get_pegawai_nip';
 
 $route['api_update']['patch'] = 'apiclient/pembaharuan_data';
 $route['api_audittrail']['post'] = 'apiclient/audittrail';
+$route['api_get_seleksi']['get'] = 'apiclient/get_data_seleksi';
+$route['api_get_seleksi2']['get'] = 'apiclient/get_data_seleksi2';
+$route['api_simpan_data']['post'] = 'apiclient/simpan_data';

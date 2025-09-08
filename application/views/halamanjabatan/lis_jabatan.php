@@ -133,7 +133,7 @@
             <div class="modal-body">
                 <input hidden type="text" name="id" id="id" class="form-control" />
                 <div class="row g-2">
-                    <div class="col mb-3">
+                    <div class="col">
                         <label for="nama_jabatan" class="form-label">Nama Jabatan</label><code> *</code>
                         <input type="text" name="nama_jabatan" id="nama_jabatan" class="form-control"
                             placeholder="Masukkan Nama Jabatan" autocomplete="off" />
@@ -141,6 +141,11 @@
                     <div class="form-group">
                         <label for="struktural" class="form-label">Jabatan Struktural</label><code> *</code>
                         <div id="struktural_">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="peran" class="form-label">Peran Jabatan <code>( Opsional )</code></label>
+                        <div id="peran_">
                         </div>
                     </div>
                 </div>
@@ -229,11 +234,13 @@
                 $("#id").val('');
                 $("#nama_jabatan").val('');
                 $("#struktural_").html("");
+                $("#peran_").html("");
 
                 $("#judul").append(json.judul);
                 $("#id").val(json.id);
                 $("#nama_jabatan").val(json.nama_jabatan);
                 $("#struktural_").append(json.struktural);
+                $("#peran_").append(json.peran);
             } else if (json.st == 0) {
                 pesan('PERINGATAN', json.msg, '');
                 $('#table_pegawai').DataTable().ajax.reload();

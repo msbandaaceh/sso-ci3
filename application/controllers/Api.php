@@ -15,6 +15,10 @@ class Api extends CI_Controller
     {
         parent::__construct();
         $this->jwt_key = $this->config->item('jwt_key');
+        header('Access-Control-Allow-Origin: *');
+        header("Access-Control-Allow-Credentials: true");
+        header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
+        header('Content-Type: application/json');
     }
 
     public function cek_token()

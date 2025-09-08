@@ -186,6 +186,8 @@ class HalamanLogin extends CI_Controller
                         'userid' => $queryUser->row()->userid,
                         'fullname' => $queryUser->row()->fullname,
                         'username' => $queryUser->row()->username,
+                        'jab_id' => $queryUser->row()->jab_id,
+                        'jabatan' => $queryUser->row()->jabatan,
                         'foto' => site_url($queryUser->row()->foto),
                         'role' => $queryUser->row()->role
                     ]);
@@ -389,6 +391,7 @@ class HalamanLogin extends CI_Controller
         $this->session->set_userdata([
             'userid' => $queryUser->row()->userid,
             'fullname' => $queryUser->row()->fullname,
+            'jab_id' => $queryUser->row()->jab_id,
             'jabatan' => $queryUser->row()->jabatan,
             'foto' => site_url($queryUser->row()->foto),
             'role' => $queryUser->row()->role
