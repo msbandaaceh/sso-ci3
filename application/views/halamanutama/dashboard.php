@@ -2,10 +2,27 @@
 <div class="content-wrapper">
     <div class="container-xxl flex-grow-1 container-p-y">
 
+        <div class="row mt-sm-4 mt-3">
+            <div class="col-12">
+                <div class="card bg-warning text-center text-white mb-3">
+                    <div class="card-header">
+                        <div class="card-image">
+                            <img src="<?= $this->session->userdata('foto'); ?>"
+                                class="w-px-90 h-px-150 rounded-circle" />
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <h4 class="card-title text-white">Assalamu'alaikum, Saleum Teuka</h4>
+                        <h3 class="card-title text-white"><?= $this->session->userdata('fullname') ?></h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="row row-cols-1 row-cols-md-3 g-6 mb-12">
             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 mb-3">
                 <div class="card h-100">
-                    <a href="http://hadir-in.ms-bandaaceh.local" data-loader><img class="card-img-top"
+                    <a href="http://hadir-in.ms-bandaaceh.local"><img class="card-img-top"
                             src="<?= site_url('assets/img/hadir-in.webp') ?>" alt="Card image cap"></a>
                     <div class="card-body text-center">
                         <div class="btn btn-primary">

@@ -28,7 +28,8 @@ $route['simpan_user'] = 'HalamanUser/simpan';
 $route['simpan_peg'] = 'HalamanRegistrasi/simpan_pegawai';
 $route['simpan_ppnpn'] = 'HalamanRegistrasi/simpan_ppnpn';
 $route['simpan_tamu'] = 'HalamanLogin/simpan_tamu';
-$Route['save_user'] = 'HalamanRegistrasi/simpan_user';
+$route['save_user'] = 'HalamanRegistrasi/simpan_user';
+$route['simpan_lokasi'] = 'HalamanPengaturan/simpan_lokasi';
 
 $route['pilih_role'] = 'HalamanLogin/pilih_role';
 $route['role_plh'] = 'HalamanLogin/role_plh';
@@ -63,6 +64,7 @@ $route['cek_nohp'] = 'HalamanRegistrasi/cek_nohp';
 $route['cek_jabatan'] = 'HalamanRegistrasi/cek_jabatan';
 
 $route['get_nip'] = 'HalamanUser/get_pegawai_nip';
+$route['get_lokasi'] = 'HalamanPengaturan/get_lokasi';
 
 $route['api_update']['patch'] = 'apiclient/pembaharuan_data';
 $route['api_audittrail']['post'] = 'apiclient/audittrail';

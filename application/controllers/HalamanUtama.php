@@ -22,6 +22,8 @@ class HalamanUtama extends CI_Controller
         if (!$this->session->userdata('logged_in')) {
             redirect('keluar');
         }
+
+        #die(var_dump($this->session->all_userdata()));
     }
 
     public function index()

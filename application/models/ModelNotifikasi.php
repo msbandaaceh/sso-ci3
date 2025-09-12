@@ -79,12 +79,7 @@ class ModelNotifikasi extends CI_Model
 
             if ($kweri_notif->num_rows() > 0) {
                 foreach ($kweri_notif->result() as $row) {
-
-                    //$cari = array("#jenis_perkara#", "#namap#", "#tgl_daftar#", "#noperk#");
-                    //$ganti = array($row->jenis_perkara_nama, str_replace("'", "''", $row->namap), $row->tgl_daftar, $row->nomor_perkara);
                     $pesans = "*[NOTIFIKASI OTOMATIS LITERASI MS BANDA ACEH]*\n\n" . $row->pesan . "\n\nPesan ini dikirim otomatis oleh sistem LITERASI Mahkamah Syar'iyah Banda Aceh";
-                    //$tanggals = date("Y-m-d H:i:s");
-                    //$this->db->query("insert into waku.perkara_daftar(perkara_id,nomor_perkara,tanggal_daftar,nama_pihak,nomor_hp,pesan,dikirim)values($row->perkara_id,'$row->nomor_perkara','$row->tgl_daftar','" . str_replace("'", "''", $row->namap) . "','$row->telp1','$pesans','$tanggals')");
                     $pesan = array(
                         "pesan" => $pesans,
                         "tabel" => "sys_notif",
@@ -94,8 +89,6 @@ class ModelNotifikasi extends CI_Model
                 }
                 return $notif;
             }
-
-
         } catch (Exception $e) {
             $pesan = array("error" => $e);
             $notif[] = $pesan;
@@ -116,20 +109,6 @@ class ModelNotifikasi extends CI_Model
         }
 
         return $notif;
-    }
-
-    public function get_rapat_5_menit_sebelum_mulai()
-    {
-        // Mendapatkan waktu sekarang
-        $this->db->select('*');
-        $this->db->from('register_rapat');
-        $this->db->where('TIME(NOW()) BETWEEN TIME(mulai) - INTERVAL 5 MINUTE AND TIME(mulai)');
-        $this->db->where('tanggal = DATE(NOW())');
-        $this->db->where('reminder', 0);
-
-        // Menjalankan query dan mengambil hasilnya
-        $query = $this->db->get();
-        return $query;
     }
     
     public function cek_reminder_presensi($jenis)

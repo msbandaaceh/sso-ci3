@@ -53,8 +53,4 @@ class ModelLogin extends CI_Model
             return 0;
         }
     }
-
-    function tambahTamu($data, $table) {
-        return $this->db->insert($table, $data);
-    }
 }

@@ -344,6 +344,134 @@
                             </form>
                         </div>
 
+                        <div class="row">
+                            <form id="formUser" method="POST" action="<?= site_url('simpan_config') ?>"
+                                onsubmit="return showLoaderSweetalert2(this)">
+                                <div class="row">
+                                    <input class="form-control" type="hidden" id="id_jam_istirahat_mulai" name="id"
+                                        value="<?= base64_encode($this->encryption->encrypt($istirahat_mulai->row()->id)) ?>" />
+                                    <label for="istirahat_mulai" class="form-label">WAKTU ISTIRAHAT MULAI</label>
+                                    <div class="mb-3 col-md-10">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control timepicker" id="istirahat_mulai"
+                                                name="app" value="<?= $istirahat_mulai->row()->value ?>" />
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3 col-md-2 col-sm-12 text-center">
+                                        <button type="submit" class="btn btn-primary me-2">Simpan</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="row">
+                            <form id="formUser" method="POST" action="<?= site_url('simpan_config') ?>"
+                                onsubmit="return showLoaderSweetalert2(this)">
+                                <div class="row">
+                                    <input class="form-control" type="hidden" id="id_jam_istirahat_selesai" name="id"
+                                        value="<?= base64_encode($this->encryption->encrypt($istirahat_selesai->row()->id)) ?>" />
+                                    <label for="istirahat_selesai" class="form-label">WAKTU ISTIRAHAT SELESAI</label>
+                                    <div class="mb-3 col-md-10">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control timepicker" id="istirahat_selesai"
+                                                name="app" value="<?= $istirahat_selesai->row()->value ?>" />
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3 col-md-2 col-sm-12 text-center">
+                                        <button type="submit" class="btn btn-primary me-2">Simpan</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="row">
+                            <form id="formUser" method="POST" action="<?= site_url('simpan_config') ?>"
+                                onsubmit="return showLoaderSweetalert2(this)">
+                                <div class="row">
+                                    <input class="form-control" type="hidden" id="id_jam_istirahat_mulai_jumat"
+                                        name="id"
+                                        value="<?= base64_encode($this->encryption->encrypt($istirahat_mulai_jumat->row()->id)) ?>" />
+                                    <label for="istirahat_mulai_jumat" class="form-label">WAKTU ISTIRAHAT JUMAT
+                                        MULAI</label>
+                                    <div class="mb-3 col-md-10">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control timepicker"
+                                                id="istirahat_mulai_jumat" name="app"
+                                                value="<?= $istirahat_mulai_jumat->row()->value ?>" />
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3 col-md-2 col-sm-12 text-center">
+                                        <button type="submit" class="btn btn-primary me-2">Simpan</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="row">
+                            <form id="formUser" method="POST" action="<?= site_url('simpan_config') ?>"
+                                onsubmit="return showLoaderSweetalert2(this)">
+                                <div class="row">
+                                    <input class="form-control" type="hidden" id="id_jam_istirahat_selesai_jumat"
+                                        name="id"
+                                        value="<?= base64_encode($this->encryption->encrypt($istirahat_selesai_jumat->row()->id)) ?>" />
+                                    <label for="istirahat_selesai_jumat" class="form-label">WAKTU ISTIRAHAT JUMAT
+                                        SELESAI</label>
+                                    <div class="mb-3 col-md-10">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control timepicker"
+                                                id="istirahat_selesai_jumat" name="app"
+                                                value="<?= $istirahat_selesai_jumat->row()->value ?>" />
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3 col-md-2 col-sm-12 text-center">
+                                        <button type="submit" class="btn btn-primary me-2">Simpan</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="row">
+                            <form id="formUser" method="POST" action="<?= site_url('simpan_config') ?>"
+                                onsubmit="return showLoaderSweetalert2(this)">
+                                <div class="row">
+                                    <input class="form-control" type="hidden" id="id_presensi_lokasi" name="id"
+                                        value="<?= base64_encode($this->encryption->encrypt($presensi_lokasi->row()->id)) ?>" />
+                                    <label for="presensi_lokasi" class="form-label">AKTIFKAN PRESENSI LOKASI</label>
+                                    <div class="mb-3 col-md-10">
+                                        <div class="form-group">
+                                            <select class="form-select" id="presensi_lokasi" name="app">
+                                                <?php
+                                                if ($presensi_lokasi->row()->value == '1') {
+                                                    echo '<option value = "1" selected>YA</option>';
+                                                    echo '<option value = "2">TIDAK</option>';
+                                                } else {
+                                                    echo '<option value = "1">YA</option>';
+                                                    echo '<option value = "2" selected>TIDAK</option>';
+                                                }
+                                                ?>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3 col-md-2 col-sm-12 text-center">
+                                        <button type="submit" class="btn btn-primary me-2">Simpan</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <label for="map" class="form-label">LOKASI PRESENSI</label>
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <button type="button" id="btnLihatLokasi" class="btn btn-primary me-2">Lihat
+                                    Lokasi</button>
+                            </div>
+                        </div>
+
                     </div>
                     <!-- /Account -->
                 </div>
@@ -351,6 +479,21 @@
         </div>
     </div>
     <!-- / Content -->
+
+    <div class="modal fade" id="lokasiPresensi" data-bs-backdrop="static" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="judul">Lokasi Presensi</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="dropdown-divider"></div>
+                <div class="modal-body">
+                    <div id="map" style="height:500px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="content-backdrop fade"></div>
     <script>
@@ -381,6 +524,150 @@
         // Event listener untuk kop surat satker
         document.getElementById('kop').addEventListener('change', function () {
             previewImage(this, 'uploadedKop'); // Menampilkan preview pada gambar tanda tangan
+        });
+
+        let map; // biar bisa diakses global
+        let userMarker; // simpan marker lokasi user
+
+        document.getElementById("btnLihatLokasi").addEventListener("click", function () {
+            const modal = new bootstrap.Modal(document.getElementById('lokasiPresensi'));
+            modal.show();
+
+            // Tunggu modal selesai ditampilkan
+            $('#lokasiPresensi').on('shown.bs.modal', function () {
+                if (!map) {
+                    // Buat map pertama kali
+                    map = L.map('map');
+
+                    // Tambah tile layer
+                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                        attribution: '&copy; OpenStreetMap contributors'
+                    }).addTo(map);
+
+                    map.locate({
+                        setView: true,
+                        maxZoom: 20,
+                        enableHighAccuracy: true
+                    });
+
+                    map.on("locationfound", function (e) {
+                        if (userMarker) {
+                            userMarker.setLatLng(e.latlng);
+                        } else {
+                            userMarker = L.marker(e.latlng).addTo(map);
+                        }
+
+                        map.setView(e.latlng, 19); // paksa zoom dekat
+                    });
+
+                    // Event kalau gagal menemukan lokasi
+                    map.on("locationerror", function () {
+                        alert("Tidak bisa mendapatkan lokasi Anda");
+                        map.setView([-6.2, 106.816], 17); // fallback ke Jakarta
+                    });
+
+                    // Ambil polygon dari server
+                    $.getJSON('get_lokasi', function (data) {
+                        console.log("Data dari server:", data);
+
+                        if (data && data.koordinat && data.koordinat.length > 0) {
+                            let coords = data.koordinat.map(p => [p.lat, p.lng]);
+
+                            let polygon = L.polygon(coords, {
+                                color: "red",
+                                fillColor: "#f03",
+                                fillOpacity: 0.4
+                            }).addTo(map);
+
+                            map.setView(polygon.getBounds().getCenter(), 17);
+                        }
+                    });
+
+                    // === Tombol custom "Lokasi Saya" ===
+                    L.control.locateMe = function (opts) {
+                        let control = L.control({ position: 'topleft' });
+                        control.onAdd = function (map) {
+                            let btn = L.DomUtil.create('button', 'leaflet-bar');
+                            btn.innerHTML = '📍';
+                            btn.title = "Pusatkan ke Lokasi Saya";
+                            btn.style.width = '34px';
+                            btn.style.height = '34px';
+                            btn.style.fontSize = '18px';
+                            btn.style.cursor = 'pointer';
+
+                            btn.onclick = function () {
+                                map.locate({ setView: true, maxZoom: 17 });
+                            };
+
+                            return btn;
+                        };
+                        return control;
+                    }
+                    L.control.locateMe().addTo(map);
+
+                    // === Tambahkan Draw Control untuk Polygon ===
+                    let drawnItems = new L.FeatureGroup();
+                    map.addLayer(drawnItems);
+
+                    let drawControl = new L.Control.Draw({
+                        draw: {
+                            polyline: false,
+                            circle: false,
+                            rectangle: false,
+                            marker: false,
+                            circlemarker: false,
+                            polygon: {
+                                allowIntersection: false,
+                                showArea: true,
+                                drawError: {
+                                    color: '#e1e100',
+                                    message: "<strong>Error:<strong> Polygon tidak boleh berpotongan!"
+                                },
+                                shapeOptions: {
+                                    color: 'blue'
+                                }
+                            }
+                        },
+                        edit: {
+                            featureGroup: drawnItems
+                        }
+                    });
+                    map.addControl(drawControl);
+
+                    // Event ketika polygon selesai dibuat
+                    map.on(L.Draw.Event.CREATED, function (event) {
+                        let layer = event.layer;
+                        drawnItems.addLayer(layer);
+
+                        // Ambil koordinat polygon
+                        let coords = layer.getLatLngs()[0].map(p => ({ lat: p.lat, lng: p.lng }));
+                        console.log("Polygon dibuat:", coords);
+
+                        // Kirim ke server via AJAX
+                        $.ajax({
+                            url: "simpan_lokasi",
+                            method: "POST",
+                            contentType: "application/json", // penting!
+                            data: JSON.stringify({
+                                nama: "Lokasi Presensi",
+                                polygon: coords
+                            }),
+                            success: function (res) {
+                                alert("Polygon berhasil disimpan!");
+                                console.log(res);
+                            },
+                            error: function (xhr, status, err) {
+                                console.error(err);
+                                alert("Gagal menyimpan polygon");
+                            }
+                        });
+                    });
+
+                } else {
+                    map.invalidateSize();
+                    map.locate({ setView: true, maxZoom: 17 }); // update lokasi setiap buka modal
+                }
+            });
         });
     </script>
 </div>

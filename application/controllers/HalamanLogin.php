@@ -25,20 +25,15 @@ class HalamanLogin extends CI_Controller
         $this->load->model('ModelNotifikasi', 'notif');
         $this->load->model('ModelUtama', 'utama');
         $this->load->model('pengaturan/ModelPegawai', 'pegawai');
-        #$this->load->model('pengaturan/ModelUser', 'user');
-        $queryNamaSatker = $this->model->get_konfigurasi('4');
-        $queryLogoSatker = $this->model->get_konfigurasi('22');
-        $queryNamaApp = $this->model->get_konfigurasi('1');
-        $queryTitleApp = $this->model->get_konfigurasi('2');
-        $this->session->set_userdata('nama_satker', $queryNamaSatker->row()->value);
-        $this->session->set_userdata('logo_satker', 'assets/dokumen/' . $queryLogoSatker->row()->value);
-        $this->session->set_userdata('nama_app', $queryNamaApp->row()->value);
-        $this->session->set_userdata('title_app', $queryTitleApp->row()->value);
     }
 
     public function index()
     {
-        $this->load->view('form_login');
+        $data['nama_satker'] = $this->model->get_konfigurasi('4')->row()->value;
+        $data['logo_satker'] = 'assets/dokumen/' . $this->model->get_konfigurasi('22')->row()->value;
+        $data['nama_app'] = $this->model->get_konfigurasi('1')->row()->value;
+        $data['title_app'] = $this->model->get_konfigurasi('2')->row()->value;
+        $this->load->view('form_login', $data);
     }
 
     public function proses_login()
@@ -123,6 +118,8 @@ class HalamanLogin extends CI_Controller
                     'kop_satker' => site_url('assets/dokumen/' . $queryKopSatker->row()->value),
                     'nama_app' => $queryNamaApp->row()->value,
                     'title' => $queryNamaApp->row()->value . ' ' . $queryNamaSatker->row()->value,
+                    'sso_db' => $this->config->item('sso_db'),
+                    'sso_server' => $this->config->item('sso_server')
                 ]);
 
                 # Cek apakah user merupakan plh/plt
@@ -254,7 +251,7 @@ class HalamanLogin extends CI_Controller
     public function logout()
     {
         $this->session->sess_destroy();
-        delete_cookie('sso_token', '.ms-bandaaceh.local');
+        delete_cookie('sso_token', $this->config->item('cookie_domain'));
         $redirect = $this->input->get('redirect_to');
         redirect($redirect ?: base_url('login'));
     }
@@ -285,7 +282,7 @@ class HalamanLogin extends CI_Controller
             $role = $cekJabatan->row()->role;
             $userid = '-99';
             $fullname = $queryUser->row()->nama_pegawai;
-            $username = $this->model->get_seleksi('v_users', 'userid', $id)->row()->username;
+            $username = $this->model->get_seleksi('v_users', 'pegawai_id', $queryUser->row()->pegawai_id)->row()->username;
             $plh = '0';
             $plt = '1';
             $this->session->set_userdata('status_plt', '1');
@@ -391,6 +388,7 @@ class HalamanLogin extends CI_Controller
         $this->session->set_userdata([
             'userid' => $queryUser->row()->userid,
             'fullname' => $queryUser->row()->fullname,
+            'username' => $queryUser->row()->username,
             'jab_id' => $queryUser->row()->jab_id,
             'jabatan' => $queryUser->row()->jabatan,
             'foto' => site_url($queryUser->row()->foto),

@@ -598,6 +598,11 @@ class HalamanPengaturan extends CI_Controller
         $data['mulai_apel_jumat'] = $this->model->get_konfigurasi('32');
         $data['selesai_apel_jumat'] = $this->model->get_konfigurasi('33');
         $data['ip_kantor'] = $this->model->get_konfigurasi('34');
+        $data['istirahat_mulai'] = $this->model->get_konfigurasi('35');
+        $data['istirahat_selesai'] = $this->model->get_konfigurasi('36');
+        $data['istirahat_mulai_jumat'] = $this->model->get_konfigurasi('37');
+        $data['istirahat_selesai_jumat'] = $this->model->get_konfigurasi('38');
+        $data['presensi_lokasi'] = $this->model->get_konfigurasi('39');
         $data['page'] = 'app';
 
         $this->load->view('header', $data);
@@ -669,6 +674,52 @@ class HalamanPengaturan extends CI_Controller
             $this->session->set_flashdata('pesan', 'Gagal Simpan, ' . $queryUpdate);
             redirect('app');
         }
+    }
+
+    public function get_status_presensi()
+    {
+        $status = $this->model->get_konfigurasi('39')->row()->value;
+        $data['status'] = $status;
+
+        echo json_encode($data);
+    }
+
+    public function simpan_lokasi()
+    {
+        $input = json_decode($this->input->raw_input_stream, true);
+        $nama = $input['nama'];
+        $polygon = json_encode($input['polygon']);
+
+        // kosongkan polygon lama (supaya tunggal)
+        $this->db->truncate('lokasi_kantor');
+
+        $this->db->insert('lokasi_kantor', [
+            'nama' => $nama,
+            'polygon_json' => $polygon
+        ]);
+
+        echo json_encode(['status' => true, 'message' => 'Polygon berhasil disimpan']);
+    }
+
+    public function get_lokasi()
+    {
+        $lokasi = $this->db->get('lokasi_kantor')->row();
+        if ($lokasi) {
+            $lokasi->koordinat = json_decode($lokasi->polygon_json); // decode dulu biar rapi
+        }
+        echo json_encode($lokasi);
+    }
+
+    public function update_lokasi()
+    {
+        $input = json_decode($this->input->raw_input_stream, true);
+        $polygon = json_encode($input['polygon']);
+
+        $this->db->update('lokasi_kantor', [
+            'polygon_json' => $polygon
+        ]);
+
+        echo json_encode(['status' => true, 'message' => 'Polygon berhasil diupdate']);
     }
 
     #                         #
