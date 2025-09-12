@@ -69,7 +69,7 @@ class HalamanUser extends CI_Controller
     {
         $id = $this->encryption->decrypt(base64_decode($this->input->post('id')));
 
-        $queryPegawai = $this->pegawai->pilih_pegawai();
+        $queryPegawai = $this->pegawai->pilih_semua_pegawai();
         $pegawai = array();
         $pegawai['0'] = "Pilih Pegawai";
         foreach ($queryPegawai->result() as $row) {

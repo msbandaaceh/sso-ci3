@@ -43,6 +43,17 @@ class ModelPegawai extends CI_Model
         }
     }
 
+    public function pilih_semua_pegawai()
+    {
+        try {
+            $this->db->where('id > 0');
+            $this->db->order_by('jab_id', 'ASC');
+            return $this->db->get('v_pegawai');
+        } catch (Exception $e) {
+            return $e;
+        }
+    }
+
     public function pilih_atasan()
     {
         try {

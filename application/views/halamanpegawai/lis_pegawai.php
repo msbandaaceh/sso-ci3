@@ -390,96 +390,6 @@
         $.validator.addMethod("valueNotEquals", function (value, element, arg) {
             return arg !== value;
         }, "Value must not equal arg.");
-
-        $('#formPegawai').validate({
-            rules: {
-                passKon: {
-                    equalTo: "#pass",
-                    required: true
-                },
-                nama_gelar: {
-                    required: true,
-                    maxlength: 60
-                },
-                nama: {
-                    required: true,
-                    maxlength: 40
-                },
-                jabatan: {
-                    valueNotEquals: "0",
-                    remote: {
-                        url: '<?= site_url() ?>cek_jabatan',
-                        type: 'post',
-                        data: {
-                            jabatan: function () {
-                                return $('#jabatan').val();
-                            }
-                        }
-                    }
-                },
-                jenis: {
-                    valueNotEquals: "0"
-                },
-                pangkat: {
-                    valueNotEquals: "0"
-                },
-                nohp: {
-                    required: true,
-                    maxlength: 14,
-                    remote: {
-                        url: '<?= site_url() ?>cek_nohp',
-                        type: 'post',
-                        data: {
-                            nohp: function () {
-                                return $('#nohp').val();
-                            }
-                        }
-                    }
-                },
-                stat: {
-                    valueNotEquals: "2"
-                }
-            },
-            messages: {
-                nama_gelar: {
-                    required: "Nama (Dengan Gelar) tidak boleh kosong",
-                    maxlength: "Nama Gelar tidak boleh melebihi 60 karakter"
-                },
-                nama: {
-                    required: "Nama tidak boleh kosong",
-                    maxlength: "Nama Tanpa Gelar tidak boleh melebihi 40 karakter"
-                },
-                jabatan: {
-                    valueNotEquals: "Jabatan harus dipilih",
-                    remote: "Ada pegawai aktif yang menduduki jabatan yang anda pilih, silakan hubungi bagian kepegawaian"
-                },
-                jenis: {
-                    valueNotEquals: "Jenis Pegawai harus dipilih"
-                },
-                pangkat: {
-                    valueNotEquals: "Pangkat Golongan harus dipilih"
-                },
-                nohp: {
-                    required: "Nomor Handphone tidak boleh kosong",
-                    maxlength: "Nomor Handphone tidak boleh melebihi 14 karakter",
-                    remote: "Nomor Handphone sudah dipakai"
-                },
-                stat: {
-                    valueNotEquals: "Status keaktifan harus dipilih"
-                },
-            },
-            errorElement: 'span',
-            errorPlacement: function (error, element) {
-                error.addClass('invalid-feedback');
-                element.closest('.form-group').append(error);
-            },
-            highlight: function (element, errorClass, validClass) {
-                $(element).addClass('is-invalid');
-            },
-            unhighlight: function (element, errorClass, validClass) {
-                $(element).removeClass('is-invalid');
-            }
-        });
     });
 
 </script>
@@ -536,6 +446,100 @@
             } else if (json.st == 0) {
                 pesan('PERINGATAN', json.msg, '');
                 $('#table_pegawai').DataTable().ajax.reload();
+            }
+
+            var id = document.getElementById('id').value;
+            console.log(id);
+            if (id == '') {
+                $('#formPegawai').validate({
+                    rules: {
+                        passKon: {
+                            equalTo: "#pass",
+                            required: true
+                        },
+                        nama_gelar: {
+                            required: true,
+                            maxlength: 60
+                        },
+                        nama: {
+                            required: true,
+                            maxlength: 40
+                        },
+                        jabatan: {
+                            valueNotEquals: "0",
+                            remote: {
+                                url: '<?= site_url() ?>cek_jabatan',
+                                type: 'post',
+                                data: {
+                                    jabatan: function () {
+                                        return $('#jabatan').val();
+                                    }
+                                }
+                            }
+                        },
+                        jenis: {
+                            valueNotEquals: "0"
+                        },
+                        pangkat: {
+                            valueNotEquals: "0"
+                        },
+                        nohp: {
+                            required: true,
+                            maxlength: 14,
+                            remote: {
+                                url: '<?= site_url() ?>cek_nohp',
+                                type: 'post',
+                                data: {
+                                    nohp: function () {
+                                        return $('#nohp').val();
+                                    }
+                                }
+                            }
+                        },
+                        stat: {
+                            valueNotEquals: "2"
+                        }
+                    },
+                    messages: {
+                        nama_gelar: {
+                            required: "Nama (Dengan Gelar) tidak boleh kosong",
+                            maxlength: "Nama Gelar tidak boleh melebihi 60 karakter"
+                        },
+                        nama: {
+                            required: "Nama tidak boleh kosong",
+                            maxlength: "Nama Tanpa Gelar tidak boleh melebihi 40 karakter"
+                        },
+                        jabatan: {
+                            valueNotEquals: "Jabatan harus dipilih",
+                            remote: "Ada pegawai aktif yang menduduki jabatan yang anda pilih, silakan hubungi bagian kepegawaian"
+                        },
+                        jenis: {
+                            valueNotEquals: "Jenis Pegawai harus dipilih"
+                        },
+                        pangkat: {
+                            valueNotEquals: "Pangkat Golongan harus dipilih"
+                        },
+                        nohp: {
+                            required: "Nomor Handphone tidak boleh kosong",
+                            maxlength: "Nomor Handphone tidak boleh melebihi 14 karakter",
+                            remote: "Nomor Handphone sudah dipakai"
+                        },
+                        stat: {
+                            valueNotEquals: "Status keaktifan harus dipilih"
+                        },
+                    },
+                    errorElement: 'span',
+                    errorPlacement: function (error, element) {
+                        error.addClass('invalid-feedback');
+                        element.closest('.form-group').append(error);
+                    },
+                    highlight: function (element, errorClass, validClass) {
+                        $(element).addClass('is-invalid');
+                    },
+                    unhighlight: function (element, errorClass, validClass) {
+                        $(element).removeClass('is-invalid');
+                    }
+                });
             }
         });
     } 

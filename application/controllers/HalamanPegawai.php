@@ -345,13 +345,13 @@ class HalamanPegawai extends CI_Controller
                 $str[] = $item->id;
             }
             if (in_array($jabatan, $str)) {
-                $cekJabatan = $this->pegawai->cek_jabatan_pegawai($jabatan, $id);
+                $cekJabatan = $this->pegawai->cek_jabatan_pegawai($jabatan, $id)->num_rows();
             } else {
                 $cekJabatan = 0;
             }
 
-            //die(var_dump($cekJabatan->num_rows()));
-            if ($cekJabatan->num_rows() > 0) {
+            #die(var_dump($cekJabatan));
+            if ($cekJabatan > 0) {
                 $querySimpan = "Ada Pegawai Aktif Menjabat Jabatan Yang Anda Pilih, Silakan Cek Kembali";
             } else {
                 $dataPegawai += array(
@@ -393,13 +393,13 @@ class HalamanPegawai extends CI_Controller
                 $str[] = $item->id;
             }
             if (in_array($jabatan, $str)) {
-                $cekJabatan = $this->pegawai->cek_jabatan_baru_pegawai($jabatan);
+                $cekJabatan = $this->pegawai->cek_jabatan_baru_pegawai($jabatan)->num_rows();
             } else {
                 $cekJabatan = 0;
             }
 
             //die(var_dump($cekJabatan->num_rows()));
-            if ($cekJabatan->num_rows() > 0) {
+            if ($cekJabatan > 0) {
                 $querySimpan = "Ada Pegawai Aktif Menjabat Jabatan Yang Anda Pilih, Silakan Cek Kembali";
             } else {
                 $dataPegawai += array(
