@@ -18,10 +18,6 @@ class HalamanUtama extends CI_Controller
         if (!$token) {
             $this->session->sess_destroy();
         }
-        
-        if (!$this->session->userdata('logged_in')) {
-            redirect('keluar');
-        }
 
         #die(var_dump($this->session->all_userdata()));
     }
@@ -39,9 +35,19 @@ class HalamanUtama extends CI_Controller
 
         $data['hasil'] = $hasil;
         $data['page'] = 'dashboard';
-        $data['role'] = $this->session->userdata('role');
 
-        $this->load->view('header', $data);
-        $this->load->view('halamanutama/dashboard');
+        if (!$this->session->userdata('logged_in')) {
+            $this->load->model('ModelLogin', 'model');
+            
+            $data['nama_satker'] = $this->model->get_konfigurasi('4')->row()->value;
+            $data['logo_satker'] = 'assets/dokumen/' . $this->model->get_konfigurasi('22')->row()->value;
+            $data['nama_app'] = $this->model->get_konfigurasi('1')->row()->value;
+            $data['title_app'] = $this->model->get_konfigurasi('2')->row()->value;
+            $this->load->view('halamanutama/landing_page', $data);
+        } else {
+            $data['role'] = $this->session->userdata('role');
+            $this->load->view('header', $data);
+            $this->load->view('halamanutama/dashboard');
+        }
     }
 }
