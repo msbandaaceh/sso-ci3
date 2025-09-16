@@ -9,7 +9,7 @@
 
     <meta name="description" content="DASHBOARD SSO LITERASI MS BANDA ACEH" />
 
-    <link rel="icon" href="<?= $this->session->userdata('logo_satker') ?>">
+    <link rel="icon" href="assets/img/ms-bna.png">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />

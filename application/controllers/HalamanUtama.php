@@ -26,14 +26,9 @@ class HalamanUtama extends CI_Controller
     {
         $data['jwt'] = $this->session->userdata('jwt');
 
-        $query = $this->model->get_data('ref_client_app');
-        $hasil = [];
-        foreach ($query->result() as $i => $item) {
-            $hasil[] = $item->nama_app;
-        }
-        #die(var_dump($hasil));
+        $query = $this->model->get_data_client();
 
-        $data['hasil'] = $hasil;
+        $data['hasil'] = $query->result();
         $data['page'] = 'dashboard';
 
         if (!$this->session->userdata('logged_in')) {

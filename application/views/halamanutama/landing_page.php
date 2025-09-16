@@ -9,7 +9,7 @@
 
     <meta name="description" content="SSO MS BANDA ACEH" />
 
-    <link rel="icon" href="<?= $logo_satker ?>">
+    <link rel="icon" href="assets/img/ms-bna.png">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -67,8 +67,7 @@
                                 <div class="card bg-warning text-center text-white mb-3">
                                     <div class="card-header">
                                         <div class="card-image mb-3">
-                                            <img src="<?= $logo_satker ?>"
-                                                class="w-px-90 h-px-150" />
+                                            <img src="<?= $logo_satker ?>" class="w-px-90 h-px-150" />
                                         </div>
                                         <h2 class="card-title text-white">SELAMAT DATANG DI LITERASI</h2>
                                     </div>
@@ -82,79 +81,19 @@
                         </div>
 
                         <div class="row row-cols-1 row-cols-md-3 g-6 mb-12">
-                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 mb-3">
-                                <div class="card h-100">
-                                    <a href="http://hadir-in.ms-bandaaceh.local"><img class="card-img-top"
-                                            src="<?= site_url('assets/img/hadir-in.webp') ?>" alt="Card image cap"></a>
-                                    <div class="card-body text-center">
-                                        <div class="btn btn-primary">
-                                            <p class="card-text"><?= $hasil[0] ?></p>
+                            <?php foreach ($hasil as $client) { ?>
+                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 mb-3">
+                                    <div class="card h-100">
+                                        <a href="<?= $client->domain ?>"><img class="card-img-top"
+                                                src="<?= 'assets/img/'.$client->foto ?>" alt="Card image cap"></a>
+                                        <div class="card-body text-center">
+                                            <div class="btn btn-primary">
+                                                <p class="card-text"><?= $client->nama_app ?></p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-
-                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 mb-3">
-                                <div class="card h-100">
-                                    <a href="http://paylink.ms-bandaaceh.local"><img class="card-img-top"
-                                            src="<?= site_url('assets/img/paylink.webp') ?>" alt="Card image cap"></a>
-                                    <div class="card-body text-center">
-                                        <div class="btn btn-primary">
-                                            <p class="card-text"><?= $hasil[1] ?></p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 mb-3">
-                                <div class="card h-100">
-                                    <a href="http://sias.ms-bandaaceh.local"><img class="card-img-top"
-                                            src="<?= site_url('assets/img/sias.webp') ?>" alt="Card image cap"></a>
-                                    <div class="card-body text-center">
-                                        <div class="btn btn-primary">
-                                            <p class="card-text"><?= $hasil[2] ?></p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row row-cols-1 row-cols-md-3 g-6 mb-12">
-                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 mb-3">
-                                <div class="card h-100">
-                                    <a href="http://seudati.ms-bandaaceh.local"><img class="card-img-top"
-                                            src="<?= site_url('assets/img/seudati.webp') ?>" alt="Card image cap"></a>
-                                    <div class="card-body text-center">
-                                        <div class="btn btn-primary">
-                                            <p class="card-text"><?= $hasil[3] ?></p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 mb-3">
-                                <div class="card h-100">
-                                    <a href="http://agam.ms-bandaaceh.local"><img class="card-img-top"
-                                            src="<?= site_url('assets/img/agam.webp') ?>" alt="Card image cap"></a>
-                                    <div class="card-body text-center">
-                                        <div class="btn btn-primary">
-                                            <p class="card-text"><?= $hasil[4] ?></p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 mb-3">
-                                <div class="card h-100">
-                                    <a href="http://e-guest.ms-bandaaceh.local"><img class="card-img-top"
-                                            src="<?= site_url('assets/img/e-guest.webp') ?>" alt="Card image cap"></a>
-                                    <div class="card-body text-center">
-                                        <div class="btn btn-primary">
-                                            <p class="card-text"><?= $hasil[5] ?></p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            <?php } ?>
                         </div>
                     </div>
                 </div>

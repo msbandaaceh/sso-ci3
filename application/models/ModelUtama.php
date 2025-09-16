@@ -66,6 +66,16 @@ class ModelUtama extends CI_Model
         }
     }
 
+    public function get_data_client()
+    {
+        try {
+            $this->db->where('status', '1');
+            return $this->db->get('ref_client_app');
+        } catch (Exception $e) {
+            return 0;
+        }
+    }
+
     public function get_konfigurasi($id)
     {
         try {
