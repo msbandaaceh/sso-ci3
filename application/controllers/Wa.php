@@ -3,13 +3,9 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Wa extends CI_Controller
 {
-    private $api_izincuti = 'seudati.ms-bandaaceh.local/api';
-    private $api_rapat = 'agam.ms-bandaaceh.local/api';
-    private $api_gaji = 'paylink.ms-bandaaceh.local/api';
-
     public function notifikasi()
     {
-        $this->load->model('pengaturan/ModelNotifikasi', 'notif');
+        $this->load->model('ModelNotifikasi', 'notif');
         $apine = $this->input->get('kuncine');
         if ($apine <> $this->config->item('api_key')) {
             echo json_encode(array("hasill" => "ANDA TIDAK BERHAK AKSES !!!!"));
@@ -85,7 +81,7 @@ class Wa extends CI_Controller
             'api_key' => $this->config->item('api_key')
         ];
 
-        $result = $this->apihelper->get($this->api_rapat . '/reminder_rapat', $params);
+        $result = $this->apihelper->get($this->config->item('api_rapat') . '/reminder_rapat', $params);
 
         if ($result['status_code'] == '200' && $result['response']['status'] === 'success') {
             $data_rapat = $result['response']['data'][0];
@@ -122,7 +118,7 @@ class Wa extends CI_Controller
                     'data' => array('reminder' => 1)
                 ];
 
-                $this->apihelper->post($this->api_rapat . '/pembaharuan_data', $payload);
+                $this->apihelper->post($this->config->item('api_rapat') . '/pembaharuan_data', $payload);
             }
         }
     }
@@ -179,7 +175,7 @@ class Wa extends CI_Controller
             'api_key' => $this->config->item('api_key'),
         ];
 
-        $result = $this->apihelper->get($this->api_izincuti . '/cek_hari_libur', $params);
+        $result = $this->apihelper->get($this->config->item('api_izincuti') . '/cek_hari_libur', $params);
         if ($result['status_code'] == 200 && $result['response']['status'] == 'kosong') {
             if (in_array($hari, ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat'])) {
                 // Pagi
