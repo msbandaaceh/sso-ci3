@@ -148,20 +148,20 @@ class HalamanLogin extends CI_Controller
                         'status_plh' => '0',
                         'status_plt' => '0',
                         'iat' => time(),
-                        'exp' => time() + 3600
+                        'exp' => time() + 7200
                     ];
 
                     $cookie_domain = $this->config->item('cookie_domain');
 
                     $jwt = JWT::encode($payload, $this->jwt_key, 'HS256');
                     $redirect = isset($_COOKIE['redirect_to']) ? $_COOKIE['redirect_to'] : null;
-                    setcookie('redirect_to', '', time() - 3600, "/", $cookie_domain);
+                    setcookie('redirect_to', '', time() - 300, "/", $cookie_domain);
 
                     setcookie(
                         'sso_token',
                         $jwt,
                         [
-                            'expires' => time() + 3600,
+                            'expires' => time() + 7200,
                             'path' => '/',
                             'domain' => $cookie_domain, // pastikan subdomain
                             'secure' => false, // hanya jika HTTPS
@@ -294,20 +294,20 @@ class HalamanLogin extends CI_Controller
             'status_plh' => $plh,
             'status_plt' => $plt,
             'iat' => time(),
-            'exp' => time() + 3600
+            'exp' => time() + 7200
         ];
 
         $cookie_domain = $this->config->item('cookie_domain');
 
         $jwt = JWT::encode($payload, $this->jwt_key, 'HS256');
         $redirect = isset($_COOKIE['redirect_to']) ? $_COOKIE['redirect_to'] : null;
-        setcookie('redirect_to', '', time() - 3600, "/", $cookie_domain);
+        setcookie('redirect_to', '', time() - 300, "/", $cookie_domain);
 
         setcookie(
             'sso_token',
             $jwt,
             [
-                'expires' => time() + 3600,
+                'expires' => time() + 7200,
                 'path' => '/',
                 'domain' => $cookie_domain, // pastikan subdomain
                 'secure' => false, // hanya jika HTTPS
@@ -355,20 +355,20 @@ class HalamanLogin extends CI_Controller
             'status_plh' => '0',
             'status_plt' => '0',
             'iat' => time(),
-            'exp' => time() + 3600
+            'exp' => time() + 7200
         ];
 
         $cookie_domain = $this->config->item('cookie_domain');
 
         $jwt = JWT::encode($payload, $this->jwt_key, 'HS256');
         $redirect = isset($_COOKIE['redirect_to']) ? $_COOKIE['redirect_to'] : null;
-        setcookie('redirect_to', '', time() - 3600, "/", $cookie_domain);
+        setcookie('redirect_to', '', time() - 300, "/", $cookie_domain);
 
         setcookie(
             'sso_token',
             $jwt,
             [
-                'expires' => time() + 3600,
+                'expires' => time() + 7200,
                 'path' => '/',
                 'domain' => $cookie_domain, // pastikan subdomain
                 'secure' => false, // hanya jika HTTPS

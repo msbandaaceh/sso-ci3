@@ -77,6 +77,44 @@ class ApiClient extends CI_Controller
         }
     }
 
+    public function get_data_pegawai_aktif()
+    {
+        $kolom_seleksi = $this->input->get('kolom_seleksi');
+        $seleksi = $this->input->get('seleksi');
+    
+        $data = $this->api->get_seleksi2('v_pegawai', $kolom_seleksi, $seleksi, 'status_pegawai', '1');
+        if ($data->num_rows() > 0) {
+            echo json_encode([
+                'status' => 'success',
+                'data' => $data->row()
+            ]);
+        } else {
+            echo json_encode([
+                'status' => 'error',
+                'message' => 'Data tidak ditemukan.'
+            ]);
+        }
+    }
+
+    public function get_data_plh()
+    {
+        $kolom_seleksi = $this->input->get('kolom_seleksi');
+        $seleksi = $this->input->get('seleksi');
+    
+        $data = $this->api->get_seleksi('v_plh', $kolom_seleksi, $seleksi);
+        if ($data->num_rows() > 0) {
+            echo json_encode([
+                'status' => 'success',
+                'data' => $data->row()
+            ]);
+        } else {
+            echo json_encode([
+                'status' => 'error',
+                'message' => 'Data tidak ditemukan.'
+            ]);
+        }
+    }
+
     public function get_data_tabel()
     {
         $tabel = $this->input->get('tabel');
