@@ -229,7 +229,7 @@ class ApiClient extends CI_Controller
         if ($data->num_rows() > 0) {
             echo json_encode([
                 'status' => 'success',
-                'data' => $data->row()
+                'data' => $data->result_array()
             ]);
         } else {
             echo json_encode([
