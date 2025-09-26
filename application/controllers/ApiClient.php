@@ -222,4 +222,20 @@ class ApiClient extends CI_Controller
             'message' => $sukses ? 'Audit trail berhasil disimpan' : 'Gagal menyimpan audit trail'
         ]);
     }
+
+    public function get_lokasi()
+    {
+        $data = $this->api->get_data_tabel('lokasi_kantor');
+        if ($data->num_rows() > 0) {
+            echo json_encode([
+                'status' => 'success',
+                'data' => $data->row()
+            ]);
+        } else {
+            echo json_encode([
+                'status' => 'error',
+                'message' => 'Data tidak ditemukan.'
+            ]);
+        }
+    }
 }
