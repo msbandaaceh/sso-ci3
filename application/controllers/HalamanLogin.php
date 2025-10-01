@@ -166,7 +166,7 @@ class HalamanLogin extends CI_Controller
                             'domain' => $cookie_domain, // pastikan subdomain
                             'secure' => false, // hanya jika HTTPS
                             'httponly' => true,
-                            'samesite' => 'Lax', // atau 'Strict'
+                            'samesite' => 'None', // atau 'Strict'
                         ]
                     );
 
@@ -312,7 +312,7 @@ class HalamanLogin extends CI_Controller
                 'domain' => $cookie_domain, // pastikan subdomain
                 'secure' => false, // hanya jika HTTPS
                 'httponly' => true,
-                'samesite' => 'Lax', // atau 'Strict'
+                'samesite' => 'None', // atau 'Strict'
             ]
         );
 
@@ -373,7 +373,7 @@ class HalamanLogin extends CI_Controller
                 'domain' => $cookie_domain, // pastikan subdomain
                 'secure' => false, // hanya jika HTTPS
                 'httponly' => true,
-                'samesite' => 'Lax', // atau 'Strict'
+                'samesite' => 'None', // atau 'Strict'
             ]
         );
 
