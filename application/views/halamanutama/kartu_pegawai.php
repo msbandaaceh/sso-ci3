@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Profil Pegawai</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
+    <link rel="icon" href="<?= site_url('assets/img/ms-bna.png') ?>">
     <style>
         * {
             box-sizing: border-box;
@@ -15,7 +15,7 @@
         body {
             margin: 0;
             padding: 20px;
-            background-image: url('dokumen/foto/bg-account.webp');
+            background-image: url("<?= site_url('assets/dokumen/foto/bg-account.webp') ?>");
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
