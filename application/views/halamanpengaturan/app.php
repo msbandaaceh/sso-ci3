@@ -329,10 +329,10 @@
                                 <div class="row">
                                     <input class="form-control" type="hidden" id="id_ip_kantor" name="id"
                                         value="<?= base64_encode($this->encryption->encrypt($ip_kantor->row()->id)) ?>" />
-                                    <label for="selesai_apel_sore" class="form-label">ALAMAT IP JARINGAN KANTOR</label>
+                                    <label for="ip_kantor" class="form-label">ALAMAT IP JARINGAN KANTOR</label>
                                     <div class="mb-3 col-md-10">
                                         <div class="form-group">
-                                            <input type="text" class="form-control timepicker" id="selesai_apel_sore"
+                                            <input type="text" class="form-control" id="ip_kantor"
                                                 name="app" value="<?= $ip_kantor->row()->value ?>" />
                                         </div>
                                     </div>
