@@ -467,8 +467,9 @@
                         </div>
                         <div class="row">
                             <div class="form-group">
-                                <button type="button" id="btnLihatLokasi" class="btn btn-primary me-2">Lihat
-                                    Lokasi</button>
+                                <button type="button" id="btnLihatLokasi" class="btn btn-primary me-2">Lokasi
+                                    Kantor</button>
+                                <button type="button" id="btnLokasiMPP" class="btn btn-primary me-2">Lokasi MPP</button>
                             </div>
                         </div>
 
@@ -528,8 +529,24 @@
 
         let map; // biar bisa diakses global
         let userMarker; // simpan marker lokasi user
+        let currentLocationType = null;
+        let polygon = null;
 
         document.getElementById("btnLihatLokasi").addEventListener("click", function () {
+            bukaModalLokasi('1');
+        });
+
+        document.getElementById("btnLokasiMPP").addEventListener("click", function () {
+            bukaModalLokasi('2');
+        });
+
+        function bukaModalLokasi(jenis) {
+            currentLocationType = jenis;
+
+            // ubah judul modal dinamis
+            document.getElementById('judul').textContent =
+                jenis === '1' ? 'Lokasi Kantor' : 'Lokasi MPP';
+
             const modal = new bootstrap.Modal(document.getElementById('lokasiPresensi'));
             modal.show();
 
@@ -564,23 +581,6 @@
                     map.on("locationerror", function () {
                         alert("Tidak bisa mendapatkan lokasi Anda");
                         map.setView([-6.2, 106.816], 17); // fallback ke Jakarta
-                    });
-
-                    // Ambil polygon dari server
-                    $.getJSON('get_lokasi', function (data) {
-                        console.log("Data dari server:", data);
-
-                        if (data && data.koordinat && data.koordinat.length > 0) {
-                            let coords = data.koordinat.map(p => [p.lat, p.lng]);
-
-                            let polygon = L.polygon(coords, {
-                                color: "red",
-                                fillColor: "#f03",
-                                fillOpacity: 0.4
-                            }).addTo(map);
-
-                            map.setView(polygon.getBounds().getCenter(), 17);
-                        }
                     });
 
                     // === Tombol custom "Lokasi Saya" ===
@@ -649,7 +649,8 @@
                             method: "POST",
                             contentType: "application/json", // penting!
                             data: JSON.stringify({
-                                nama: "Lokasi Presensi",
+                                nama: currentLocationType === '1' ? 'Lokasi Kantor' : 'Lokasi MPP',
+                                tipe: currentLocationType, // bisa dipakai backend untuk pembeda
                                 polygon: coords
                             }),
                             success: function (res) {
@@ -667,8 +668,31 @@
                     map.invalidateSize();
                     map.locate({ setView: true, maxZoom: 17 }); // update lokasi setiap buka modal
                 }
+
+                // Ambil polygon dari server
+                $.getJSON('get_lokasi?tipe=' + currentLocationType, function (data) {
+                    console.log("Data dari server:", data);
+
+                    // Hapus polygon lama jika ada
+                    if (polygon) {
+                        map.removeLayer(polygon);
+                        polygon = null;
+                    }
+
+                    if (data && data.koordinat && data.koordinat.length > 0) {
+                        let coords = data.koordinat.map(p => [p.lat, p.lng]);
+
+                        polygon = L.polygon(coords, {
+                            color: currentLocationType === '1' ? "red" : "green",
+                            fillColor: currentLocationType === '1' ? "#f03" : "#3f3",
+                            fillOpacity: 0.4
+                        }).addTo(map);
+
+                        map.setView(polygon.getBounds().getCenter(), 17);
+                    }
+                });
             });
-        });
+        }
     </script>
 </div>
 <!-- Content wrapper -->

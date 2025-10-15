@@ -688,21 +688,26 @@ class HalamanPengaturan extends CI_Controller
     {
         $input = json_decode($this->input->raw_input_stream, true);
         $nama = $input['nama'];
+        $jenis = $input['tipe'];
         $polygon = json_encode($input['polygon']);
 
-        // kosongkan polygon lama (supaya tunggal)
-        $this->db->truncate('lokasi_kantor');
+        $query = $this->model->get_seleksi('lokasi_kantor', 'id', $jenis);
+        if ($query->num_rows() > 0) {
+            $data = [
+                'nama' => $nama,
+                'polygon_json' => $polygon
+            ];
 
-        $this->db->insert('lokasi_kantor', [
-            'nama' => $nama,
-            'polygon_json' => $polygon
-        ]);
+            $this->model->pembaharuan_data('lokasi_kantor', $data, 'id', $jenis);
+        }
 
         echo json_encode(['status' => true, 'message' => 'Polygon berhasil disimpan']);
     }
 
     public function get_lokasi()
     {
+        $jenis = $this->input->get('tipe');
+        $this->db->where('id', $jenis);
         $lokasi = $this->db->get('lokasi_kantor')->row();
         if ($lokasi) {
             $lokasi->koordinat = json_decode($lokasi->polygon_json); // decode dulu biar rapi
