@@ -16,10 +16,12 @@ $route['user'] = 'HalamanPengaturan/get_user_data';
 $route['profil'] = 'HalamanPengaturan/get_profil_data';
 $route['app'] = 'HalamanPengaturan/get_app_data';
 $route['client'] = 'HalamanPengaturan/get_client_data';
+$route['mpp'] = 'HalamanPengaturan/get_mpp_data';
 
 $route['simpan_data_user'] = 'HalamanPengaturan/simpan_data_user';
 $route['simpan_data_profil'] = 'HalamanPengaturan/simpan_data_profil';
 $route['simpan_plh'] = 'HalamanPengaturan/simpan_plh';
+$route['simpan_mpp'] = 'HalamanPengaturan/simpan_mpp';
 $route['simpan_config'] = 'HalamanPengaturan/simpan_config';
 $route['simpan_pegawai'] = 'HalamanPegawai/simpan';
 $route['simpan_jabatan'] = 'HalamanJabatan/simpan';
@@ -41,6 +43,7 @@ $route['daftar_pangkat'] = 'HalamanPangkat';
 $route['daftar_user'] = 'HalamanUser';
 
 $route['edit_plh'] = 'HalamanPengaturan/edit_plh';
+$route['edit_mpp'] = 'HalamanPengaturan/edit_mpp';
 
 $route['hapus_plh/(:any)'] = 'HalamanPengaturan/hapus_plh/$1';
 $route['hapus_plh_js'] = 'HalamanPengaturan/hapus_plh_js';

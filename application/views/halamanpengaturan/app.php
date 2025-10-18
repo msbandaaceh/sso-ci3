@@ -39,14 +39,13 @@
                             <a class="nav-link" href="<?= site_url('plh'); ?>" data-loader><i class="bx bx-bell me-1"></i>
                                 Pengaturan Plh</a>
                         </li>
-                        <?php
-                    }
-
-                    if (in_array($role, ['super', 'admin_satker', 'validator_kepeg_satker'])) {
-                        ?>
                         <li class="nav-item">
                             <a class="nav-link active" href="javascript:void(0);"><i class="bx bx-wrench me-1"></i>
                                 Pengaturan Aplikasi</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="<?= site_url('mpp'); ?>" data-loader><i class="bx bx-bell me-1"></i>
+                                Pengaturan MPP</a>
                         </li>
                         <?php
                     }
@@ -332,8 +331,8 @@
                                     <label for="ip_kantor" class="form-label">ALAMAT IP JARINGAN KANTOR</label>
                                     <div class="mb-3 col-md-10">
                                         <div class="form-group">
-                                            <input type="text" class="form-control" id="ip_kantor"
-                                                name="app" value="<?= $ip_kantor->row()->value ?>" />
+                                            <input type="text" class="form-control" id="ip_kantor" name="app"
+                                                value="<?= $ip_kantor->row()->value ?>" />
                                         </div>
                                     </div>
 

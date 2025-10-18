@@ -27,7 +27,7 @@
         class="template-customizer-theme-css" />
     <link rel="stylesheet" href="<?= site_url('assets/css/demo.css') ?>" />
 
-    <?php if ($page == 'daftar') { ?>
+    <?php if (in_array($page, ['daftar', 'mpp'])) { ?>
         <!-- DataTables -->
         <link rel="stylesheet" href="<?= site_url('assets/libs/datatables-bs4/css/dataTables.bootstrap4.min.css') ?>">
         <link rel="stylesheet"

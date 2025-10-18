@@ -3,8 +3,8 @@
     <!-- Content -->
 
     <div class="container-xxl flex-grow-1 container-p-y">
-        <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Pengaturan Akun /</span> Data Pejabat Pelaksana
-            Harian (Plh)</h4>
+        <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Pengaturan Akun /</span> Data Petugas Mall
+            Pelayanan Publik (MPP)</h4>
 
         <div class="row">
             <div class="col-md-12">
@@ -39,7 +39,7 @@
                     if (in_array($role, ['super', 'admin_satker', 'validator_kepeg_satker'])) {
                         ?>
                         <li class="nav-item">
-                            <a class="nav-link active"><i class="bx bx-bell me-1"></i>
+                            <a class="nav-link" href="<?= site_url('plh'); ?>" data-loader><i class="bx bx-bell me-1"></i>
                                 Pengaturan Plh</a>
                         </li>
                         <li class="nav-item">
@@ -47,50 +47,54 @@
                                 Pengaturan Aplikasi</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="<?= site_url('mpp'); ?>" data-loader><i class="bx bx-bell me-1"></i>
+                            <a class="nav-link active"><i class="bx bx-bell me-1"></i>
                                 Pengaturan MPP</a>
                         </li>
+
                         <?php
                     }
                     ?>
                 </ul>
 
                 <div class="card mb-4">
-                    <h5 class="card-header">Data Pelaksana Harian (Plh) Pejabat MS Banda Aceh</h5>
+                    <h5 class="card-header">Data Petugas MPP MS Banda Aceh</h5>
                     <div class="card-body">
-                        <table id="example2" class="table table-bordered table-hover">
+                        <div class="card-title d-flex align-items-right">
+                            <button type="button" class="btn btn-primary"
+                                onclick="BukaModalMPP('<?php echo base64_encode($this->encryption->encrypt(-1)); ?>')"><i
+                                    class="bx bx-plus me-1"></i>Tambah
+                                Data</button>
+                        </div>
+                        <table id="tabelPetugasMPP" class="table table-bordered table-hover">
                             <thead>
                                 <tr>
                                     <th>No</th>
-                                    <th>NAMA JABATAN PLH</th>
                                     <th>NAMA PEGAWAI</th>
+                                    <th>STATUS</th>
                                     <th>AKSI</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php
-                                $plh_no = 1;
-                                foreach ($plh_data as $item) {
+                                $no = 1;
+                                foreach ($mpp_data as $item) {
                                     ?>
                                     <tr>
                                         <td>
-                                            <?= $plh_no ?>
+                                            <?= $no++ ?>
                                         </td>
                                         <td>
-                                            <?= $item->nama; ?>
+                                            <?= $item['nama']; ?>
                                         </td>
                                         <td>
                                             <?php
-                                            if ($item->pegawai_id) {
-                                                echo '<span class="badge rounded-pill bg-primary">' . $item->nama_pegawai . '</span>';
-                                            } else {
-                                                echo '<span class="badge rounded-pill bg-secondary">Belum Ada Plh</span>';
-                                            }
+                                            if ($item['status'] == '0')
+                                                echo 'Tidak Aktif';
+                                            else
+                                                echo 'Aktif';
                                             ?>
                                         </td>
-
                                         <td>
-                                            <?php $idEncrypt = str_replace('/', '___', $this->encryption->encrypt($item->id)); ?>
                                             <div class="dropdown">
                                                 <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
                                                     data-bs-toggle="dropdown">
@@ -98,24 +102,20 @@
                                                 </button>
                                                 <div class="dropdown-menu">
                                                     <button class="dropdown-item"
-                                                        onclick="BukaModalPlh('<?= base64_encode($this->encryption->encrypt($item->id)) ?>')"><i
-                                                            class="bx bx-edit-alt me-1"></i> Edit Plh</button>
-                                                    <button class="dropdown-item" id="hapus" href="#" data-bs-toggle="modal"
-                                                        data-bs-target="#hapusPPlh" data-id="<?= $idEncrypt; ?>"
-                                                        data-loader><i class="bx bx-trash me-1"></i> Hapus Plh</a>
+                                                        onclick="BukaModalMPP('<?= base64_encode($this->encryption->encrypt($item['id'])) ?>')"><i
+                                                            class="bx bx-edit-alt me-1"></i> Edit Petugas</button>
                                                 </div>
                                             </div>
                                         </td>
                                     </tr>
                                     <?php
-                                    $plh_no++;
                                 } ?>
                             </tbody>
                             <tfoot>
                                 <tr>
                                     <th>No</th>
-                                    <th>NAMA JABATAN PLH</th>
                                     <th>NAMA PEGAWAI</th>
+                                    <th>STATUS</th>
                                     <th>AKSI</th>
                                 </tr>
                             </tfoot>
@@ -130,35 +130,13 @@
     </div>
     <!-- Content wrapper -->
 
-    <!-- Modal Hapus Pejabat Plh -->
-    <div class="modal fade" id="hapusPPlh" data-bs-backdrop="static" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered">
-            <form method="POST" id="formPengguna" class="modal-content" onsubmit="return showLoaderSweetalert2(this)">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="backDropModalTitle">HAPUS DATA PLH</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="dropdown-divider"></div>
-                <div class="modal-body">
-                    <blockquote class="blockquote mt-3">
-                        <p>Apakah anda yakin akan menghapus data Plh?</p>
-                    </blockquote>
-                </div>
-
-                <div class="modal-footer">
-                    <a id="hapusPlh" class="btn btn-danger" role="button"><span class="badge bg-danger">Hapus</span></a>
-                </div>
-            </form>
-        </div>
-    </div>
-
     <!-- Modal Tambah/Edit Plh -->
-    <div class="modal fade" id="plhModal" data-bs-backdrop="static">
+    <div class="modal fade" id="mppModal" data-bs-backdrop="static">
         <div class="modal-dialog modal-lg">
-            <form method="POST" id="formPegawaiPlh" action="<?= site_url('simpan_plh') ?>" class="modal-content"
+            <form method="POST" id="formPegawaiMPP" action="<?= site_url('simpan_mpp') ?>" class="modal-content"
                 onsubmit="return showLoaderSweetalert2(this)">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="judul"></h5>
+                    <h5 class="modal-title" id="judul_"></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="dropdown-divider"></div>
@@ -170,12 +148,18 @@
                             <div id="pegawai_"></div>
                         </div>
                     </div>
+                    <div class="row g-2">
+                        <div class="col mb-3">
+                            <label for="status" class="form-label">STATUS PETUGAS</label><code> *</code>
+                            <div id="status_"></div>
+                        </div>
+                    </div>
 
                     <label for="emailBackdrop" class="form-label"><code><i>* Wajib Diisi</i></code></label>
                 </div>
 
                 <div class="modal-footer">
-                    <button type="submit" id="simpanPegawai" class="btn btn-primary">Simpan</button>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
                 </div>
             </form>
         </div>

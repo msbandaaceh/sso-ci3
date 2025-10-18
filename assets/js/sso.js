@@ -102,7 +102,37 @@ function BukaModalPlh(id) {
 
         $("#pegawai").select2({
             width: '100%',
-            dropdownParent: $('#formPegawaiPlh')
+            dropdownParent: $('#formPegawaiPlh'),
+        });
+    });
+}
+
+function BukaModalMPP(id) {
+    $.post('edit_mpp', {
+        id: id
+    }, function (response) {
+        var json = jQuery.parseJSON(response);
+        if (json.st == 1) {
+            $("#judul_").html("");
+            $("#id").val('');
+            $("#pegawai_").html('');
+            $("#status_").html('');
+
+            $("#judul_").append(json.judul);
+            $("#id").val(json.id);
+            $("#pegawai_").append(json.pegawai);
+            
+            $("#status_").append(json.status);
+        } else if (json.st == 0) {
+            pesan('PERINGATAN', json.msg, '');
+            $('#table_pegawai').DataTable().ajax.reload();
+        }
+
+        $("#mppModal").modal('show');
+
+        $("#pegawai").select2({
+            width: '100%',
+            dropdownParent: $('#mppModal')
         });
     });
 }

@@ -35,14 +35,13 @@
                             <a class="nav-link" href="<?= site_url('plh'); ?>" data-loader><i class="bx bx-bell me-1"></i>
                                 Pengaturan Plh</a>
                         </li>
-                        <?php
-                    }
-
-                    if (in_array($role, ['super', 'admin_satker', 'validator_kepeg_satker'])) {
-                        ?>
                         <li class="nav-item">
                             <a class="nav-link" href="<?= site_url('app'); ?>" data-loader><i class="bx bx-wrench me-1"></i>
                                 Pengaturan Aplikasi</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="<?= site_url('mpp'); ?>" data-loader><i class="bx bx-bell me-1"></i>
+                                Pengaturan MPP</a>
                         </li>
                         <?php
                     }

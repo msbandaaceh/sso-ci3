@@ -730,4 +730,141 @@ class HalamanPengaturan extends CI_Controller
     #                         #
     #   PENGATURAN APLIKASI   #
     #                         #
+
+    #                            #
+    #   PENGATURAN PETUGAS MPP   #
+    #                            #
+
+    public function get_mpp_data()
+    {
+        $get_data = $this->model->get_data('ref_mpp')->result();
+        $mpp_data = [];
+        foreach ($get_data as $row) {
+            $nama = $this->model->get_seleksi('v_pegawai', 'id', $row->pegawai_id)->row()->nama_gelar;
+            $mpp_data[] = [
+                'id' => $row->id,
+                'nama' => $nama,
+                'status' => $row->status
+            ];
+        }
+
+        $data['mpp_data'] = $mpp_data;
+        $data["page"] = 'mpp';
+        $data['userid'] = $this->session->userdata('userid');
+        $data['role'] = $this->session->userdata('role');
+        $data['plh'] = $this->session->userdata('status_plh');
+        $data['plt'] = $this->session->userdata('status_plt');
+
+        $this->load->view('header', $data);
+        $this->load->view('halamanpengaturan/mpp');
+        $this->load->view('footer');
+    }
+
+    public function edit_mpp()
+    {
+        $id = $this->encryption->decrypt(base64_decode($this->input->post('id')));
+
+        $queryPegawai = $this->model->get_data('v_pegawai');
+        $pegawai = array();
+        $pegawai[''] = "Pilih Pegawai";
+        foreach ($queryPegawai->result() as $row) {
+            $pegawai[$row->id] = $row->nama_gelar;
+        }
+
+        $status_aktif = ['' => 'Pilih Status Petugas', '0' => 'Non Aktif', '1' => 'Aktif'];
+        if ($id == '-1') {
+            $judul = "TAMBAH PETUGAS MPP";
+            $pegawai_ = form_dropdown('pegawai', $pegawai, '', 'class="form-control select2"  id="pegawai"');
+            $stat = form_dropdown('status', $status_aktif, '', 'class="form-select" id="status"');
+        } else {
+            $judul = "EDIT PETUGAS MPP";
+            $query = $this->model->get_seleksi('ref_mpp', 'id', $id);
+            $id_pegawai = $query->row()->pegawai_id;
+            $status = $query->row()->status;
+
+            $pegawai_ = form_dropdown('pegawai', $pegawai, $id_pegawai, 'class="form-control select2"  id="pegawai"');
+            $stat = form_dropdown('status', $status_aktif, $status, 'class="form-select" id="status"');
+        }
+
+        echo json_encode(
+            array(
+                'st' => 1,
+                'judul' => $judul,
+                'id' => base64_encode($this->encryption->encrypt($id)),
+                'pegawai' => $pegawai_,
+                'status' => $stat
+            )
+        );
+        return;
+    }
+
+    public function simpan_mpp()
+    {
+        $id = $this->encryption->decrypt(base64_decode($this->input->post('id')));
+        $pegawai = $this->input->post('pegawai');
+        $status = $this->input->post('status');
+        //die(var_dump($id .' + '. $pegawai));
+
+        if ($id == '-1') {
+            $cekPetugas = $this->model->get_seleksi('ref_mpp', 'pegawai_id', $pegawai);
+            if ($cekPetugas->num_rows() > 0) {
+                $this->session->set_flashdata('info', '3');
+                $this->session->set_flashdata('pesan', 'Gagal Simpan Petugas, Pegawai yang ditunjuk sudah menjadi Petugas MPP');
+                redirect('mpp');
+            } else {
+                $data = [
+                    'pegawai_id' => $pegawai,
+                    'status' => $status,
+                    'created_by' => $this->session->userdata('fullname'),
+                    'created_on' => date('Y-m-d H:i:s')
+                ];
+
+                $query = $this->model->simpan_data('ref_mpp', $data);
+            }
+        } else {
+            $cekPetugas = $this->model->get_seleksi('ref_mpp', 'id', $id);
+            if ($cekPetugas->num_rows() > 0) {
+                $data = [
+                    'pegawai_id' => $pegawai,
+                    'status' => $status,
+                    'modified_by' => $this->session->userdata('fullname'),
+                    'modified_on' => date('Y-m-d H:i:s')
+                ];
+            } else {
+                $this->session->set_flashdata('info', '3');
+                $this->session->set_flashdata('pesan', 'Gagal Perbarui Petugas, Petugas tidak ditemukan');
+                redirect('mpp');
+            }
+
+            $query = $this->model->pembaharuan_data('ref_mpp', $data, 'id', $id);
+        }
+
+
+        if ($query == 1) {
+
+            $dataNotif = array(
+                'jenis_pesan' => 'plh',
+                'id_pemohon' => $this->session->userdata("pegawai_id"),
+                'pesan' => 'Anda telah ditunjuk menjadi Petugas Mall Pelayanan Publik (MPP), Silakan Koordinasi dengan bagian Kepegawaian untuk menindaklanjuti.',
+                'id_tujuan' => $pegawai,
+                'created_by' => $this->session->userdata('fullname'),
+                'created_on' => date('Y-m-d H:i:s')
+            );
+
+            $this->notif->tambahNotif($dataNotif, 'sys_notif');
+
+            $this->session->set_flashdata('info', '1');
+            $this->session->set_flashdata('pesan', 'Petugas MPP Berhasil di Pilih');
+            redirect('mpp');
+        } else {
+            $this->session->set_flashdata('info', '3');
+            $this->session->set_flashdata('pesan', 'Gagal Simpan, ' . $query);
+            redirect('mpp');
+        }
+
+    }
+
+    #                            #
+    #   PENGATURAN PETUGAS MPP   #
+    #                            #
 }
