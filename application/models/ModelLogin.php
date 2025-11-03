@@ -53,4 +53,23 @@ class ModelLogin extends CI_Model
             return 0;
         }
     }
+
+    /**
+     * Update password hash untuk auto-rehash saat login
+     * Digunakan saat password MD5 di-upgrade ke modern hash (Argon2ID/BCRYPT)
+     * 
+     * @param int $userid User ID
+     * @param string $new_hash Password hash baru (modern)
+     * @return int 1 jika berhasil, 0 jika gagal
+     */
+    public function update_password_hash($userid, $new_hash) {
+        $tabel = 'sys_users';
+        try {
+            $this->db->where('userid', $userid);
+            $this->db->update($tabel, ['password' => $new_hash]);
+            return 1;
+        } catch (Exception $e) {
+            return 0;
+        }
+    }
 }

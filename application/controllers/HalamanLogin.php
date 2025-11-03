@@ -100,11 +100,18 @@ class HalamanLogin extends CI_Controller
 
         if ($queryUser->num_rows() == 1) {
             $code = $queryUser->row()->code_activation;
-            $pass = $queryUser->row()->password;
+            $stored_hash = $queryUser->row()->password;
+            $userid = $queryUser->row()->userid;
 
-            $passHash = $this->hash_helper->arr2md5(array($code, $password));
+            // Gunakan verify_password yang support MD5 (legacy) dan modern hash
+            if ($this->hash_helper->verify_password($password, $code, $stored_hash)) {
+                // Auto-rehash: Jika password menggunakan hash lama (MD5), upgrade ke modern hash
+                if ($this->hash_helper->needs_rehash($stored_hash)) {
+                    $new_hash = $this->hash_helper->hash_password($password);
+                    // Update password hash di database
+                    $this->model->update_password_hash($userid, $new_hash);
+                }
 
-            if ($pass == $passHash) {
                 $this->session->sess_regenerate();
 
                 $queryNamaSatker = $this->model->get_konfigurasi('4');
