@@ -27,7 +27,7 @@
         class="template-customizer-theme-css" />
     <link rel="stylesheet" href="<?= site_url('assets/css/demo.css') ?>" />
 
-    <?php if (in_array($page, ['daftar', 'mpp'])) { ?>
+    <?php if (in_array($page, ['daftar', 'mpp', 'ticketing'])) { ?>
         <!-- DataTables -->
         <link rel="stylesheet" href="<?= site_url('assets/libs/datatables-bs4/css/dataTables.bootstrap4.min.css') ?>">
         <link rel="stylesheet"
@@ -131,6 +131,18 @@
                                             <a class="dropdown-item" href="<?= site_url('daftar_pegawai'); ?>" data-loader>
                                                 <i class="bx bx-list-ul me-2"></i>
                                                 <span class="align-middle">Manajemen Pengguna</span>
+                                            </a>
+                                        </li>
+                                        <?php
+                                    }
+                                    ?>
+                                    <?php
+                                    if (in_array($role, ['super', 'admin_satker', 'validator_ptip_satker'])) {
+                                        ?>
+                                        <li>
+                                            <a class="dropdown-item" href="<?= site_url('ticketing'); ?>" data-loader>
+                                                <i class="bx bx-message-square-detail me-2"></i>
+                                                <span class="align-middle">Laporan Ticketing</span>
                                             </a>
                                         </li>
                                         <?php
