@@ -41,6 +41,11 @@ $route['daftar_pegawai'] = 'HalamanPegawai';
 $route['daftar_jabatan'] = 'HalamanJabatan';
 $route['daftar_pangkat'] = 'HalamanPangkat';
 $route['daftar_user'] = 'HalamanUser';
+$route['ticketing'] = 'HalamanTicketing';
+$route['ticketing_form'] = 'HalamanTicketing/form';
+$route['simpan_ticket'] = 'HalamanTicketing/simpan_ticket';
+$route['ticketing_detail'] = 'HalamanTicketing/detail';
+$route['update_tindak_lanjut'] = 'HalamanTicketing/update_tindak_lanjut';
 
 $route['edit_plh'] = 'HalamanPengaturan/edit_plh';
 $route['edit_mpp'] = 'HalamanPengaturan/edit_mpp';
