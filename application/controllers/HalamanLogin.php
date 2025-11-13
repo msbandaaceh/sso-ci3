@@ -171,9 +171,9 @@ class HalamanLogin extends CI_Controller
                             'expires' => time() + 7200,
                             'path' => '/',
                             'domain' => $cookie_domain, // pastikan subdomain
-                            'secure' => false, // hanya jika HTTPS
-                            'httponly' => true,
-                            'samesite' => 'None', // atau 'Strict'
+                            'secure' => $this->config->item('cookie_secure'), // hanya jika HTTPS
+                            'httponly' => $this->config->item('cookie_httponly'),
+                            'samesite' => $this->config->item('cookie_samesite'), // atau 'Strict'
                         ]
                     );
 
@@ -317,9 +317,9 @@ class HalamanLogin extends CI_Controller
                 'expires' => time() + 7200,
                 'path' => '/',
                 'domain' => $cookie_domain, // pastikan subdomain
-                'secure' => false, // hanya jika HTTPS
-                'httponly' => true,
-                'samesite' => 'None', // atau 'Strict'
+                'secure' => $this->config->item('cookie_secure'), // hanya jika HTTPS
+                'httponly' => $this->config->item('cookie_httponly'),
+                'samesite' => $this->config->item('cookie_samesite'),
             ]
         );
 
@@ -378,9 +378,9 @@ class HalamanLogin extends CI_Controller
                 'expires' => time() + 7200,
                 'path' => '/',
                 'domain' => $cookie_domain, // pastikan subdomain
-                'secure' => false, // hanya jika HTTPS
-                'httponly' => true,
-                'samesite' => 'None', // atau 'Strict'
+                'secure' => $this->config->item('cookie_secure'), // hanya jika HTTPS
+                'httponly' => $this->config->item('cookie_httponly'),
+                'samesite' => $this->config->item('cookie_samesite'), // atau 'Strict'
             ]
         );
 
