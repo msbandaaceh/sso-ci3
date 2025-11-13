@@ -8,6 +8,12 @@ $route['translate_uri_dashes'] = FALSE;
 $route['validasi'] = 'HalamanLogin/proses_login';
 $route['login'] = 'HalamanLogin';
 
+// Reset Password Routes
+$route['reset_password'] = 'ResetPassword';
+$route['reset_password/request_reset'] = 'ResetPassword/request_reset';
+$route['reset_password/process'] = 'ResetPassword/process';
+$route['reset_password/do_reset'] = 'ResetPassword/do_reset';
+
 $route['reg'] = 'HalamanRegistrasi';
 $route['reg_validasi'] = 'HalamanRegistrasi/validasi';
 

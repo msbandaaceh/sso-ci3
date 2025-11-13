@@ -55,8 +55,7 @@
                 <div class="row">
                     <div>
                         <div class="app-brand justify-content-center mb-4">
-                            <img src="<?= site_url($logo_satker) ?>" alt="Card image"
-                                height="75" />
+                            <img src="<?= site_url($logo_satker) ?>" alt="Card image" height="75" />
                         </div>
                     </div>
                 </div>
@@ -125,6 +124,13 @@
                                 <button class="btn btn-primary d-grid w-100" type="submit">Sign
                                     in</button>
                             </div>
+                            
+                            <div class="text-center">
+                                <a href="<?= site_url('reset_password') ?>" class="d-flex align-items-center justify-content-center">
+                                    <i class="bx bx-lock-open me-2"></i>
+                                    <span>Lupa Password?</span>
+                                </a>
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -153,11 +159,12 @@
     <!-- Main JS -->
     <script src="<?= site_url('assets/js/main.js') ?>"></script>
 
-    <!-- Page JS -->
+    <!-- Page JS
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    -->
 
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
-    
     <script src="<?= site_url('assets/js/sso.js') ?>"></script>
 
     <script>
