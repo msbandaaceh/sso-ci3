@@ -46,6 +46,7 @@ $route['ticketing_form'] = 'HalamanTicketing/form';
 $route['simpan_ticket'] = 'HalamanTicketing/simpan_ticket';
 $route['ticketing_detail'] = 'HalamanTicketing/detail';
 $route['update_tindak_lanjut'] = 'HalamanTicketing/update_tindak_lanjut';
+$route['ticketing_export_pdf'] = 'HalamanTicketing/export_pdf';
 
 $route['edit_plh'] = 'HalamanPengaturan/edit_plh';
 $route['edit_mpp'] = 'HalamanPengaturan/edit_mpp';

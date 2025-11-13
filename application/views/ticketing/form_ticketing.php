@@ -29,10 +29,28 @@
                             <code><?php echo form_error('jenis_laporan'); ?></code>
                             <select class="form-select" id="jenis_laporan" name="jenis_laporan" required>
                                 <option value="">Pilih Jenis Laporan</option>
-                                <option value="error" <?= set_select('jenis_laporan', 'error'); ?>>Error</option>
-                                <option value="bug" <?= set_select('jenis_laporan', 'bug'); ?>>Bug</option>
-                                <option value="permintaan_fitur" <?= set_select('jenis_laporan', 'permintaan_fitur'); ?>>Permintaan Fitur</option>
-                                <option value="laporan_lainnya" <?= set_select('jenis_laporan', 'laporan_lainnya'); ?>>Laporan Lainnya</option>
+                                <optgroup label="Masalah Sistem">
+                                    <option value="error" <?= set_select('jenis_laporan', 'error'); ?>>Error / Kesalahan Sistem</option>
+                                    <option value="bug" <?= set_select('jenis_laporan', 'bug'); ?>>Bug / Kutu Program</option>
+                                </optgroup>
+                                <optgroup label="Masalah Infrastruktur TI">
+                                    <option value="masalah_jaringan" <?= set_select('jenis_laporan', 'masalah_jaringan'); ?>>Masalah Jaringan</option>
+                                    <option value="masalah_internet" <?= set_select('jenis_laporan', 'masalah_internet'); ?>>Masalah Internet / Koneksi</option>
+                                    <option value="masalah_hardware" <?= set_select('jenis_laporan', 'masalah_hardware'); ?>>Masalah Hardware / Perangkat</option>
+                                    <option value="masalah_printer" <?= set_select('jenis_laporan', 'masalah_printer'); ?>>Masalah Printer</option>
+                                </optgroup>
+                                <optgroup label="Masalah Aplikasi & Software">
+                                    <option value="masalah_software" <?= set_select('jenis_laporan', 'masalah_software'); ?>>Masalah Software / Aplikasi</option>
+                                    <option value="masalah_email" <?= set_select('jenis_laporan', 'masalah_email'); ?>>Masalah Email</option>
+                                    <option value="masalah_akun" <?= set_select('jenis_laporan', 'masalah_akun'); ?>>Masalah Akun / Login</option>
+                                </optgroup>
+                                <optgroup label="Permintaan">
+                                    <option value="permintaan_fitur" <?= set_select('jenis_laporan', 'permintaan_fitur'); ?>>Permintaan Fitur Baru</option>
+                                    <option value="permintaan_akses" <?= set_select('jenis_laporan', 'permintaan_akses'); ?>>Permintaan Akses / Hak Akses</option>
+                                </optgroup>
+                                <optgroup label="Lainnya">
+                                    <option value="lainnya" <?= set_select('jenis_laporan', 'lainnya'); ?>>Lainnya</option>
+                                </optgroup>
                             </select>
                         </div>
 

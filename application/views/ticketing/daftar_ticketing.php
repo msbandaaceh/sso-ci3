@@ -64,6 +64,58 @@
             </div>
         </div>
 
+        <!-- Filter dan Export -->
+        <div class="row mb-4">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0"><i class="bx bx-filter me-2"></i>Filter & Export</h5>
+                        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="resetFilter()">
+                            <i class="bx bx-refresh me-1"></i>Reset
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <form id="filterForm" method="GET" action="<?= site_url('ticketing') ?>">
+                            <div class="row g-3">
+                                <div class="col-md-3">
+                                    <label for="tanggal_awal" class="form-label">Tanggal Awal</label>
+                                    <input type="date" class="form-control" id="tanggal_awal" name="tanggal_awal" 
+                                        value="<?= $this->input->get('tanggal_awal') ?>">
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="tanggal_akhir" class="form-label">Tanggal Akhir</label>
+                                    <input type="date" class="form-control" id="tanggal_akhir" name="tanggal_akhir" 
+                                        value="<?= $this->input->get('tanggal_akhir') ?>">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="status_filter" class="form-label">Status (Pilih Banyak)</label>
+                                    <select class="form-select" id="status_filter" name="status[]" multiple size="4">
+                                        <option value="baru" <?= in_array('baru', $this->input->get('status') ?: []) ? 'selected' : '' ?>>Baru</option>
+                                        <option value="diproses" <?= in_array('diproses', $this->input->get('status') ?: []) ? 'selected' : '' ?>>Diproses</option>
+                                        <option value="selesai" <?= in_array('selesai', $this->input->get('status') ?: []) ? 'selected' : '' ?>>Selesai</option>
+                                        <option value="ditolak" <?= in_array('ditolak', $this->input->get('status') ?: []) ? 'selected' : '' ?>>Ditolak</option>
+                                    </select>
+                                    <small class="text-muted">Tekan Ctrl/Cmd untuk pilih banyak</small>
+                                </div>
+                                <div class="col-md-2 d-flex align-items-end">
+                                    <button type="submit" class="btn btn-primary w-100">
+                                        <i class="bx bx-search me-1"></i>Filter
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-md-12">
+                                    <button type="button" class="btn btn-success" onclick="exportPDF()">
+                                        <i class="bx bx-file me-1"></i>Export ke PDF
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="row">
             <div class="col-md-12">
                 <!-- Bootstrap Table with Header - Footer -->
@@ -87,10 +139,19 @@
                                 $no = 1;
                                 foreach ($tickets as $ticket) {
                                     $jenis_label = [
-                                        'error' => 'Error',
-                                        'bug' => 'Bug',
-                                        'permintaan_fitur' => 'Permintaan Fitur',
-                                        'laporan_lainnya' => 'Laporan Lainnya'
+                                        'error' => 'Error / Kesalahan Sistem',
+                                        'bug' => 'Bug / Kutu Program',
+                                        'permintaan_fitur' => 'Permintaan Fitur Baru',
+                                        'masalah_jaringan' => 'Masalah Jaringan',
+                                        'masalah_hardware' => 'Masalah Hardware / Perangkat',
+                                        'masalah_software' => 'Masalah Software / Aplikasi',
+                                        'masalah_email' => 'Masalah Email',
+                                        'masalah_printer' => 'Masalah Printer',
+                                        'masalah_internet' => 'Masalah Internet / Koneksi',
+                                        'masalah_akun' => 'Masalah Akun / Login',
+                                        'permintaan_akses' => 'Permintaan Akses / Hak Akses',
+                                        'lainnya' => 'Lainnya',
+                                        'laporan_lainnya' => 'Lainnya' // Untuk kompatibilitas data lama
                                     ];
                                     $jenis = isset($jenis_label[$ticket->jenis_laporan]) ? $jenis_label[$ticket->jenis_laporan] : $ticket->jenis_laporan;
 
@@ -254,10 +315,19 @@
                 if (response.st == 1) {
                     var data = response.data;
                     var jenis_label = {
-                        'error': 'Error',
-                        'bug': 'Bug',
-                        'permintaan_fitur': 'Permintaan Fitur',
-                        'laporan_lainnya': 'Laporan Lainnya'
+                        'error': 'Error / Kesalahan Sistem',
+                        'bug': 'Bug / Kutu Program',
+                        'permintaan_fitur': 'Permintaan Fitur Baru',
+                        'masalah_jaringan': 'Masalah Jaringan',
+                        'masalah_hardware': 'Masalah Hardware / Perangkat',
+                        'masalah_software': 'Masalah Software / Aplikasi',
+                        'masalah_email': 'Masalah Email',
+                        'masalah_printer': 'Masalah Printer',
+                        'masalah_internet': 'Masalah Internet / Koneksi',
+                        'masalah_akun': 'Masalah Akun / Login',
+                        'permintaan_akses': 'Permintaan Akses / Hak Akses',
+                        'lainnya': 'Lainnya',
+                        'laporan_lainnya': 'Lainnya' // Untuk kompatibilitas data lama
                     };
                     var status_badge = {
                         'baru': 'bg-label-danger',
@@ -501,6 +571,42 @@
             }
         });
     });
+
+    // Fungsi export PDF
+    function exportPDF() {
+        var tanggalAwal = $('#tanggal_awal').val();
+        var tanggalAkhir = $('#tanggal_akhir').val();
+        var status = $('#status_filter').val();
+        
+        var params = [];
+        if (tanggalAwal) {
+            params.push('tanggal_awal=' + encodeURIComponent(tanggalAwal));
+        }
+        if (tanggalAkhir) {
+            params.push('tanggal_akhir=' + encodeURIComponent(tanggalAkhir));
+        }
+        if (status && status.length > 0) {
+            status.forEach(function(s) {
+                params.push('status[]=' + encodeURIComponent(s));
+            });
+        }
+        
+        var url = '<?= site_url('ticketing_export_pdf') ?>';
+        if (params.length > 0) {
+            url += '?' + params.join('&');
+        }
+        
+        // Buka di window baru untuk print
+        window.open(url, '_blank');
+    }
+
+    // Fungsi reset filter
+    function resetFilter() {
+        $('#tanggal_awal').val('');
+        $('#tanggal_akhir').val('');
+        $('#status_filter').val(null).trigger('change');
+        window.location.href = '<?= site_url('ticketing') ?>';
+    }
 
     var info = "<?= $this->session->flashdata('info') ?? ''; ?>";
     var pesan = "<?= $this->session->flashdata('pesan') ?? ''; ?>";

@@ -115,5 +115,31 @@ class ModelTicketing extends CI_Model
             return 0;
         }
     }
+
+    /**
+     * Ambil data ticketing dengan filter tanggal dan status
+     */
+    public function get_tickets_filtered($tanggal_awal = null, $tanggal_akhir = null, $status = [])
+    {
+        try {
+            // Filter tanggal
+            if ($tanggal_awal) {
+                $this->db->where('DATE(created_on) >=', $tanggal_awal);
+            }
+            if ($tanggal_akhir) {
+                $this->db->where('DATE(created_on) <=', $tanggal_akhir);
+            }
+            
+            // Filter status (multiselect)
+            if (!empty($status) && is_array($status)) {
+                $this->db->where_in('status', $status);
+            }
+            
+            $this->db->order_by('created_on', 'DESC');
+            return $this->db->get('ticketing');
+        } catch (Exception $e) {
+            return 0;
+        }
+    }
 }
 

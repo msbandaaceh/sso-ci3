@@ -124,7 +124,29 @@ class HalamanTicketing extends CI_Controller
             redirect('keluar');
         }
 
-        $data['tickets'] = $this->ticketing->get_all_tickets()->result();
+        // Ambil filter dari GET
+        $tanggal_awal = $this->input->get('tanggal_awal');
+        $tanggal_akhir = $this->input->get('tanggal_akhir');
+        $status_filter = $this->input->get('status');
+
+        // Parse status jika ada
+        $status_array = [];
+        if ($status_filter) {
+            if (is_array($status_filter)) {
+                $status_array = $status_filter;
+            } else {
+                $status_array = [$status_filter];
+            }
+        }
+
+        // Ambil data dengan atau tanpa filter
+        if ($tanggal_awal || $tanggal_akhir || !empty($status_array)) {
+            $tickets = $this->ticketing->get_tickets_filtered($tanggal_awal, $tanggal_akhir, $status_array);
+        } else {
+            $tickets = $this->ticketing->get_all_tickets();
+        }
+
+        $data['tickets'] = $tickets->result();
         $data['role'] = $role;
         $data['page'] = 'ticketing';
 
@@ -138,6 +160,52 @@ class HalamanTicketing extends CI_Controller
 
         $this->load->view('header', $data);
         $this->load->view('ticketing/daftar_ticketing', $data);
+    }
+
+    /**
+     * Export PDF dengan filter
+     */
+    public function export_pdf()
+    {
+        if (!$this->session->userdata('logged_in')) {
+            redirect('keluar');
+        }
+
+        $role = $this->session->userdata('role');
+        if (!in_array($role, ['super', 'admin_satker', 'validator_ptip_satker'])) {
+            redirect('keluar');
+        }
+
+        $tanggal_awal = $this->input->get('tanggal_awal');
+        $tanggal_akhir = $this->input->get('tanggal_akhir');
+        $status = $this->input->get('status');
+
+        // Parse status jika ada
+        $status_array = [];
+        if ($status) {
+            if (is_array($status)) {
+                $status_array = array_filter($status); // Hapus nilai kosong
+            } else {
+                $status_array = [$status];
+            }
+        }
+
+        // Ambil data dengan filter
+        $tickets = $this->ticketing->get_tickets_filtered($tanggal_awal, $tanggal_akhir, $status_array);
+
+        // Load konfigurasi
+        $this->load->model('ModelLogin', 'login');
+        $data['nama_satker'] = $this->login->get_konfigurasi('4')->row()->value;
+        $data['logo_satker'] = 'assets/dokumen/' . $this->login->get_konfigurasi('22')->row()->value;
+        $data['nama_app'] = $this->login->get_konfigurasi('1')->row()->value;
+
+        $data['tickets'] = $tickets->result();
+        $data['tanggal_awal'] = $tanggal_awal;
+        $data['tanggal_akhir'] = $tanggal_akhir;
+        $data['status_filter'] = $status_array;
+
+        // Load view PDF
+        $this->load->view('ticketing/export_pdf', $data);
     }
 
     /**
@@ -372,4 +440,3 @@ class HalamanTicketing extends CI_Controller
         }
     }
 }
-
