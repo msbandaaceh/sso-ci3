@@ -20,10 +20,17 @@ class HalamanJabatan extends CI_Controller
 
         $this->load->model('ModelJabatan', 'jabatan');
         $this->load->model('ModelUtama', 'model');
+        
+        // Hanya cek cookie jika user belum login
+        // Jika user sudah login, session tetap dipertahankan
         $token = $this->input->cookie('sso_token');
-        if (!$token) {
+        $logged_in = $this->session->userdata('logged_in');
+        
+        // Hanya destroy session jika tidak ada token DAN user belum login
+        if (!$token && !$logged_in) {
             $this->session->sess_destroy();
         }
+        
         if (!$this->session->userdata('logged_in')) {
             redirect('keluar');
         }

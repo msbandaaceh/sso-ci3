@@ -173,8 +173,11 @@ class HalamanUser extends CI_Controller
                     'modified_on' => date('Y-m-d H:i:s')
                 );
             } else {
-                $code_activation = md5(uniqid());
-                $password = $this->hash_helper->arr2md5(array($code_activation, $password));
+                // Generate activation code menggunakan fungsi modern
+                $code_activation = $this->hash_helper->generate_activation_code();
+                // Gunakan hash_password() modern untuk password baru
+                $password = $this->hash_helper->hash_password($password);
+                // Activation tetap pakai MD5 untuk kompatibilitas (tidak critical)
                 $activation = $this->hash_helper->arr2md5(array($nama, $username, $email));
                 $dataPengguna = array(
                     'userid' => $id,
@@ -200,8 +203,11 @@ class HalamanUser extends CI_Controller
                 $this->session->set_flashdata('pesan', 'Gagal Simpan, Pegawai Sudah Terdaftar sebagai Pengguna ' . $id_pegawai);
                 redirect('daftar_user');
             } else {
-                $code_activation = md5(uniqid());
-                $password = $this->hash_helper->arr2md5(array($code_activation, $password));
+                // Generate activation code menggunakan fungsi modern
+                $code_activation = $this->hash_helper->generate_activation_code();
+                // Gunakan hash_password() modern untuk password baru
+                $password = $this->hash_helper->hash_password($password);
+                // Activation tetap pakai MD5 untuk kompatibilitas (tidak critical)
                 $activation = $this->hash_helper->arr2md5(array($nama, $username, $email));
                 $dataPengguna = array(
                     'userid' => $id,

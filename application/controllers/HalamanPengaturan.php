@@ -258,10 +258,10 @@ class HalamanPengaturan extends CI_Controller
                 'modified_on' => date('Y-m-d H:i:s')
             );
         } else {
-            //$activation = $this->arr2md5(array($nama, $username, $email));
-            $code_activation = md5(uniqid());
-            $password = $this->hash_helper->arr2md5(array($code_activation, $password));
-            //die(var_dump("masuk nang kene"));
+            // Generate activation code menggunakan fungsi modern
+            $code_activation = $this->hash_helper->generate_activation_code();
+            // Gunakan hash_password() modern untuk password baru
+            $password = $this->hash_helper->hash_password($password);
             $dataPengguna = array(
                 'password' => $password,
                 'email' => $email,

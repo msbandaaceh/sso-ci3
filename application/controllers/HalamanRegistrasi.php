@@ -269,8 +269,11 @@ class HalamanRegistrasi extends CI_Controller
         $querySimpan = $this->pegawai->tambah_pegawai($dataPegawai);
         if ($querySimpan == 1) {
 
-            $code_activation = md5(uniqid());
-            $password = $this->hash_helper->arr2md5(array($code_activation, $password));
+            // Generate activation code menggunakan fungsi modern
+            $code_activation = $this->hash_helper->generate_activation_code();
+            // Gunakan hash_password() modern untuk password baru
+            $password = $this->hash_helper->hash_password($password);
+            // Activation tetap pakai MD5 untuk kompatibilitas (tidak critical)
             $activation = $this->hash_helper->arr2md5(array($nama_gelar, $username, $email));
 
             $queryPegawai = $this->pegawai->get_pegawai_by('nohp', $nohp);
@@ -358,8 +361,11 @@ class HalamanRegistrasi extends CI_Controller
         $querySimpan = $this->pegawai->tambah_pegawai($dataPegawai);
         if ($querySimpan == 1) {
 
-            $code_activation = md5(uniqid());
-            $password = $this->hash_helper->arr2md5(array($code_activation, $password));
+            // Generate activation code menggunakan fungsi modern
+            $code_activation = $this->hash_helper->generate_activation_code();
+            // Gunakan hash_password() modern untuk password baru
+            $password = $this->hash_helper->hash_password($password);
+            // Activation tetap pakai MD5 untuk kompatibilitas (tidak critical)
             $activation = $this->hash_helper->arr2md5(array($nama_gelar, $nip, $email));
 
             $queryPegawai = $this->pegawai->get_pegawai_by('nip', $nip);
@@ -420,8 +426,11 @@ class HalamanRegistrasi extends CI_Controller
         $email = $this->input->post('email');
         $atasan = $this->input->post('atasan');
 
-        $code_activation = md5(uniqid());
-        $password = $this->hash_helper->arr2md5(array($code_activation, $password));
+        // Generate activation code menggunakan fungsi modern
+        $code_activation = $this->hash_helper->generate_activation_code();
+        // Gunakan hash_password() modern untuk password baru
+        $password = $this->hash_helper->hash_password($password);
+        // Activation tetap pakai MD5 untuk kompatibilitas (tidak critical)
         $activation = $this->hash_helper->arr2md5(array($fullname, $nip, $email));
 
         $dataPengguna = array(
