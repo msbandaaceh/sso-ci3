@@ -389,13 +389,22 @@ class HalamanTicketing extends CI_Controller
         $validator_ptip_satker = $this->model->get_seleksi2('v_users', 'role', 'validator_ptip_satker', 'status_pegawai', '1');
 
         $jenis_label = [
-            'error' => 'Error',
-            'bug' => 'Bug',
-            'permintaan_fitur' => 'Permintaan Fitur',
-            'laporan_lainnya' => 'Laporan Lainnya'
+            'error' => 'Error / Kesalahan Sistem',
+            'bug' => 'Bug / Kutu Program',
+            'permintaan_fitur' => 'Permintaan Fitur Baru',
+            'masalah_jaringan' => 'Masalah Jaringan',
+            'masalah_hardware' => 'Masalah Hardware / Perangkat',
+            'masalah_software' => 'Masalah Software / Aplikasi',
+            'masalah_email' => 'Masalah Email',
+            'masalah_printer' => 'Masalah Printer',
+            'masalah_internet' => 'Masalah Internet / Koneksi',
+            'masalah_akun' => 'Masalah Akun / Login',
+            'permintaan_akses' => 'Permintaan Akses / Hak Akses',
+            'lainnya' => 'Lainnya',
+            'laporan_lainnya' => 'Lainnya' // Untuk kompatibilitas data lama
         ];
 
-        $jenis = isset($jenis_label[$jenis_laporan]) ? $jenis_label[$jenis_laporan] : 'Laporan Lainnya';
+        $jenis = isset($jenis_label[$jenis_laporan]) ? $jenis_label[$jenis_laporan] : 'Lainnya';
 
         // Buat pesan WhatsApp
         $pesanWA = "Laporan ticketing baru telah masuk:\n\n";
