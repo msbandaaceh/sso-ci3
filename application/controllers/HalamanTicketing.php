@@ -315,10 +315,10 @@ class HalamanTicketing extends CI_Controller
     private function kirim_notifikasi_wa($ticket_id, $nama_pelapor, $deskripsi, $jenis_laporan)
     {
         // Ambil semua admin satker
-        $admin_satker = $this->model->get_seleksi2('v_users', 'role', 'admin_satker', 'status', '1');
+        $admin_satker = $this->model->get_seleksi2('v_users', 'role', 'admin_satker', 'status_pegawai', '1');
 
         // Ambil semua validator_ptip_satker
-        $validator_ptip_satker = $this->model->get_seleksi2('v_users', 'role', 'validator_ptip_satker', 'status', '1');
+        $validator_ptip_satker = $this->model->get_seleksi2('v_users', 'role', 'validator_ptip_satker', 'status_pegawai', '1');
 
         $jenis_label = [
             'error' => 'Error',
