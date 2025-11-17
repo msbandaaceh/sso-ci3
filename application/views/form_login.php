@@ -159,10 +159,9 @@
     <!-- Main JS -->
     <script src="<?= site_url('assets/js/main.js') ?>"></script>
 
-    <!-- Page JS
+    <!-- Page JS -->
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-    -->
-
+    
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <script src="<?= site_url('assets/js/sso.js') ?>"></script>
