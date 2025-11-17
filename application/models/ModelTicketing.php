@@ -118,16 +118,22 @@ class ModelTicketing extends CI_Model
 
     /**
      * Ambil data ticketing dengan filter tanggal dan status
+     * OPTIMASI: Menggunakan range query tanpa fungsi DATE() untuk memungkinkan penggunaan index
      */
     public function get_tickets_filtered($tanggal_awal = null, $tanggal_akhir = null, $status = [])
     {
         try {
-            // Filter tanggal
+            // Filter tanggal - menggunakan range query tanpa fungsi DATE()
+            // Ini memungkinkan MySQL menggunakan index pada kolom created_on
             if ($tanggal_awal) {
-                $this->db->where('DATE(created_on) >=', $tanggal_awal);
+                // Tambahkan waktu 00:00:00 untuk awal hari
+                $tanggal_awal_datetime = $tanggal_awal . ' 00:00:00';
+                $this->db->where('created_on >=', $tanggal_awal_datetime);
             }
             if ($tanggal_akhir) {
-                $this->db->where('DATE(created_on) <=', $tanggal_akhir);
+                // Tambahkan waktu 23:59:59 untuk akhir hari
+                $tanggal_akhir_datetime = $tanggal_akhir . ' 23:59:59';
+                $this->db->where('created_on <=', $tanggal_akhir_datetime);
             }
             
             // Filter status (multiselect)
