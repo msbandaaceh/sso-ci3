@@ -188,6 +188,7 @@ class HalamanLogin extends CI_Controller
 
                     $this->session->set_userdata([
                         'userid' => $queryUser->row()->userid,
+                        'pegawai_id' => $queryUser->row()->pegawai_id,
                         'fullname' => $queryUser->row()->fullname,
                         'username' => $queryUser->row()->username,
                         'jab_id' => $queryUser->row()->jab_id,
@@ -277,6 +278,7 @@ class HalamanLogin extends CI_Controller
             $userid = $queryPlh->row()->userid;
             $jabatan = "Plh " . $queryPlh->row()->jabatan;
             $role = $queryPlh->row()->role;
+            $pegawai_id = $queryPlh->row()->pegawai_id;
             $fullname = $queryUser->row()->nama_pegawai;
             $username = $queryPlh->row()->username;
             $plh = '1';
@@ -289,6 +291,7 @@ class HalamanLogin extends CI_Controller
             $role = $cekJabatan->row()->role;
             $userid = '-99';
             $fullname = $queryUser->row()->nama_pegawai;
+            $pegawai_id = $queryUser->row()->pegawai_id;
             $username = $this->model->get_seleksi('v_users', 'pegawai_id', $queryUser->row()->pegawai_id)->row()->username;
             $plh = '0';
             $plt = '1';
@@ -334,6 +337,7 @@ class HalamanLogin extends CI_Controller
         $this->session->set_userdata([
             'userid' => $userid,
             'fullname' => $fullname,
+            'pegawai_id' => $pegawai_id,
             'username' => $username,
             'jab_id' => $id,
             'jabatan' => $jabatan,
@@ -395,6 +399,7 @@ class HalamanLogin extends CI_Controller
         $this->session->set_userdata([
             'userid' => $queryUser->row()->userid,
             'fullname' => $queryUser->row()->fullname,
+            'pegawai_id' => $queryUser->row()->pegawai_id,
             'username' => $queryUser->row()->username,
             'jab_id' => $queryUser->row()->jab_id,
             'jabatan' => $queryUser->row()->jabatan,
