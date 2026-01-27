@@ -176,28 +176,29 @@ class HalamanPegawai extends CI_Controller
         }
 
         $id = $this->input->post('id');
-        $nip = $this->input->post('nip');
-        $nama_gelar = strtoupper($this->input->post('nama_gelar'));
-        $nama = strtoupper($this->input->post('nama'));
+        $nip = $this->input->post('nip') ? $this->input->post('nip') : null;
+        $nama_gelar = $this->input->post('nama_gelar');
+        $nama = $this->input->post('nama');
         $pangkat = $this->input->post('pangkat');
         $jabatan = $this->input->post('jabatan');
-        $alamat = strtoupper($this->input->post('alamat'));
-        $ket = $this->input->post('ket');
+        $alamat = $this->input->post('alamat') ? $this->input->post('alamat') : null;
+        $ket = $this->input->post('ket') ? $this->input->post('ket') : null;
         $nohp = $this->input->post('nohp');
         $stat = $this->input->post('stat');
-        $jenis = $this->input->post('jenis');
-        $tmt = $this->input->post('tmt');
-        $jk = $this->input->post('jk');
-
-        if ($tmt == "") {
-            $tmt = NULL;
-        }
+        $jenis = $this->input->post('jenis') ? $this->input->post('jenis') : null;
+        $tmt = $this->input->post('tmt') ? $this->input->post('tmt') : null;
+        $jk = $this->input->post('jk') ? $this->input->post('jk') : null;
 
         if (!$id) {
-            $cekPegawaiExist = $this->model->get_seleksi('v_pegawai', 'nip', $nip);
+            if ($nip != null) {
+                $cekPegawaiExist = $this->model->get_seleksi('v_pegawai', 'nip', $nip);
+            } else {
+                $cekPegawaiExist = $this->model->get_seleksi('v_pegawai', 'nohp', $nohp);
+            }
+
             if ($cekPegawaiExist->num_rows() > 0) {
                 $this->session->set_flashdata('info', '2');
-                $this->session->set_flashdata('pesan', 'Pegawai sudah terdaftar, cek kembali daftar pegawai');
+                $this->session->set_flashdata('pesan', 'Pegawai sudah terdaftar, atau nomor hp sudah digunakan, cek kembali daftar pegawai');
                 redirect('daftar_pegawai', validation_errors());
                 return;
             }
