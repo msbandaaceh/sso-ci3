@@ -546,7 +546,7 @@
 </script>
 
 <!-- Page JS -->
-<script src="<?= site_url('assets/js/sso.js') ?>"></script>
+<script src="<?= site_url('assets/js/sso.js?v=1.0.0') ?>"></script>
 
 <script>
     var info = "<?= $this->session->flashdata('info') ?? ''; ?>";

@@ -121,7 +121,7 @@ function BukaModalMPP(id) {
             $("#judul_").append(json.judul);
             $("#id").val(json.id);
             $("#pegawai_").append(json.pegawai);
-            
+
             $("#status_").append(json.status);
         } else if (json.st == 0) {
             pesan('PERINGATAN', json.msg, '');
@@ -138,17 +138,11 @@ function BukaModalMPP(id) {
 }
 
 function showLoaderSweetalert2(form) {
-    const isInsideModal = $(form).closest('#plhModal').length > 0;
-
-    // Jika form ini berasal dari modal, tutup modal terlebih dahulu
-    if (isInsideModal) {
-        $('#plhModal').modal('hide');
-    }
-
     Swal.fire({
         title: 'Memproses...',
         html: 'Mohon tunggu, sedang proses.',
         allowOutsideClick: false,
+        allowEscapeKey: false,
         didOpen: () => {
             Swal.showLoading();
         }

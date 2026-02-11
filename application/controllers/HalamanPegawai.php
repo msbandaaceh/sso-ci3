@@ -226,8 +226,11 @@ class HalamanPegawai extends CI_Controller
         if (!empty($_FILES['foto']['name'])) {
             $this->upload->initialize($config_foto);
             if (!$this->upload->do_upload('foto')) {
-                $error = $this->upload->display_errors();
-                $file_path_foto = $error;
+                $raw = $this->upload->display_errors();
+                $errors = 'Upload Foto Gagal: ' . ($raw ?: 'Unknown error');
+                $this->session->set_flashdata('info', '2');
+                $this->session->set_flashdata('pesan', $errors);
+                redirect('daftar_pegawai');
             } else {
                 $data = $this->upload->data();
                 $file_path_foto = 'assets/dokumen/foto/' . $data['file_name'];
@@ -256,8 +259,11 @@ class HalamanPegawai extends CI_Controller
         if (!empty($_FILES['ttd']['name'])) {
             $this->upload->initialize($config_ttd);
             if (!$this->upload->do_upload('ttd')) {
-                $error = $this->upload->display_errors();
-                $file_path_ttd = $error;
+                $raw = $this->upload->display_errors();
+                $errors[] = 'Upload Ttd Gagal: ' . ($raw ?: 'Unknown error');
+                $this->session->set_flashdata('info', '2');
+                $this->session->set_flashdata('pesan', $errors);
+                redirect('daftar_pegawai');
             } else {
                 $data = $this->upload->data();
                 $file_path_ttd = 'assets/dokumen/ttd/' . $data['file_name'];

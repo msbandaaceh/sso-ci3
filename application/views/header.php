@@ -67,6 +67,12 @@
     <!-- Leaflet Draw (plugin untuk edit polygon) -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet-draw/dist/leaflet.draw.css" />
     <script src="https://unpkg.com/leaflet-draw/dist/leaflet.draw.js"></script>
+
+    <style>
+        .swal2-container {
+            z-index: 20000 !important;
+        }
+    </style>
 </head>
 
 <body>
