@@ -96,11 +96,11 @@
                                                         onclick="BukaModal('<?= base64_encode($this->encryption->encrypt($item->userid)) ?>')"><i
                                                             class="bx bx-edit-alt me-1"></i> Edit</button>
                                                     <a class="dropdown-item" id="hapus" href="#" data-bs-toggle="modal"
-                                                        data-bs-target="#hapusModal" data-id="<?= $idEncrypt; ?>"
-                                                        data-loader><i class="bx bx-trash me-1"></i> Hapus</a>
+                                                        data-bs-target="#hapusModal" data-id="<?= $idEncrypt; ?>"><i
+                                                            class="bx bx-trash me-1"></i> Hapus</a>
                                                     <a class="dropdown-item" id="reset" href="#" data-bs-toggle="modal"
-                                                        data-bs-target="#resetModal" data-id="<?= $idEncrypt; ?>"
-                                                        data-loader><i class="bx bx-trash me-1"></i> Reset Perangkat
+                                                        data-bs-target="#resetModal" data-id="<?= $idEncrypt; ?>"><i
+                                                            class="bx bx-trash me-1"></i> Reset Perangkat
                                                         Presensi</a>
                                                 </div>
                                             </div>
