@@ -185,7 +185,7 @@ class Wa extends CI_Controller
 
                 // Sore (Jumat atau bukan)
                 if ($hari == 'Jumat') {
-                    if ($this->waktu_dalam_rentang("17:00", "17:10")) {
+                    if ($this->waktu_dalam_rentang("15:30", "15:40")) {
                         $this->kirim_reminder('2', $pesanWA);
                     }
                     if ($this->waktu_dalam_rentang($mulaiIstirahatJumat, date("H:i", strtotime($mulaiIstirahatJumat) + 300))) {
@@ -195,7 +195,7 @@ class Wa extends CI_Controller
                         $this->kirim_reminder('5', $pesanSelesaiIstirahat);
                     }
                 } else {
-                    if ($this->waktu_dalam_rentang("16:30", "16:40")) {
+                    if ($this->waktu_dalam_rentang("15:00", "15:10")) {
                         $this->kirim_reminder('2', $pesanWA);
                     }
                     if ($this->waktu_dalam_rentang($mulaiIstirahat, date("H:i", strtotime($mulaiIstirahat) + 300))) {
