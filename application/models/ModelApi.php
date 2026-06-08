@@ -34,6 +34,18 @@ class ModelApi extends CI_Model
         return $this->db->get($tabel);
     }
 
+    public function get_seleksi_array($tabel, $where = [])
+    {
+        // multiple where
+        if (!empty($where)) {
+            foreach ($where as $kolom => $nilai) {
+                $this->db->where($kolom, $nilai);
+            }
+        }
+
+        return $this->db->get($tabel);
+    }
+
     public function get_data_tabel($tabel)
     {
         return $this->db->get($tabel);
