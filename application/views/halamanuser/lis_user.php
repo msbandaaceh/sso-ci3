@@ -1,3 +1,95 @@
+<style>
+    /* Samakan kontainer select2 (yang menggantikan <select>) dengan .form-select */
+    .select2-container--default .select2-selection--single {
+        display: block;
+        width: 100%;
+        height: calc(1.5em + .875rem + 2px);
+        /* = 1.5em line-height + .4375rem pad-top + .4375rem pad-bottom + 2px border ≈ 40px (sama dengan .form-select) */
+        padding: .4375rem 1.875rem .4375rem .875rem;
+        font-size: .9375rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: #697a8d;
+        background-color: #fff;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%23697a8d' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right .875rem center;
+        background-size: 16px 12px;
+        border: 1px solid #d9dee3;
+        border-radius: .375rem;
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0);
+        transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    }
+
+    /* Samakan teks pilihan yang tampil (rendered text) */
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+        padding: 0;
+        padding-right: 0;
+        line-height: 1.5;
+        color: #697a8d;
+        font-size: .9375rem;
+        font-weight: 400;
+    }
+
+    /* Posisi panah default select2 (yang di kanan selection) disembunyikan,
+       karena kita sudah pakai panah SVG dari .form-select di background */
+    .select2-container--default .select2-selection--single .select2-selection__arrow {
+        display: none;
+    }
+
+    /* Samakan warna saat focus (sama dengan .form-select:focus) */
+    .select2-container--default.select2-container--open .select2-selection--single,
+    .select2-container--default .select2-selection--single:focus,
+    .select2-container--default .select2-selection--single:hover {
+        border-color: #696cff;
+        outline: 0;
+        box-shadow: 0 0 0 .25rem rgba(105, 108, 255, .1);
+    }
+
+    /* Placeholder (sama seperti .form-select) */
+    .select2-container--default .select2-selection--single .select2-selection__placeholder {
+        color: #697a8d;
+    }
+
+    /* Samakan tinggi dropdown (option list) */
+    .select2-container--default .select2-results__option {
+        padding: .4375rem .875rem;
+        font-size: .9375rem;
+        color: #697a8d;
+    }
+
+    .select2-container--default .select2-results__option--highlighted[aria-selected] {
+        background-color: #e7e7ff;
+        color: #697a8d;
+    }
+
+    /* Samakan searchbox di dalam dropdown (jika dropdownParent besar, min-height biar konsisten) */
+    .select2-container--default .select2-dropdown {
+        border-color: #d9dee3;
+        border-radius: .375rem;
+        box-shadow: 0 .25rem 1rem rgba(0, 0, 0, .08);
+    }
+
+    /* Samakan tampilan clear (x) yang muncul karena allowClear */
+    .select2-container--default .select2-selection--single .select2-selection__clear {
+        margin-right: 1.25rem;
+        color: #697a8d;
+        font-size: 1rem;
+    }
+
+    /* State invalid (untuk form validation jQuery validate) */
+    .is-invalid+.select2-container--default .select2-selection--single {
+        border-color: #ff5b5c;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%23ff5b5c' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3E%3C/svg%3E");
+    }
+
+    .is-invalid+.select2-container--default .select2-selection--single:focus,
+    .is-invalid+.select2-container--default.select2-container--open .select2-selection--single {
+        border-color: #ff5b5c;
+        box-shadow: 0 0 0 .25rem rgba(255, 91, 92, .1);
+    }
+</style>
+
 <!-- Content wrapper -->
 <div class="content-wrapper">
 
@@ -148,7 +240,7 @@
                     <div class="col mb-3">
                         <div class="form-group">
                             <label for="pegawai" class="form-label">PEGAWAI</label><code> *</code>
-                            <div id="pegawai_"><select id='pegawai'></select></div>
+                            <div id="pegawai_"></div>
                         </div>
                         <div class="form-group">
                             <label for="username" class="form-label">USERNAME</label>
@@ -262,6 +354,7 @@
 <!-- endbuild -->
 
 <!-- Vendors JS -->
+<script src="<?= site_url('assets/libs/select2/js/select2.min.js') ?>"></script>
 <script src="<?= site_url('assets/libs/sweetalert2/js/sweetalert2.min.js') ?>"></script>
 
 <!-- jquery-validation -->
@@ -407,6 +500,35 @@
                 $("#email").val(json.email);
                 $("#blok_").append(json.blok);
                 $("#atasan_").append(json.atasan);
+
+                // Hancurkan instance select2 lama (jika ada) sebelum inisialisasi ulang,
+                // supaya tidak terjadi double-widget / error "select2 already initialized"
+                if ($("#pegawai").data('select2')) {
+                    $("#pegawai").select2('destroy');
+                }
+                if ($("#atasan").data('select2')) {
+                    $("#atasan").select2('destroy');
+                }
+
+                // Inisialisasi select2.
+                // dropdownParent PENTING di Bootstrap modal: tanpa ini dropdown
+                // terpotong / tertutup backdrop sehingga data "tidak muncul".
+                $("#pegawai").select2({
+                    width: '100%',
+                    placeholder: '-- Pilih Pegawai --',
+                    allowClear: true,
+                    dropdownParent: $('#tambahModal')
+                });
+                $("#atasan").select2({
+                    width: '100%',
+                    placeholder: '-- Pilih Atasan --',
+                    allowClear: true,
+                    dropdownParent: $('#tambahModal')
+                });
+
+                // Trigger change supaya nilai dari server (selected) tertampil di select2
+                $("#pegawai").val($("#pegawai").val()).trigger('change');
+                $("#atasan").val($("#atasan").val()).trigger('change');
             } else if (json.st == 0) {
                 pesan('PERINGATAN', json.msg, '');
                 $('#table_pegawai').DataTable().ajax.reload();
