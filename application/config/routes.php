@@ -86,3 +86,5 @@ $route['api_audittrail']['post'] = 'apiclient/audittrail';
 $route['api_get_seleksi']['get'] = 'apiclient/get_data_seleksi';
 $route['api_get_seleksi2']['get'] = 'apiclient/get_data_seleksi2';
 $route['api_simpan_data']['post'] = 'apiclient/simpan_data';
+$route['api/pegawai/(:num)']['get'] = 'apiclient/get_pegawai_by_id/$1';
+$route['api/pegawai']['get'] = 'apiclient/get_all_pegawai';

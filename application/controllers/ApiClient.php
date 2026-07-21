@@ -30,9 +30,105 @@ class ApiClient extends CI_Controller
         $this->load->model('ModelApi', 'api');
         $this->load->model('ModelNotifikasi', 'notif');
 
-        header('Access-Control-Allow-Origin: *');
-        header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
+        // Handle preflight OPTIONS sebelum method apapun dieksekusi
+        if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+            $this->_send_cors_headers();
+            header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With, X-Api-Key');
+            header('Access-Control-Max-Age: 86400');
+            http_response_code(204);
+            exit;
+        }
+
+        $this->_send_cors_headers();
         header('Content-Type: application/json');
+    }
+
+    public function _remap($method, $args = array())
+    {
+        if (!$this->_validate_api_key()) {
+            return;
+        }
+        if (method_exists($this, $method)) {
+            call_user_func_array(array($this, $method), $args);
+        } else {
+            show_404();
+        }
+    }
+
+    private function _send_cors_headers()
+    {
+        $allowed = $this->config->item('cors_allowed_origins');
+        $allowed = is_array($allowed) ? $allowed : array();
+        $origin  = isset($_SERVER['HTTP_ORIGIN']) ? rtrim($_SERVER['HTTP_ORIGIN'], '/') : '';
+
+        if (!empty($origin) && in_array($origin, $allowed, true)) {
+            header('Access-Control-Allow-Origin: ' . $origin);
+            header('Vary: Origin');
+            header('Access-Control-Allow-Credentials: true');
+        }
+
+        header('Access-Control-Allow-Methods: GET, POST, PUT, PATCH, DELETE, OPTIONS');
+    }
+
+    private function _validate_api_key()
+    {
+        $expected = (string) $this->config->item('api_key');
+        $key = null;
+
+        // 1) Query string
+        $key = $this->input->get('api_key');
+        if (empty($key)) {
+            $key = $this->input->get('kuncine');
+        }
+
+        // 2) Header X-Api-Key
+        if (empty($key) && function_exists('getallheaders')) {
+            $headers = getallheaders();
+            if (isset($headers['X-Api-Key'])) {
+                $key = $headers['X-Api-Key'];
+            } elseif (isset($headers['x-api-key'])) {
+                $key = $headers['x-api-key'];
+            }
+        }
+
+        // 3) Body JSON
+        if (empty($key)) {
+            $raw = file_get_contents('php://input');
+            if (!empty($raw)) {
+                $decoded = json_decode($raw, true);
+                if (is_array($decoded)) {
+                    if (isset($decoded['api_key']) && !empty($decoded['api_key'])) {
+                        $key = $decoded['api_key'];
+                    } elseif (isset($decoded['kuncine']) && !empty($decoded['kuncine'])) {
+                        $key = $decoded['kuncine'];
+                    }
+                }
+            }
+        }
+
+        if (empty($key) || !hash_equals($expected, (string) $key)) {
+            $this->_log_failed_attempt();
+            http_response_code(401);
+            echo json_encode(array(
+                'status'  => 'error',
+                'message' => 'Unauthorized: API key tidak valid atau tidak diberikan.'
+            ));
+            return false;
+        }
+
+        return true;
+    }
+
+    private function _log_failed_attempt()
+    {
+        if ((int) $this->config->item('log_threshold') === 0) {
+            return;
+        }
+        log_message('warning',
+            'ApiClient auth failed | IP: ' . $this->input->ip_address() .
+            ' | URI: ' . (isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '-') .
+            ' | Origin: ' . (isset($_SERVER['HTTP_ORIGIN']) ? $_SERVER['HTTP_ORIGIN'] : '-')
+        );
     }
 
     public function get_data_seleksi()
@@ -100,7 +196,7 @@ class ApiClient extends CI_Controller
     {
         $kolom_seleksi = $this->input->get('kolom_seleksi');
         $seleksi = $this->input->get('seleksi');
-    
+
         $data = $this->api->get_seleksi2('v_pegawai', $kolom_seleksi, $seleksi, 'status_pegawai', '1');
         if ($data->num_rows() > 0) {
             echo json_encode([
