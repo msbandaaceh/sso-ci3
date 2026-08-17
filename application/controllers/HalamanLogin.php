@@ -43,7 +43,12 @@ class HalamanLogin extends CI_Controller
         $this->form_validation->set_message(['required' => '%s Tidak Boleh Kosong', 'max_length' => '%s Tidak Boleh Melebihi 18 Karakter']);
 
         if ($this->form_validation->run() == FALSE) {
-            $this->load->view('form_login', validation_errors());
+            $data['nama_satker'] = $this->model->get_konfigurasi('4')->row()->value;
+            $data['logo_satker'] = 'assets/dokumen/' . $this->model->get_konfigurasi('22')->row()->value;
+            $data['nama_app'] = $this->model->get_konfigurasi('1')->row()->value;
+            $data['title_app'] = $this->model->get_konfigurasi('2')->row()->value;
+            $data['validation_errors'] = validation_errors();
+            $this->load->view('form_login', $data);
             return;
         }
 
