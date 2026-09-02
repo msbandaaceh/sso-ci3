@@ -153,7 +153,7 @@ class HalamanLogin extends CI_Controller
                     # Periksa apakah ada pegawai lain yang ditunjuk sebagai plh/plt dari jabatan anda
                     #die(var_dump($queryUser->row()->jab_id));
                     $cekPegawaiPlh = $this->model->get_seleksi('ref_plh', 'plh_id_jabatan', $queryUser->row()->jab_id);
-                    if ($cekPegawaiPlh->row()->pegawai_id) {
+                    if ($cekPegawaiPlh->num_rows() > 0 && $cekPegawaiPlh->row()->pegawai_id) {
                         $this->session->set_flashdata('pegawai_plh', '1');
                     }
 

@@ -112,4 +112,80 @@ class ModelUtama extends CI_Model
             return 0;
         }
     }
+
+    public function get_cuti_kalender($tgl_awal, $tgl_akhir)
+    {
+        try {
+            // Ambil data cuti dari API seudati
+            $params = [
+                'api_key' => $this->config->item('api_key'),
+                'tgl_awal' => $tgl_awal,
+                'tgl_akhir' => $tgl_akhir
+            ];
+            $result = $this->apihelper->get($this->config->item('api_izincuti') . '/get_cuti_kalender', $params);
+
+            $data_cuti = [];
+            if ($result['status_code'] === 200 && isset($result['response']['status']) && $result['response']['status'] === 'success') {
+                $data_cuti = $result['response']['data'];
+            }
+
+            // Ambil data pegawai dari v_pegawai lokal
+            $this->db->select('id, nama_gelar');
+            $this->db->from('v_pegawai');
+            $pegawai_result = $this->db->get()->result_array();
+
+            // Build pegawai map
+            $pegawai_map = [];
+            foreach ($pegawai_result as $pegawai) {
+                $pegawai_map[$pegawai['id']] = $pegawai['nama_gelar'];
+            }
+
+            // Gabungkan data cuti dengan nama pegawai
+            foreach ($data_cuti as &$cuti) {
+                $cuti['nama_pegawai'] = $pegawai_map[$cuti['pegawai_id']] ?? '';
+            }
+
+            return $data_cuti;
+        } catch (Exception $e) {
+            return [];
+        }
+    }
+
+    public function get_izin_keluar_kalender($tgl_awal, $tgl_akhir)
+    {
+        try {
+            // Ambil data izin keluar dari API seudati
+            $params = [
+                'api_key' => $this->config->item('api_key'),
+                'tgl_awal' => $tgl_awal,
+                'tgl_akhir' => $tgl_akhir
+            ];
+            $result = $this->apihelper->get($this->config->item('api_izincuti') . '/get_izin_keluar_kalender', $params);
+
+            $data_izin = [];
+            if ($result['status_code'] === 200 && isset($result['response']['status']) && $result['response']['status'] === 'success') {
+                $data_izin = $result['response']['data'];
+            }
+
+            // Ambil data user dari v_users lokal
+            $this->db->select('userid, fullname');
+            $this->db->from('v_users');
+            $user_result = $this->db->get()->result_array();
+
+            // Build user map
+            $user_map = [];
+            foreach ($user_result as $user) {
+                $user_map[$user['userid']] = $user['fullname'];
+            }
+
+            // Gabungkan data izin dengan nama user
+            foreach ($data_izin as &$izin) {
+                $izin['nama_pegawai'] = $user_map[$izin['id_user']] ?? '';
+            }
+
+            return $data_izin;
+        } catch (Exception $e) {
+            return [];
+        }
+    }
 }

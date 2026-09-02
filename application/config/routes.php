@@ -88,3 +88,6 @@ $route['api_get_seleksi2']['get'] = 'apiclient/get_data_seleksi2';
 $route['api_simpan_data']['post'] = 'apiclient/simpan_data';
 $route['api/pegawai/(:num)']['get'] = 'apiclient/get_pegawai_by_id/$1';
 $route['api/pegawai']['get'] = 'apiclient/get_all_pegawai';
+
+$route['kalender_pegawai'] = 'HalamanUtama/kalender_pegawai';
+$route['get_cuti_kalender'] = 'HalamanUtama/get_cuti_kalender';

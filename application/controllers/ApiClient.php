@@ -59,7 +59,7 @@ class ApiClient extends CI_Controller
     {
         $allowed = $this->config->item('cors_allowed_origins');
         $allowed = is_array($allowed) ? $allowed : array();
-        $origin  = isset($_SERVER['HTTP_ORIGIN']) ? rtrim($_SERVER['HTTP_ORIGIN'], '/') : '';
+        $origin = isset($_SERVER['HTTP_ORIGIN']) ? rtrim($_SERVER['HTTP_ORIGIN'], '/') : '';
 
         if (!empty($origin) && in_array($origin, $allowed, true)) {
             header('Access-Control-Allow-Origin: ' . $origin);
@@ -110,7 +110,7 @@ class ApiClient extends CI_Controller
             $this->_log_failed_attempt();
             http_response_code(401);
             echo json_encode(array(
-                'status'  => 'error',
+                'status' => 'error',
                 'message' => 'Unauthorized: API key tidak valid atau tidak diberikan.'
             ));
             return false;
@@ -124,7 +124,8 @@ class ApiClient extends CI_Controller
         if ((int) $this->config->item('log_threshold') === 0) {
             return;
         }
-        log_message('warning',
+        log_message(
+            'warning',
             'ApiClient auth failed | IP: ' . $this->input->ip_address() .
             ' | URI: ' . (isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '-') .
             ' | Origin: ' . (isset($_SERVER['HTTP_ORIGIN']) ? $_SERVER['HTTP_ORIGIN'] : '-')
@@ -211,11 +212,36 @@ class ApiClient extends CI_Controller
         }
     }
 
+    public function get_semua_pegawai_aktif()
+    {
+        $data = $this->api->get_seleksi('v_pegawai', 'status_pegawai', '1');
+        echo json_encode([
+            'status' => 'success',
+            'data' => $data->result_array()
+        ]);
+    }
+
+    public function get_semua_user_aktif()
+    {
+        $key = $this->input->get('api_key');
+        if ($key !== $this->config->item('api_key')) {
+            http_response_code(401);
+            echo json_encode(['status' => 'error', 'message' => 'Anda tidak diijikan akses API']);
+            return;
+        }
+
+        $data = $this->api->get_seleksi('v_users', 'status_pegawai', '1');
+        echo json_encode([
+            'status' => 'success',
+            'data' => $data->result_array()
+        ]);
+    }
+
     public function get_data_plh()
     {
         $kolom_seleksi = $this->input->get('kolom_seleksi');
         $seleksi = $this->input->get('seleksi');
-    
+
         $data = $this->api->get_seleksi('v_plh', $kolom_seleksi, $seleksi);
         if ($data->num_rows() > 0) {
             echo json_encode([

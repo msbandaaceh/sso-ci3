@@ -130,6 +130,12 @@
                                             <span class="align-middle">Dashboard</span>
                                         </a>
                                     </li>
+                                    <li>
+                                        <a class="dropdown-item" href="<?= site_url('kalender_pegawai') ?>" data-loader>
+                                            <i class="bx bx-calendar me-2"></i>
+                                            <span class="align-middle">Kalender Pegawai</span>
+                                        </a>
+                                    </li>
                                     <?php
                                     if (in_array($role, ['super', 'admin_satker', 'validator_kepeg_satker'])) {
                                         ?>
