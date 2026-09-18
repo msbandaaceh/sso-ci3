@@ -68,17 +68,34 @@
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <label for="ttd" class="form-label">TANDA TANGAN PEGAWAI (PNG)</label>
+                                <label class="form-label">QR CODE KARTU PEGAWAI</label>
                                 <div class="d-flex align-items-start align-items-sm-center gap-4">
-                                    <img src="<?= $this->session->userdata('ttd'); ?>" alt="user-avatar"
-                                        class="d-block rounded" height="180" width="120" id="uploadedSignature" />
+                                    <?php if (!empty($qrcode)): ?>
+                                        <img src="<?= site_url($qrcode); ?>" alt="QR Code Pegawai" class="d-block rounded"
+                                            height="180" width="180" id="uploadedQrCode" />
+                                    <?php else: ?>
+                                        <div class="d-block rounded bg-light d-flex align-items-center justify-content-center"
+                                            height="180" width="180" id="uploadedQrCode"
+                                            style="min-height:180px;min-width:180px;">
+                                            <span class="text-muted">Belum dibuat</span>
+                                        </div>
+                                    <?php endif; ?>
                                     <div class="button-wrapper">
-                                        <label for="ttd" class="btn btn-primary me-2 mb-4" tabindex="0">
-                                            <span class="d-none d-sm-block">Unggah Tanda Tangan Lain</span>
-                                            <i class="bx bx-upload d-block d-sm-none"></i>
-                                        </label>
-
-                                        <p class="text-muted mb-0">Allowed PNG. Max size of 5 Mb</p>
+                                        <a href="<?= site_url('generate_qrcode'); ?>" class="btn btn-primary me-2 mb-4"
+                                            tabindex="0" id="btnGenerateQr">
+                                            <span class="d-none d-sm-block">Generate QR Code</span>
+                                            <i class="bx bx-qrcode d-block d-sm-none"></i>
+                                        </a>
+                                        <?php if (!empty($qrcode)): ?>
+                                            <a href="<?= site_url($qrcode); ?>" download class="btn btn-success me-2 mb-4"
+                                                tabindex="0">
+                                                <span class="d-none d-sm-block">Unduh QR Code</span>
+                                                <i class="bx bx-download d-block d-sm-none"></i>
+                                            </a>
+                                        <?php endif; ?>
+                                        <p class="text-muted mb-0">Scan QR Code akan menampilkan Kartu Pegawai. Jika
+                                            Foto, Nama, Nip atau Jabatan tidak sesuai, silakan perbaiki data pegawai,
+                                            lalu Generate ulang QR Code</p>
                                     </div>
                                 </div>
                             </div>
@@ -303,9 +320,24 @@
             previewImage(this, 'uploadedAvatar'); // Menampilkan preview pada gambar pegawai
         });
 
-        // Event listener untuk tanda tangan pegawai
-        document.getElementById('ttd').addEventListener('change', function () {
-            previewImage(this, 'uploadedSignature'); // Menampilkan preview pada gambar tanda tangan
+        // Event listener untuk tombol generate QR Code
+        document.getElementById('btnGenerateQr').addEventListener('click', function (e) {
+            e.preventDefault();
+            const url = this.href;
+            Swal.fire({
+                title: 'Konfirmasi',
+                text: 'Generate QR Code untuk pegawai ini?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#696cff',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, Generate',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = url;
+                }
+            });
         });
     </script>
 

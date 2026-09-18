@@ -333,6 +333,7 @@ class HalamanPengaturan extends CI_Controller
             $data['id_grup'] = $queryProfil[0]->id_grup;
             $data['tmt'] = $queryProfil[0]->tmt;
             $data['nohp'] = $queryProfil[0]->nohp;
+            $data['qrcode'] = $queryProfil[0]->qrcode_pegawai ?? '';
             $this->session->set_userdata('ttd', site_url($queryProfil[0]->ttd));
 
             $data['jabatan'] = $this->jabatan->all_jabatan_data();
@@ -867,4 +868,71 @@ class HalamanPengaturan extends CI_Controller
     #                            #
     #   PENGATURAN PETUGAS MPP   #
     #                            #
+
+    public function generate_qrcode()
+    {
+        if (!$this->session->userdata('logged_in')) {
+            redirect('keluar');
+        }
+
+        $id = $this->session->userdata('userid');
+
+        if (empty($id)) {
+            $this->session->set_flashdata('info', '3');
+            $this->session->set_flashdata('pesan', 'USERID pegawai tidak ditemukan');
+            redirect('profil');
+        }
+
+        $pegawai = $this->user->get_user_data($id);
+        if (empty($pegawai[0]->nip)) {
+            $this->session->set_flashdata('info', '3');
+            $this->session->set_flashdata('pesan', 'NIP pegawai belum diisi, silakan lengkapi data profil terlebih dahulu');
+            redirect('profil');
+        }
+
+        $qrContent = site_url('kartu_pegawai/' . $id);
+        $filePath = 'assets/dokumen/ttd/qrcode_' . $id . '.png';
+        $fullPath = realpath(dirname(__FILE__)) . '/../../' . $filePath;
+
+        $logoConfig = $this->model->get_konfigurasi('22');
+        $logoPath = !empty($logoConfig->row()->value) ? FCPATH . 'assets/dokumen/' . $logoConfig->row()->value : FCPATH . 'assets/dokumen/logo.webp';
+        if (!file_exists($logoPath)) {
+            $logoPath = FCPATH . 'assets/dokumen/logo.webp';
+        }
+
+        try {
+            require_once __DIR__ . '/../../vendor/autoload.php';
+            $qrCode = new \Endroid\QrCode\QrCode(
+                $qrContent,
+                null,
+                new \Endroid\QrCode\ErrorCorrectionLevel\ErrorCorrectionLevelHigh(),
+                300,
+                10
+            );
+            $logo = \Endroid\QrCode\Logo\Logo::create($logoPath)->setResizeToWidth(60);
+            $writer = new \Endroid\QrCode\Writer\PngWriter();
+            $result = $writer->write($qrCode, $logo);
+
+            $dir = dirname($fullPath);
+            if (!is_dir($dir)) {
+                mkdir($dir, 0777, true);
+            }
+            $result->saveToFile($fullPath);
+
+            $this->model->pembaharuan_data(
+                'pegawai',
+                ['qrcode_pegawai' => $filePath],
+                'id',
+                $this->session->userdata('pegawai_id')
+            );
+
+            $this->session->set_flashdata('info', '1');
+            $this->session->set_flashdata('pesan', 'QR Code berhasil dibuat');
+        } catch (Exception $e) {
+            $this->session->set_flashdata('info', '3');
+            $this->session->set_flashdata('pesan', 'Gagal membuat QR Code: ' . $e->getMessage());
+        }
+
+        redirect('profil');
+    }
 }
