@@ -256,6 +256,18 @@ class HalamanUser extends CI_Controller
 
         $resetPengguna = $this->user->reset_perangkat($dataPengguna, $idDecrypt);
         if ($resetPengguna) {
+            $pegawai_id = $this->model->get_seleksi('v_users', 'userid', $idDecrypt)->row()->pegawai_id;
+
+            $dataNotif = array(
+                'jenis_pesan' => 'reset_perangkat',
+                'id_pemohon' => $this->session->userdata("id_pegawai"),
+                'pesan' => 'Perangkat anda telah direset. Silakan keluar dari aplikasi LITERASI, kemudian Login kembali.',
+                'id_tujuan' => $pegawai_id,
+                'created_by' => $this->session->userdata('fullname'),
+                'created_on' => date('Y-m-d H:i:s')
+            );
+
+            $this->notif->tambahNotif($dataNotif, 'sys_notif');
             $this->session->set_flashdata('info', '1');
             $this->session->set_flashdata('pesan', 'Data Perangkat Pengguna Berhasil di Reset, Silakan melakukan perekaman kembali');
             redirect('daftar_user');
