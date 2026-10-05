@@ -13,9 +13,9 @@ $ssl =
 $protocol = $ssl ? "https://" : "http://";
 
 $config['base_url'] = $protocol .$_SERVER['SERVER_NAME'].'/';
-$config['sso_server'] = $protocol .'sso.ms-bandaaceh.go.id/'; # Domain SSO Server
-$config['sso_db'] = 'sso'; # DB SSO Server
-$config['captcha'] = '6LfWeOMpAAAAAMNB5EZUMoRRQGrrs7Zk9R0vwBl6';
+$config['sso_server'] = env('SSO_SERVER');
+$config['sso_db'] = env('SSO_DB');
+$config['captcha'] = env('CAPTCHA_KEY');
 
 $config['index_page'] = '';
 $config['uri_protocol']	= 'REQUEST_URI';
@@ -41,10 +41,10 @@ $config['log_date_format'] = 'Y-m-d H:i:s';
 $config['error_views_path'] = '';
 $config['cache_path'] = '';
 $config['cache_query_string'] = FALSE;
-$config['encryption_key'] = '@M4hk4m4hBn4';
+$config['encryption_key'] = env('ENCRYPTION_KEY');
 
 $config['sess_driver'] = 'files';
-$config['sess_cookie_name'] = 'sso_msbna';
+$config['sess_cookie_name'] = 'sso_session';
 $config['sess_samesite'] = 'Lax';
 $config['sess_expiration'] = 7200;
 $config['sess_save_path'] = NULL;
@@ -53,7 +53,7 @@ $config['sess_time_to_update'] = 300;
 $config['sess_regenerate_destroy'] = FALSE;
 
 $config['cookie_prefix']	= '';
-$config['cookie_domain']	= '.ms-bandaaceh.go.id';
+$config['cookie_domain']	= env('COOKIE_DOMAIN');
 $config['cookie_path']		= '/';
 $config['cookie_secure']	= $ssl ? TRUE : FALSE;
 $config['cookie_httponly'] 	= TRUE;
@@ -65,35 +65,27 @@ $config['global_xss_filtering'] = FALSE;
 $config['csrf_protection'] = FALSE;
 $config['csrf_token_name'] = 'csrf_test_name';
 $config['csrf_cookie_name'] = 'csrf_cookie_name';
-$config['csrf_expire'] = 1800;
+$config['csrf_expire'] = 7200;
 $config['csrf_regenerate'] = TRUE;
 $config['csrf_exclude_uris'] = array();
 
 $config['compress_output'] = FALSE;
-$config['time_reference'] = '';
+$config['time_reference'] = 'local';
 $config['rewrite_short_tags'] = FALSE;
 $config['proxy_ips'] = '';
 
-$config['jwt_key'] = 'M4hk4m4hBn4@2025';
-$config['jwt_issuer'] = '.ms-bandaaceh.go.id';
-$config['jwt_expire_time'] = 3600; // 1 jam
+$config['jwt_key'] = env('JWT_KEY');
+$config['jwt_issuer'] = env('JWT_ISSUER');
+$config['jwt_expire_time'] = env('JWT_EXPIRE_TIME');
 
-$config['api_key'] = 'M4hk4m4hBn4@2025';
-$config['api_izincuti'] = 'seudati.ms-bandaaceh.go.id/api';
-$config['api_rapat'] = 'agam.ms-bandaaceh.go.id/api';
+$config['api_key'] = env('API_KEY');
+$config['api_izincuti'] = env('API_IZINCUTI');
+$config['api_rapat'] = env('API_RAPAT');
 
 // CORS whitelist untuk ApiClient
 // Domain yang diizinkan memanggil API ini via browser (fetch/XHR).
 // Sertakan http dan https variant. Samakan dengan domain aktual production.
-$config['cors_allowed_origins'] = array(
-    'https://hadir-in.ms-bandaaceh.go.id',
-    'https://paylink.ms-bandaaceh.go.id',
-    'https://sias.ms-bandaaceh.go.id',
-    'https://seudati.ms-bandaaceh.go.id',
-    'https://agam.ms-bandaaceh.go.id',
-    'https://e-guest.ms-bandaaceh.go.id',
-    'https://ananda.ms-bandaaceh.go.id',
-    'https://e-supel.ms-bandaaceh.go.id',
-    'https://literasi.ms-bandaaceh.go.id',
-    'http://localhost'
-);
+$cors_env = env('CORS_ALLOWED_ORIGINS');
+$config['cors_allowed_origins'] = $cors_env
+    ? array_map('trim', explode(',', $cors_env))
+    : array();
