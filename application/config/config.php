@@ -44,7 +44,7 @@ $config['cache_query_string'] = FALSE;
 $config['encryption_key'] = env('ENCRYPTION_KEY');
 
 $config['sess_driver'] = 'files';
-$config['sess_cookie_name'] = 'sso_session';
+$config['sess_cookie_name'] = env('COOKIE_NAME');
 $config['sess_samesite'] = 'Lax';
 $config['sess_expiration'] = 7200;
 $config['sess_save_path'] = NULL;
