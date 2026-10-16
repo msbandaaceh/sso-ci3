@@ -168,14 +168,11 @@ class HalamanPegawai extends CI_Controller
         $this->form_validation->set_message(['required' => '%s Tidak Boleh Kosong', 'max_length' => '%s Tidak Boleh Melebihi %s Karakter']);
 
         if ($this->form_validation->run() == FALSE) {
-            //echo json_encode(array('st' => 0, 'msg' => 'Tidak Berhasil:<br/>'.validation_errors()));
-            $this->session->set_flashdata('info', '2');
-            $this->session->set_flashdata('pesan', form_error('nip') . form_error('nama_gelar') . form_error('nama') . form_error('pangkat') . form_error('jabatan') . form_error('alamat') . form_error('ket') . form_error('nohp') . form_error('stat') . 'Gagal Simpan Pegawai, Periksa Kembali Form Input Pegawai');
-            redirect('daftar_pegawai', validation_errors());
+            echo json_encode(array('success' => false, 'pesan' => 'Tidak Berhasil:<br/>'.validation_errors()));
             return;
         }
 
-        $id = $this->input->post('id');
+        $id = $this->encryption->decrypt(base64_decode($this->input->post('id')));
         $nip = $this->input->post('nip') ? $this->input->post('nip') : null;
         $nama_gelar = $this->input->post('nama_gelar');
         $nama = $this->input->post('nama');
@@ -197,9 +194,7 @@ class HalamanPegawai extends CI_Controller
             }
 
             if ($cekPegawaiExist->num_rows() > 0) {
-                $this->session->set_flashdata('info', '2');
-                $this->session->set_flashdata('pesan', 'Pegawai sudah terdaftar, atau nomor hp sudah digunakan, cek kembali daftar pegawai');
-                redirect('daftar_pegawai', validation_errors());
+                echo json_encode(array('success' => false, 'pesan' => 'Pegawai sudah terdaftar, atau nomor hp sudah digunakan, cek kembali daftar pegawai'));
                 return;
             }
         }
@@ -210,17 +205,10 @@ class HalamanPegawai extends CI_Controller
         $config_foto['max_size'] = 1024 * 5;
         $config_foto['encrypt_name'] = FALSE;
 
-        // Konfigurasi untuk upload tanda tangan
-        $config_ttd['upload_path'] = 'assets/dokumen/ttd/';
-        $config_ttd['allowed_types'] = 'png';
-        $config_ttd['max_size'] = 1024 * 5;
-        $config_ttd['encrypt_name'] = FALSE;
-
         $this->load->library('upload');
 
         // Inisialisasi variabel file path
         $file_path_foto = '';
-        $file_path_ttd = '';
 
         // Upload foto jika ada
         if (!empty($_FILES['foto']['name'])) {
@@ -228,9 +216,8 @@ class HalamanPegawai extends CI_Controller
             if (!$this->upload->do_upload('foto')) {
                 $raw = $this->upload->display_errors();
                 $errors = 'Upload Foto Gagal: ' . ($raw ?: 'Unknown error');
-                $this->session->set_flashdata('info', '2');
-                $this->session->set_flashdata('pesan', $errors);
-                redirect('daftar_pegawai');
+                echo json_encode(array('success' => false, 'pesan' => $errors));
+                return;
             } else {
                 $data = $this->upload->data();
                 $file_path_foto = 'assets/dokumen/foto/' . $data['file_name'];
@@ -255,22 +242,7 @@ class HalamanPegawai extends CI_Controller
             }
         }
 
-        // Upload tanda tangan jika ada
-        if (!empty($_FILES['ttd']['name'])) {
-            $this->upload->initialize($config_ttd);
-            if (!$this->upload->do_upload('ttd')) {
-                $raw = $this->upload->display_errors();
-                $errors[] = 'Upload Ttd Gagal: ' . ($raw ?: 'Unknown error');
-                $this->session->set_flashdata('info', '2');
-                $this->session->set_flashdata('pesan', $errors);
-                redirect('daftar_pegawai');
-            } else {
-                $data = $this->upload->data();
-                $file_path_ttd = 'assets/dokumen/ttd/' . $data['file_name'];
-            }
-        }
-
-        if (!empty($file_path_foto) && !empty($file_path_ttd)) {
+        if (empty($file_path_foto)) {
             $dataPegawai = array(
                 'nip' => $nip,
                 'nama_gelar' => $nama_gelar,
@@ -280,70 +252,27 @@ class HalamanPegawai extends CI_Controller
                 'alamat' => $alamat,
                 'keterangan' => $ket,
                 'nohp' => $nohp,
-                'foto' => $file_path_foto,
-                'ttd' => $file_path_ttd,
                 'tmt' => $tmt,
                 'jk' => $jk,
                 'status_pegawai' => $stat,
                 'jenis_pegawai' => $jenis
             );
         } else {
-            // Update data jika foto diupload
-            if (!empty($file_path_foto)) {
-                $dataPegawai = array(
-                    'nip' => $nip,
-                    'nama_gelar' => $nama_gelar,
-                    'nama' => $nama,
-                    'golongan_id' => $pangkat,
-                    'jabatan_id' => $jabatan,
-                    'alamat' => $alamat,
-                    'keterangan' => $ket,
-                    'nohp' => $nohp,
-                    'tmt' => $tmt,
-                    'jk' => $jk,
-                    'status_pegawai' => $stat,
-                    'foto' => $file_path_foto,
-                    'jenis_pegawai' => $jenis
-                );
-            }
-
-            // Update data jika tanda tangan diupload
-            if (!empty($file_path_ttd)) {
-                $dataPegawai = array(
-                    'nip' => $nip,
-                    'nama_gelar' => $nama_gelar,
-                    'nama' => $nama,
-                    'golongan_id' => $pangkat,
-                    'jabatan_id' => $jabatan,
-                    'alamat' => $alamat,
-                    'keterangan' => $ket,
-                    'nohp' => $nohp,
-                    'tmt' => $tmt,
-                    'jk' => $jk,
-                    'status_pegawai' => $stat,
-                    'ttd' => $file_path_ttd,
-                    'jenis_pegawai' => $jenis
-                );
-
-                $this->session->set_userdata('ttd', $file_path_ttd);
-            }
-
-            if (empty($file_path_foto) && empty($file_path_ttd)) {
-                $dataPegawai = array(
-                    'nip' => $nip,
-                    'nama_gelar' => $nama_gelar,
-                    'nama' => $nama,
-                    'golongan_id' => $pangkat,
-                    'jabatan_id' => $jabatan,
-                    'alamat' => $alamat,
-                    'keterangan' => $ket,
-                    'nohp' => $nohp,
-                    'tmt' => $tmt,
-                    'jk' => $jk,
-                    'status_pegawai' => $stat,
-                    'jenis_pegawai' => $jenis
-                );
-            }
+            $dataPegawai = array(
+                'nip' => $nip,
+                'nama_gelar' => $nama_gelar,
+                'nama' => $nama,
+                'golongan_id' => $pangkat,
+                'jabatan_id' => $jabatan,
+                'alamat' => $alamat,
+                'keterangan' => $ket,
+                'nohp' => $nohp,
+                'tmt' => $tmt,
+                'jk' => $jk,
+                'status_pegawai' => $stat,
+                'foto' => $file_path_foto,
+                'jenis_pegawai' => $jenis
+            );
         }
 
         if ($id) {
@@ -351,7 +280,7 @@ class HalamanPegawai extends CI_Controller
             foreach ($queryStruktural as $item) {
                 $str[] = $item->id;
             }
-            if (in_array($jabatan, $str)) {
+            if (in_array($jabatan, $str) && $stat == '1') {
                 $cekJabatan = $this->pegawai->cek_jabatan_pegawai($jabatan, $id)->num_rows();
             } else {
                 $cekJabatan = 0;
@@ -419,17 +348,89 @@ class HalamanPegawai extends CI_Controller
         }
 
         if ($querySimpan == 1) {
-            $this->session->set_flashdata('info', '1');
             if ($id) {
-                $this->session->set_flashdata('pesan', 'Pegawai Berhasil di Perbarui');
+                echo json_encode(array('success' => true, 'pesan' => 'Pegawai Berhasil di Perbarui'));
             } else {
-                $this->session->set_flashdata('pesan', 'Pegawai Berhasil di Tambahkan');
+                echo json_encode(array('success' => true, 'pesan' => 'Pegawai Berhasil di Tambahkan'));
             }
-            redirect('daftar_pegawai');
         } else {
-            $this->session->set_flashdata('info', '3');
-            $this->session->set_flashdata('pesan', 'Gagal Simpan, ' . $querySimpan);
-            redirect('daftar_pegawai');
+            echo json_encode(array('success' => false, 'pesan' => 'Gagal Simpan, ' . $querySimpan));
         }
+        return;
+    }
+
+    public function detail_pegawai()
+    {
+        $id = $this->encryption->decrypt(base64_decode($this->input->post('id')));
+
+        $queryProfil = $this->model->get_seleksi('v_pegawai', 'id', $id)->row();
+        $data['id'] = $queryProfil->id;
+        $data['nip'] = $queryProfil->nip;
+        $data['nama'] = $queryProfil->nama;
+        $data['alamat'] = $queryProfil->alamat;
+        $data['nama_gelar'] = $queryProfil->nama_gelar;
+        $data['foto'] = base_url() . $queryProfil->foto;
+        $data['id_grup'] = $queryProfil->id_grup;
+        $data['tmt'] = $queryProfil->tmt;
+        $data['nohp'] = $queryProfil->nohp;
+        $data['qrcode'] = $queryProfil->qrcode_pegawai ?? '';
+        $data['status_pegawai'] = $queryProfil->status_pegawai;
+
+        $userid = $this->model->get_seleksi('v_users', 'pegawai_id', $id)->row()->userid;
+        
+        $jekel = [
+            '' => 'Pilih Jenis Kelamin',
+            '1' => 'Pria',
+            '2' => 'Wanita'
+        ];
+        $data['jenis_kelamin'] = form_dropdown('jk', $jekel, $queryProfil->jk, 'id="jk" class="select2 form-select"');
+        
+        $jabatan = [
+            '' => 'Pilih Jabatan'
+        ];
+        $query_jabatan = $this->model->get_data('ref_jabatan')->result_array();
+        
+        foreach($query_jabatan as $j) {
+            $jabatan[$j['id']] = $j['nama_jabatan'];
+        }
+        $data['jabatan'] = form_dropdown('jabatan', $jabatan, $queryProfil->jab_id, 'id="jabatan" class="form-select select2"');
+        
+        $pangkat = [
+            '' => 'Pilih Pangkat Golongan'
+        ];
+        $query_pangkat = $this->model->get_data('ref_pangkat')->result_array();
+        
+        foreach($query_pangkat as $p) {
+            $pangkat[$p['id']] = $p['golongan'] .' | '.$p['pangkat'];
+        }
+        $data['pangkat'] = form_dropdown('pangkat', $pangkat, $queryProfil->gol_id, 'id="pangkat" class="form-select select2"');
+        
+        $grup = [
+            '' => 'Pilih Jenis Pegawai',
+            '1' => 'Hakim',
+            '2' => 'PNS',
+            '3' => 'Honorer/PPNPN',
+            '4' => 'Calon Hakim',
+            '5' => 'Operator',
+            '6' => 'PPPK'
+        ];
+        $data['jenis'] = form_dropdown('jenis', $grup, $queryProfil->id_grup, 'id="jenis" class="form-select select2"');
+
+        $status = [
+            '' => 'Pilih Status Pegawai',
+            '0' => 'Tidak Aktif',
+            '1' => 'Aktif'
+        ];
+        $data['status'] = form_dropdown('stat', $status, $queryProfil->status_pegawai, 'id="status" class="form-select select2"');
+
+        $data['role'] = $this->session->userdata('role');
+        $data['userid'] = $userid;
+        $data['plh'] = $this->session->userdata('status_plh');
+        $data['plt'] = $this->session->userdata('status_plt');
+        $data['page'] = 'profil';
+
+        $this->load->view('header', $data);
+        $this->load->view('halamanpegawai/detail_pegawai');
+        $this->load->view('footer');
     }
 }

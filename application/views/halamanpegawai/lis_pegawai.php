@@ -14,22 +14,22 @@
                 <ul class="nav nav-pills flex-column flex-md-row mb-3">
                     <li class="nav-item">
                         <a class="nav-link active"><i class="bx bx-user me-1"></i>
-                            Daftar Data Pegawai</a>
+                            Data Pegawai</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="<?= site_url('daftar_user'); ?>" data-loader><i
                                 class="bx bx-user-check me-1"></i>
-                            Daftar Data User</a>
+                            Data User</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="<?= site_url('daftar_jabatan'); ?>" data-loader><i
                                 class="bx bx-briefcase me-1"></i>
-                            Daftar Data Jabatan</a>
+                            Data Referensi Jabatan</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="<?= site_url('daftar_pangkat'); ?>" data-loader><i
                                 class="bx bx-chart me-1"></i>
-                            Daftar Data Pangkat</a>
+                            Data Referensi Pangkat</a>
                     </li>
                 </ul>
                 <!-- Bootstrap Table with Header - Footer -->
@@ -96,9 +96,15 @@
                                                     <i class="bx bx-dots-vertical-rounded"></i>
                                                 </button>
                                                 <div class="dropdown-menu">
+                                                    <!--
                                                     <button class="dropdown-item" data-bs-target="#tambahModal"
                                                         onclick="BukaModal('<?= base64_encode($this->encryption->encrypt($item->id)) ?>')"
                                                         data-bs-toggle="modal"><i class="bx bx-edit-alt me-1"></i>
+                                                        EDIT</button>
+                                                    -->
+                                                    <button class="dropdown-item" id="editBtn"
+                                                        data-id="<?= base64_encode($this->encryption->encrypt($item->id)) ?>"><i
+                                                            class="bx bx-edit-alt me-1"></i>
                                                         EDIT</button>
                                                     <a class="dropdown-item" id="hapus" href="#" data-bs-toggle="modal"
                                                         data-bs-target="#hapusModal" data-id="<?= $idEncrypt; ?>"
@@ -384,6 +390,25 @@
     $(document).on("click", "#hapus", function () {
         var id = $(this).data('id');
         $('#hapusPegawai').attr('href', '<?= base_url() ?>hapus_pegawai/' + id);
+    })
+
+    $(document).on("click", "#editBtn", function () {
+
+        var id = $(this).data('id');
+
+        var form = $('<form>', {
+            action: '<?= base_url("detail_pegawai") ?>',
+            method: 'POST'
+        });
+
+        form.append($('<input>', {
+            type: 'hidden',
+            name: 'id',
+            value: id
+        }));
+
+        $('body').append(form);
+        form.submit();
     })
 
     $(document).ready(function () {

@@ -28,6 +28,7 @@ class ModelPegawai extends CI_Model
     public function all_pegawai_data()
     {
         $this->db->order_by('jab_id', 'ASC');
+        $this->db->order_by('status_pegawai', 'DESC');
         return $this->db->select('*')->from('v_pegawai')->where('id > 0')->get()->result();
     }
 

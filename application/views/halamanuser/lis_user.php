@@ -106,21 +106,21 @@
                     <li class="nav-item">
                         <a class="nav-link" href="<?= site_url('daftar_pegawai'); ?>" data-loader><i
                                 class="bx bx-user me-1"></i>
-                            Daftar Data Pegawai</a>
+                            Data Pegawai</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link active"><i class="bx bx-user-check me-1" data-loader></i>
-                            Daftar Data User</a>
+                            Data User</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="<?= site_url('daftar_jabatan'); ?>" data-loader><i
                                 class="bx bx-briefcase me-1"></i>
-                            Daftar Data Jabatan</a>
+                            Data Referensi Jabatan</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="<?= site_url('daftar_pangkat'); ?>" data-loader><i
                                 class="bx bx-chart me-1"></i>
-                            Daftar Data Pangkat</a>
+                            Data Referensi Pangkat</a>
                     </li>
                 </ul>
 

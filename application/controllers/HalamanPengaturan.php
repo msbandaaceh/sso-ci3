@@ -935,4 +935,78 @@ class HalamanPengaturan extends CI_Controller
 
         redirect('profil');
     }
+
+    public function generate_qrcode_pegawai()
+    {
+        if (!$this->session->userdata('logged_in')) {
+            redirect('keluar');
+        }
+
+        $id = $this->input->post('id');
+        $pegawai_id = $this->model->get_seleksi('v_users', 'userid', $id)->row()->pegawai_id;
+
+        if (empty($id)) {
+            echo json_encode([
+                'success' => false,
+                'pesan' => 'USERID pegawai tidak ditemukan'
+            ]);
+            return;
+        }
+
+        $pegawai = $this->user->get_user_data($id);
+        if (empty($pegawai[0]->nip)) {
+            echo json_encode([
+                'success' => false,
+                'pesan' => 'NIP pegawai belum diisi, silakan lengkapi data profil terlebih dahulu'
+            ]);
+            return;
+        }
+
+        $qrContent = site_url('kartu_pegawai/' . $id);
+        $filePath = 'assets/dokumen/ttd/qrcode_' . $id . '.png';
+        $fullPath = realpath(dirname(__FILE__)) . '/../../' . $filePath;
+
+        $logoConfig = $this->model->get_konfigurasi('22');
+        $logoPath = !empty($logoConfig->row()->value) ? FCPATH . 'assets/dokumen/' . $logoConfig->row()->value : FCPATH . 'assets/dokumen/logo.webp';
+        if (!file_exists($logoPath)) {
+            $logoPath = FCPATH . 'assets/dokumen/logo.webp';
+        }
+
+        try {
+            require_once __DIR__ . '/../../vendor/autoload.php';
+            $qrCode = new \Endroid\QrCode\QrCode(
+                $qrContent,
+                null,
+                new \Endroid\QrCode\ErrorCorrectionLevel\ErrorCorrectionLevelHigh(),
+                300,
+                10
+            );
+            $logo = \Endroid\QrCode\Logo\Logo::create($logoPath)->setResizeToWidth(60);
+            $writer = new \Endroid\QrCode\Writer\PngWriter();
+            $result = $writer->write($qrCode, $logo);
+
+            $dir = dirname($fullPath);
+            if (!is_dir($dir)) {
+                mkdir($dir, 0777, true);
+            }
+            $result->saveToFile($fullPath);
+
+            $this->model->pembaharuan_data(
+                'pegawai',
+                ['qrcode_pegawai' => $filePath],
+                'id',
+                $pegawai_id
+            );
+
+            echo json_encode([
+                'success' => true,
+                'pesan' => 'QR Code berhasil dibuat'
+            ]);
+        } catch (Exception $e) {
+            echo json_encode([
+                'success' => true,
+                'pesan' => 'Gagal membuat QR Code: ' . $e->getMessage()
+            ]);
+        }
+    }
 }

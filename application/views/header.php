@@ -142,7 +142,7 @@
                                         <li>
                                             <a class="dropdown-item" href="<?= site_url('daftar_pegawai'); ?>" data-loader>
                                                 <i class="bx bx-list-ul me-2"></i>
-                                                <span class="align-middle">Manajemen Pengguna</span>
+                                                <span class="align-middle">Manajemen Data</span>
                                             </a>
                                         </li>
                                         <?php

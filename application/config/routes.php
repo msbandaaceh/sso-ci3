@@ -90,7 +90,10 @@ $route['api/pegawai/(:num)']['get'] = 'apiclient/get_pegawai_by_id/$1';
 $route['api/pegawai']['get'] = 'apiclient/get_all_pegawai';
 
 $route['generate_qrcode'] = 'HalamanPengaturan/generate_qrcode';
+$route['generate_qrcode_pegawai'] = 'HalamanPengaturan/generate_qrcode_pegawai';
 $route['kartu_pegawai/(:num)'] = 'HalamanKartuPegawai/kartu_pegawai/$1';
 
 $route['kalender_pegawai'] = 'HalamanUtama/kalender_pegawai';
 $route['get_cuti_kalender'] = 'HalamanUtama/get_cuti_kalender';
+
+$route['detail_pegawai'] = 'HalamanPegawai/detail_pegawai';

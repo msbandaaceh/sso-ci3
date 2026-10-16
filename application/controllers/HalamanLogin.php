@@ -124,6 +124,7 @@ class HalamanLogin extends CI_Controller
                 $queryLogoSatker = $this->model->get_konfigurasi('22');
                 $queryNamaApp = $this->model->get_konfigurasi('1');
                 $queryKopSatker = $this->model->get_konfigurasi('15');
+                $queryKodeSatker = $this->model->get_konfigurasi('23');
 
                 $this->session->set_userdata([
                     'logged_in' => TRUE,
@@ -131,6 +132,7 @@ class HalamanLogin extends CI_Controller
                     'kop_satker' => site_url('assets/dokumen/' . $queryKopSatker->row()->value),
                     'nama_satker' => $queryNamaSatker->row()->value,
                     'kota_satker' => $queryKotaSatker->row()->value,
+                    'kode_satker' => $queryKodeSatker->row()->value,
                     'nama_app' => $queryNamaApp->row()->value,
                     'title' => $queryNamaApp->row()->value . ' ' . $queryNamaSatker->row()->value,
                     'sso_db' => $this->config->item('sso_db'),
