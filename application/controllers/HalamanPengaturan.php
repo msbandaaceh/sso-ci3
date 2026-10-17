@@ -943,12 +943,21 @@ class HalamanPengaturan extends CI_Controller
         }
 
         $id = $this->input->post('id');
-        $pegawai_id = $this->model->get_seleksi('v_users', 'userid', $id)->row()->pegawai_id;
+        $query_peg = $this->model->get_seleksi('v_users', 'userid', $id);
+        if ($query_peg->num_rows() > 0)
+            $pegawai_id = $query_peg->row()->pegawai_id;
+        else {
+            echo json_encode([
+                'success' => false,
+                'pesan' => 'Pegawai baru tidak bisa membuat qrcode, daftarkan dulu, lalu buat qrcode kemudian'
+            ]);
+            return;
+        }
 
         if (empty($id)) {
             echo json_encode([
                 'success' => false,
-                'pesan' => 'USERID pegawai tidak ditemukan'
+                'pesan' => 'USERID pegawai tidak ditemukan, periksa apakah pegawai sudah memiliki data user'
             ]);
             return;
         }

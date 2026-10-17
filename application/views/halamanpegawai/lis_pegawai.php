@@ -37,9 +37,7 @@
                     <!-- /.card-header -->
                     <div class="card-body">
                         <div class="card-title d-flex align-items-right">
-                            <button type="button" class="btn btn-primary"
-                                onclick="BukaModal('<?php echo base64_encode($this->encryption->encrypt(-1)); ?>')"
-                                data-bs-toggle="modal" data-bs-target="#tambahModal"><i
+                            <button type="button" class="btn btn-primary" id="editBtn" data-id=""><i
                                     class="bx bx-plus me-1"></i>Tambah
                                 Data</button>
                         </div>
@@ -139,7 +137,7 @@
     </div>
 </div>
 
-<!-- Modal Tambah/Edit Pegawai -->
+<!-- Modal Tambah/Edit Pegawai
 <div class="modal fade" id="tambahModal" data-bs-backdrop="static" tabindex="-1">
     <div class="modal-dialog modal-lg">
         <form method="POST" id="formPegawai" action="<?= site_url('simpan_pegawai') ?>" class="modal-content"
@@ -295,7 +293,7 @@
             </div>
         </form>
     </div>
-</div>
+</div> -->
 
 <!-- Modal Hapus Pegawai -->
 <div class="modal fade" id="hapusModal" data-bs-backdrop="static" tabindex="-1">
@@ -346,31 +344,6 @@
 <script src="<?= site_url('assets/libs/datatables-buttons/js/buttons.html5.min.js'); ?>"></script>
 <script src="<?= site_url('assets/libs/datatables-buttons/js/buttons.print.min.js'); ?>"></script>
 <script src="<?= site_url('assets/libs/datatables-buttons/js/buttons.colVis.min.js'); ?>"></script>
-
-<script>
-    // Fungsi untuk menampilkan preview gambar
-    function previewImage(input, imgElementId) {
-        const file = input.files[0];
-        const preview = document.getElementById(imgElementId);
-
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function (event) {
-                preview.src = event.target.result; // Set src ke hasil pembacaan
-            }
-            reader.readAsDataURL(file); // Baca file sebagai URL data
-        }
-    }
-
-    // Event listener untuk foto pegawai
-    document.getElementById('foto').addEventListener('change', function () {
-        previewImage(this, 'uploadedAvatar'); // Menampilkan preview pada gambar pegawai
-    });
-
-    document.getElementById('ttd').addEventListener('change', function () {
-        previewImage(this, 'uploadedSignature'); // Menampilkan preview pada gambar pegawai
-    });
-</script>
 
 <script>
     $(function () {

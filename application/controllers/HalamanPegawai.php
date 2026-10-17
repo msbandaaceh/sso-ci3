@@ -168,7 +168,7 @@ class HalamanPegawai extends CI_Controller
         $this->form_validation->set_message(['required' => '%s Tidak Boleh Kosong', 'max_length' => '%s Tidak Boleh Melebihi %s Karakter']);
 
         if ($this->form_validation->run() == FALSE) {
-            echo json_encode(array('success' => false, 'pesan' => 'Tidak Berhasil:<br/>'.validation_errors()));
+            echo json_encode(array('success' => false, 'pesan' => 'Tidak Berhasil:<br/>' . validation_errors()));
             return;
         }
 
@@ -361,74 +361,8 @@ class HalamanPegawai extends CI_Controller
 
     public function detail_pegawai()
     {
-        $id = $this->encryption->decrypt(base64_decode($this->input->post('id')));
-
-        $queryProfil = $this->model->get_seleksi('v_pegawai', 'id', $id)->row();
-        $data['id'] = $queryProfil->id;
-        $data['nip'] = $queryProfil->nip;
-        $data['nama'] = $queryProfil->nama;
-        $data['alamat'] = $queryProfil->alamat;
-        $data['nama_gelar'] = $queryProfil->nama_gelar;
-        $data['foto'] = base_url() . $queryProfil->foto;
-        $data['id_grup'] = $queryProfil->id_grup;
-        $data['tmt'] = $queryProfil->tmt;
-        $data['nohp'] = $queryProfil->nohp;
-        $data['qrcode'] = $queryProfil->qrcode_pegawai ?? '';
-        $data['status_pegawai'] = $queryProfil->status_pegawai;
-
-        $userid = $this->model->get_seleksi('v_users', 'pegawai_id', $id)->row()->userid;
+        $data = $this->pegawai->get_seleksi_pegawai();
         
-        $jekel = [
-            '' => 'Pilih Jenis Kelamin',
-            '1' => 'Pria',
-            '2' => 'Wanita'
-        ];
-        $data['jenis_kelamin'] = form_dropdown('jk', $jekel, $queryProfil->jk, 'id="jk" class="select2 form-select"');
-        
-        $jabatan = [
-            '' => 'Pilih Jabatan'
-        ];
-        $query_jabatan = $this->model->get_data('ref_jabatan')->result_array();
-        
-        foreach($query_jabatan as $j) {
-            $jabatan[$j['id']] = $j['nama_jabatan'];
-        }
-        $data['jabatan'] = form_dropdown('jabatan', $jabatan, $queryProfil->jab_id, 'id="jabatan" class="form-select select2"');
-        
-        $pangkat = [
-            '' => 'Pilih Pangkat Golongan'
-        ];
-        $query_pangkat = $this->model->get_data('ref_pangkat')->result_array();
-        
-        foreach($query_pangkat as $p) {
-            $pangkat[$p['id']] = $p['golongan'] .' | '.$p['pangkat'];
-        }
-        $data['pangkat'] = form_dropdown('pangkat', $pangkat, $queryProfil->gol_id, 'id="pangkat" class="form-select select2"');
-        
-        $grup = [
-            '' => 'Pilih Jenis Pegawai',
-            '1' => 'Hakim',
-            '2' => 'PNS',
-            '3' => 'Honorer/PPNPN',
-            '4' => 'Calon Hakim',
-            '5' => 'Operator',
-            '6' => 'PPPK'
-        ];
-        $data['jenis'] = form_dropdown('jenis', $grup, $queryProfil->id_grup, 'id="jenis" class="form-select select2"');
-
-        $status = [
-            '' => 'Pilih Status Pegawai',
-            '0' => 'Tidak Aktif',
-            '1' => 'Aktif'
-        ];
-        $data['status'] = form_dropdown('stat', $status, $queryProfil->status_pegawai, 'id="status" class="form-select select2"');
-
-        $data['role'] = $this->session->userdata('role');
-        $data['userid'] = $userid;
-        $data['plh'] = $this->session->userdata('status_plh');
-        $data['plt'] = $this->session->userdata('status_plt');
-        $data['page'] = 'profil';
-
         $this->load->view('header', $data);
         $this->load->view('halamanpegawai/detail_pegawai');
         $this->load->view('footer');

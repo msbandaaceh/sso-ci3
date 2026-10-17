@@ -170,19 +170,18 @@
                             <input hidden type="file" id="foto" name="foto" class="account-file-input"
                                 accept="image/png" />
                             <div class="row">
-                                <input class="form-control" type="hidden" id="id" name="id"
-                                    value="<?= base64_encode($this->encryption->encrypt($id)) ?>" />
+                                <input class="form-control" type="hidden" id="id" name="id" value="<?= $id ?>" />
 
                                 <div class="mb-3 col-md-6">
                                     <label for="nama_gelar" class="form-label">NAMA LENGKAP (DENGAN GELAR)</label>
                                     <input class="form-control" type="text" id="nama_gelar" name="nama_gelar"
-                                        value="<?= $nama_gelar; ?>" autofocus autocomplete="off" />
+                                       placeholder="Nama Lengkap dengan Gelar" value="<?= $nama_gelar; ?>" autofocus autocomplete="off" />
                                 </div>
 
                                 <div class="mb-3 col-md-6">
                                     <label for="nama" class="form-label">NAMA (TANPA GELAR)</label>
                                     <input class="form-control" type="text" name="nama" id="nama" value="<?= $nama ?>"
-                                        autocomplete="off" />
+                                        placeholder="Nama Lengkap tanpa Gelar" autocomplete="off" />
                                 </div>
 
                                 <div class="mb-3 col-md-6">
@@ -236,7 +235,7 @@
                             </div>
 
                             <div class="mt-2">
-                                <button type="submit" class="btn btn-primary me-2">Simpan Perubahan</button>
+                                <button type="submit" class="btn btn-primary me-2">Simpan</button>
                                 <button type="reset" class="btn btn-outline-secondary">Batal</button>
                             </div>
                         </form>
@@ -280,6 +279,8 @@
             width: '100%',
             allowClear: true,
         });
+
+        $('#nip').prop('readonly', !!$('#id').val());
     });
 
     var info = "<?= $this->session->flashdata('info') ?? ''; ?>";
@@ -340,7 +341,7 @@
                                 location.reload();
                             });
                         } else {
-                            gagal('Gagal Generate QRCode.');
+                            gagal(res.pesan);
                         }
                     },
                     error: function () {
