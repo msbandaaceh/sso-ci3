@@ -42,7 +42,7 @@ class HalamanUtama extends CI_Controller
         } else {
             $data['role'] = $this->session->userdata('role');
             $this->load->view('header', $data);
-            $this->load->view('halamanutama/dashboard');
+            $this->load->view('halamanutama/dashboard', $data);
         }
     }
 
@@ -50,7 +50,8 @@ class HalamanUtama extends CI_Controller
     {
         $data['page'] = 'kalender_pegawai';
         $data['role'] = $this->session->userdata('role');
-        $this->load->view('header', $data);
+        $this->load->vars($data);
+        $this->load->view('header');
         $this->load->view('halamankalender/kalender_pegawai');
     }
 

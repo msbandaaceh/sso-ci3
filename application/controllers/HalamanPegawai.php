@@ -4,7 +4,7 @@
  * @property CI_Config $config
  * @property CI_Input $input
  * @property CI_Model $model
- * @property CI_Model $pegawai
+ * @property ModelPegawai $pegawai
  * @property CI_Model $jabatan
  * @property CI_Model $pangkat
  * @property CI_Model $pegawai
@@ -47,7 +47,8 @@ class HalamanPegawai extends CI_Controller
         $data['role'] = $this->session->userdata('role');
         $data['userid'] = $this->session->userdata('userid');
 
-        $this->load->view('header', $data);
+        $this->load->vars($data);
+        $this->load->view('header');
         $this->load->view('halamanpegawai/lis_pegawai');
     }
 
@@ -61,7 +62,7 @@ class HalamanPegawai extends CI_Controller
         foreach ($queryJabatan->result() as $row) {
             $jabatan[$row->id] = $row->nama_jabatan;
         }
-
++
         $queryGolongan = $this->pangkat->pilih_pangkat();
         $golongan = array();
         $golongan['0'] = "Pilih Pangkat Golongan";
@@ -364,7 +365,7 @@ class HalamanPegawai extends CI_Controller
         $data = $this->pegawai->get_seleksi_pegawai();
         
         $this->load->view('header', $data);
-        $this->load->view('halamanpegawai/detail_pegawai');
-        $this->load->view('footer');
+        $this->load->view('halamanpegawai/detail_pegawai', $data);
+        $this->load->view('footer', $data);
     }
 }

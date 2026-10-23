@@ -26,7 +26,8 @@ class HalamanPangkat extends CI_Controller
         $data['page'] = 'daftar';
         $data['role'] = $this->session->userdata('role');
 
-        $this->load->view('header', $data);
+        $this->load->vars($data);
+        $this->load->view('header');
         $this->load->view('halamanpangkat/lis_pangkat');
     }
 
@@ -35,8 +36,10 @@ class HalamanPangkat extends CI_Controller
         $this->form_validation->set_rules('golongan', 'Golongan', 'trim|required|max_length[20]');
         $this->form_validation->set_rules('pangkat', 'Pangkat', 'trim|required|max_length[30]');
 
-        $this->form_validation->set_message('required', '%s Tidak Boleh Kosong');
-        $this->form_validation->set_message('max_length', '%s Tidak Boleh Melebihi %s Karakter');
+        $this->form_validation->set_message([
+            'required' => '%s Tidak Boleh Kosong',
+            'max_length' => '%s Tidak Boleh Melebihi %s Karakter'
+        ]);
 
         if ($this->form_validation->run() == FALSE) {
             //echo json_encode(array('st' => 0, 'msg' => 'Tidak Berhasil:<br/>'.validation_errors()));

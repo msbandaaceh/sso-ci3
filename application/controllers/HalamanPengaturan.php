@@ -6,7 +6,7 @@
  * @property CI_Model $model
  * @property CI_Model $plh
  * @property CI_Model $user
- * @property CI_Model $pegawai
+ * @property ModelPegawai $pegawai
  * @property CI_Model $jabatan
  * @property CI_Model $pangkat
  * @property CI_Model $pegawai
@@ -53,8 +53,8 @@ class HalamanPengaturan extends CI_Controller
         $data['plh'] = $this->session->userdata('status_plh');
         $data['plt'] = $this->session->userdata('status_plt');
 
-
-        $this->load->view('header', $data);
+        $this->load->vars($data);
+        $this->load->view('header');
         $this->load->view('halamanpengaturan/plh');
         $this->load->view('footer');
     }
@@ -217,7 +217,8 @@ class HalamanPengaturan extends CI_Controller
             }
         }
 
-        $this->load->view('header', $data);
+        $this->load->vars($data);
+        $this->load->view('header');
         $this->load->view('halamanpengaturan/user');
         $this->load->view('footer');
 
@@ -344,7 +345,8 @@ class HalamanPengaturan extends CI_Controller
             $data['plt'] = $this->session->userdata('status_plt');
             $data['page'] = 'profil';
 
-            $this->load->view('header', $data);
+            $this->load->vars($data);
+            $this->load->view('header');
             $this->load->view('halamanpengaturan/profil');
             $this->load->view('footer');
         }
@@ -395,17 +397,10 @@ class HalamanPengaturan extends CI_Controller
         $config_foto['max_size'] = 1024 * 5;
         $config_foto['encrypt_name'] = FALSE;
 
-        // Konfigurasi untuk upload tanda tangan
-        $config_ttd['upload_path'] = 'assets/dokumen/ttd/';
-        $config_ttd['allowed_types'] = 'png';
-        $config_ttd['max_size'] = 1024 * 5;
-        $config_ttd['encrypt_name'] = FALSE;
-
         $this->load->library('upload');
 
         // Inisialisasi variabel file path
         $file_path_foto = '';
-        $file_path_ttd = '';
 
         // Upload foto jika ada
         if (!empty($_FILES['foto']['name'])) {
@@ -439,21 +434,7 @@ class HalamanPengaturan extends CI_Controller
             }
         }
 
-        // Upload tanda tangan jika ada
-        if (!empty($_FILES['ttd']['name'])) {
-            $this->upload->initialize($config_ttd);
-            if (!$this->upload->do_upload('ttd')) {
-                $error = $this->upload->display_errors();
-                $file_path_ttd = $error;
-            } else {
-                $data = $this->upload->data();
-                $file_path_ttd = 'assets/dokumen/ttd/' . $data['file_name'];
-
-                $this->session->set_userdata('ttd', $file_path_ttd);
-            }
-        }
-
-        if (!empty($file_path_foto) && !empty($file_path_ttd)) {
+        if (!empty($file_path_foto)) {
             $dataPegawai = array(
                 'nip' => $nip,
                 'nama_gelar' => $nama_gelar,
@@ -464,7 +445,6 @@ class HalamanPengaturan extends CI_Controller
                 'keterangan' => $ket,
                 'nohp' => $nohp,
                 'foto' => $file_path_foto,
-                'ttd' => $file_path_ttd,
                 'tmt' => $tmt,
                 'jk' => $jk,
                 'jenis_pegawai' => $jenis,
@@ -473,69 +453,22 @@ class HalamanPengaturan extends CI_Controller
             );
 
             $this->session->set_userdata('foto', $file_path_foto);
-            $this->session->set_userdata('ttd', $file_path_ttd);
         } else {
-            // Update data jika foto diupload
-            if (!empty($file_path_foto)) {
-                $dataPegawai = array(
-                    'nip' => $nip,
-                    'nama_gelar' => $nama_gelar,
-                    'nama' => $nama,
-                    'golongan_id' => $pangkat,
-                    'jabatan_id' => $jabatan,
-                    'alamat' => $alamat,
-                    'keterangan' => $ket,
-                    'nohp' => $nohp,
-                    'tmt' => $tmt,
-                    'jk' => $jk,
-                    'foto' => $file_path_foto,
-                    'jenis_pegawai' => $jenis,
-                    'diperbaharui_oleh' => $this->session->userdata('fullname'),
-                    'diperbaharui_tanggal' => date('Y-m-d H:i:s')
-                );
-
-                $this->session->set_userdata('foto', $file_path_foto);
-            }
-
-            // Update data jika tanda tangan diupload
-            if (!empty($file_path_ttd)) {
-                $dataPegawai = array(
-                    'nip' => $nip,
-                    'nama_gelar' => $nama_gelar,
-                    'nama' => $nama,
-                    'golongan_id' => $pangkat,
-                    'jabatan_id' => $jabatan,
-                    'alamat' => $alamat,
-                    'keterangan' => $ket,
-                    'nohp' => $nohp,
-                    'tmt' => $tmt,
-                    'jk' => $jk,
-                    'ttd' => $file_path_ttd,
-                    'jenis_pegawai' => $jenis,
-                    'diperbaharui_oleh' => $this->session->userdata('fullname'),
-                    'diperbaharui_tanggal' => date('Y-m-d H:i:s')
-                );
-
-                $this->session->set_userdata('ttd', $file_path_ttd);
-            }
-
-            if (empty($file_path_foto) && empty($file_path_ttd)) {
-                $dataPegawai = array(
-                    'nip' => $nip,
-                    'nama_gelar' => $nama_gelar,
-                    'nama' => $nama,
-                    'golongan_id' => $pangkat,
-                    'jabatan_id' => $jabatan,
-                    'alamat' => $alamat,
-                    'keterangan' => $ket,
-                    'nohp' => $nohp,
-                    'tmt' => $tmt,
-                    'jk' => $jk,
-                    'jenis_pegawai' => $jenis,
-                    'diperbaharui_oleh' => $this->session->userdata('fullname'),
-                    'diperbaharui_tanggal' => date('Y-m-d H:i:s')
-                );
-            }
+            $dataPegawai = array(
+                'nip' => $nip,
+                'nama_gelar' => $nama_gelar,
+                'nama' => $nama,
+                'golongan_id' => $pangkat,
+                'jabatan_id' => $jabatan,
+                'alamat' => $alamat,
+                'keterangan' => $ket,
+                'nohp' => $nohp,
+                'tmt' => $tmt,
+                'jk' => $jk,
+                'jenis_pegawai' => $jenis,
+                'diperbaharui_oleh' => $this->session->userdata('fullname'),
+                'diperbaharui_tanggal' => date('Y-m-d H:i:s')
+            );
         }
 
         if (in_array($jabatan, ["1", "2", "4", "5", "6", "7", "8", "9", "10", "11", "12"])) {
@@ -606,7 +539,8 @@ class HalamanPengaturan extends CI_Controller
         $data['presensi_lokasi'] = $this->model->get_konfigurasi('39');
         $data['page'] = 'app';
 
-        $this->load->view('header', $data);
+        $this->load->vars($data);
+        $this->load->view('header');
         $this->load->view('halamanpengaturan/app');
         $this->load->view('footer');
     }
@@ -708,24 +642,11 @@ class HalamanPengaturan extends CI_Controller
     public function get_lokasi()
     {
         $jenis = $this->input->get('tipe');
-        $this->db->where('id', $jenis);
-        $lokasi = $this->db->get('lokasi_kantor')->row();
+        $lokasi = $this->model->get_seleksi('lokasi_kantor', 'id', $jenis)->row();
         if ($lokasi) {
             $lokasi->koordinat = json_decode($lokasi->polygon_json); // decode dulu biar rapi
         }
         echo json_encode($lokasi);
-    }
-
-    public function update_lokasi()
-    {
-        $input = json_decode($this->input->raw_input_stream, true);
-        $polygon = json_encode($input['polygon']);
-
-        $this->db->update('lokasi_kantor', [
-            'polygon_json' => $polygon
-        ]);
-
-        echo json_encode(['status' => true, 'message' => 'Polygon berhasil diupdate']);
     }
 
     #                         #
@@ -756,7 +677,8 @@ class HalamanPengaturan extends CI_Controller
         $data['plh'] = $this->session->userdata('status_plh');
         $data['plt'] = $this->session->userdata('status_plt');
 
-        $this->load->view('header', $data);
+        $this->load->vars($data);
+        $this->load->view('header');
         $this->load->view('halamanpengaturan/mpp');
         $this->load->view('footer');
     }

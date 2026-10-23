@@ -42,7 +42,8 @@ class HalamanJabatan extends CI_Controller
         $data['page'] = 'daftar';
         $data['role'] = $this->session->userdata('role');
 
-        $this->load->view('header', $data);
+        $this->load->vars($data);
+        $this->load->view('header');
         $this->load->view('halamanjabatan/lis_jabatan');
     }
 

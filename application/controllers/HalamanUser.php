@@ -6,7 +6,7 @@
  * @property CI_Model $model
  * @property CI_Model $regis
  * @property CI_Model $user
- * @property CI_Model $pegawai
+ * @property ModelPegawai $pegawai
  * @property CI_Model $jabatan
  * @property CI_Model $pangkat
  * @property CI_Model $pegawai
@@ -46,7 +46,7 @@ class HalamanUser extends CI_Controller
         $data['page'] = 'daftar';
 
         $this->load->view('header', $data);
-        $this->load->view('halamanuser/lis_user');
+        $this->load->view('halamanuser/lis_user', $data);
     }
 
     public function get_pegawai_nip()

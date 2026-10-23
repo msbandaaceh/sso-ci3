@@ -14,9 +14,6 @@ $route['reset_password/request_reset'] = 'ResetPassword/request_reset';
 $route['reset_password/process'] = 'ResetPassword/process';
 $route['reset_password/do_reset'] = 'ResetPassword/do_reset';
 
-$route['reg'] = 'HalamanRegistrasi';
-$route['reg_validasi'] = 'HalamanRegistrasi/validasi';
-
 $route['plh'] = 'HalamanPengaturan/get_plh_data';
 $route['user'] = 'HalamanPengaturan/get_user_data';
 $route['profil'] = 'HalamanPengaturan/get_profil_data';
@@ -33,10 +30,6 @@ $route['simpan_pegawai'] = 'HalamanPegawai/simpan';
 $route['simpan_jabatan'] = 'HalamanJabatan/simpan';
 $route['simpan_pangkat'] = 'HalamanPangkat/simpan';
 $route['simpan_user'] = 'HalamanUser/simpan';
-$route['simpan_peg'] = 'HalamanRegistrasi/simpan_pegawai';
-$route['simpan_ppnpn'] = 'HalamanRegistrasi/simpan_ppnpn';
-$route['simpan_tamu'] = 'HalamanLogin/simpan_tamu';
-$route['save_user'] = 'HalamanRegistrasi/simpan_user';
 $route['simpan_lokasi'] = 'HalamanPengaturan/simpan_lokasi';
 
 $route['pilih_role'] = 'HalamanLogin/pilih_role';
@@ -70,13 +63,6 @@ $route['show_pegawai'] = 'HalamanPegawai/show';
 $route['show_jabatan'] = 'HalamanJabatan/show';
 $route['show_pangkat'] = 'HalamanPangkat/show';
 $route['show_user'] = 'HalamanUser/show';
-$route['show_ppnpn'] = 'HalamanRegistrasi/show_ppnpn';
-$route['show_peg'] = 'HalamanRegistrasi/show_pegawai';
-$route['show_peg_user'] = 'HalamanRegistrasi/show_user';
-
-$route['cek_user'] = 'HalamanRegistrasi/cek_user';
-$route['cek_nohp'] = 'HalamanRegistrasi/cek_nohp';
-$route['cek_jabatan'] = 'HalamanRegistrasi/cek_jabatan';
 
 $route['get_nip'] = 'HalamanUser/get_pegawai_nip';
 $route['get_lokasi'] = 'HalamanPengaturan/get_lokasi';

@@ -164,7 +164,7 @@ class ResetPassword extends CI_Controller
     /**
      * Halaman form reset password (setelah klik link dari WhatsApp)
      * 
-     * @param string $token Token terenkripsi dari URL
+     * @param string token Token terenkripsi dari URL
      */
     public function process()
     {
@@ -312,27 +312,27 @@ class ResetPassword extends CI_Controller
     public function validate_strong_password($password)
     {
         if (strlen($password) < 8) {
-            $this->form_validation->set_message('validate_strong_password', 'Password minimal 8 karakter.');
+            $this->form_validation->set_message(['validate_strong_password' => 'Password minimal 8 karakter.']);
             return FALSE;
         }
 
         if (!preg_match('/[A-Z]/', $password)) {
-            $this->form_validation->set_message('validate_strong_password', 'Password harus mengandung minimal 1 huruf besar.');
+            $this->form_validation->set_message(['validate_strong_password' => 'Password harus mengandung minimal 1 huruf besar.']);
             return FALSE;
         }
 
         if (!preg_match('/[a-z]/', $password)) {
-            $this->form_validation->set_message('validate_strong_password', 'Password harus mengandung minimal 1 huruf kecil.');
+            $this->form_validation->set_message(['validate_strong_password' => 'Password harus mengandung minimal 1 huruf kecil.']);
             return FALSE;
         }
 
         if (!preg_match('/[0-9]/', $password)) {
-            $this->form_validation->set_message('validate_strong_password', 'Password harus mengandung minimal 1 angka.');
+            $this->form_validation->set_message(['validate_strong_password' => 'Password harus mengandung minimal 1 angka.']);
             return FALSE;
         }
 
         if (!preg_match('/[^A-Za-z0-9]/', $password)) {
-            $this->form_validation->set_message('validate_strong_password', 'Password harus mengandung minimal 1 simbol.');
+            $this->form_validation->set_message(['validate_strong_password' => 'Password harus mengandung minimal 1 simbol.']);
             return FALSE;
         }
 
