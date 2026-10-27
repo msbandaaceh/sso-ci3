@@ -29,7 +29,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
             href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap"
             rel="stylesheet">
     </noscript>
-    <link href="<?= base_url('assets/vendor/boxicons/boxicons.min.css') ?>" rel="stylesheet" />
+    <link href="<?= base_url('assets/vendor/boxicons/css/boxicons.min.css') ?>" rel="stylesheet" />
 
     <style>
         /* ============================================================
