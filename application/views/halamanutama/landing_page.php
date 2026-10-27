@@ -40,15 +40,19 @@ defined('BASEPATH') or exit('No direct script access allowed');
         :root {
             --neu-bg: #e0e5ec;
             --neu-bg-alt: #e6ebf1;
-            --neu-text: #2c3e50;
-            --neu-text-dim: #6b7f94;
-            --neu-text-muted: #9ba7b5;
-            --neu-accent: #3b82f6;
-            --neu-accent-2: #8b5cf6;
-            --neu-accent-soft: rgba(59, 130, 246, 0.12);
-            --neu-success: #10b981;
-            --neu-warning: #f59e0b;
-            --neu-danger: #ef4444;
+            --neu-text: #1e2f41;
+            /* tadinya #2c3e50 - dibikin lebih tua */
+            --neu-text-dim: #4a5e73;
+            /* FIX - tadinya #6b7f94 - ini yang bikin lulus */
+            --neu-text-muted: #5e7388;
+            /* FIX - tadinya #9ba7b5 */
+            --neu-accent: #1d4ed8;
+            /* FIX - tadinya #3b82f6 terlalu terang */
+            --neu-accent-2: #6d28d9;
+            --neu-accent-soft: rgba(29, 78, 216, 0.12);
+            --neu-success: #047857;
+            --neu-warning: #92400e;
+            --neu-danger: #b91c1c;
             --neu-radius: 20px;
             --neu-radius-sm: 14px;
             --neu-radius-full: 999px;
@@ -937,6 +941,39 @@ defined('BASEPATH') or exit('No direct script access allowed');
         .neu-reveal.visible {
             opacity: 1;
             transform: translateY(0);
+        }
+
+        .neu-brand-sub {
+            color: var(--neu-text-dim) !important;
+            font-weight: 700 !important;
+        }
+
+        .neu-hero-badge {
+            color: var(--neu-accent) !important;
+            background: #ffffff !important;
+            /* tadinya sama kayak bg jadi gak kontras */
+            box-shadow: var(--neu-shadow-raised) !important;
+            border: 1px solid rgba(29, 78, 216, 0.15);
+        }
+
+        .neu-stat-label {
+            color: var(--neu-text-dim) !important;
+            font-weight: 700 !important;
+        }
+
+        .neu-app-domain {
+            color: #4a5e73 !important;
+            /* tadinya muted */
+        }
+
+        .neu-footer p {
+            color: var(--neu-text-dim) !important;
+        }
+
+        .neu-hero-sub,
+        .neu-section-sub,
+        .neu-feature-desc {
+            color: var(--neu-text-dim) !important;
         }
     </style>
 </head>
