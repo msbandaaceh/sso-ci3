@@ -13,44 +13,64 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
+    <link rel="preload" as="style"
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap"
+            rel="stylesheet">
+    </noscript>
+    <link href="<?= base_url('assets/vendor/boxicons/css/boxicons.min.css') ?>" rel="stylesheet" />
 
     <!-- Sweetalert -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
 
     <style>
         :root {
-            --neu-bg:        #e0e5ec;
-            --neu-bg-alt:    #e6ebf1;
-            --neu-text:      #2c3e50;
-            --neu-text-dim:  #6b7f94;
-            --neu-text-muted:#9ba7b5;
-            --neu-accent:    #3b82f6;
-            --neu-accent-2:  #8b5cf6;
-            --neu-success:   #10b981;
-            --neu-warning:   #f59e0b;
-            --neu-danger:    #ef4444;
-            --neu-radius:    20px;
+            --neu-bg: #e0e5ec;
+            --neu-bg-alt: #e6ebf1;
+            --neu-text: #1e2f41;
+            --neu-text-dim: #4a5e73;
+            --neu-text-muted: #5e7388;
+            --neu-accent: #1d4ed8;
+            --neu-accent-2: #6d28d9;
+            --neu-accent-soft: rgba(29, 78, 216, 0.12);
+            --neu-success: #047857;
+            --neu-warning: #92400e;
+            --neu-danger: #b91c1c;
+            --neu-radius: 20px;
             --neu-radius-sm: 14px;
-            --neu-radius-full:999px;
+            --neu-radius-full: 999px;
             --neu-shadow-raised:
-                8px 8px 16px rgba(163,177,198,0.6),
-               -8px -8px 16px rgba(255,255,255,0.7);
+                8px 8px 16px rgba(163, 177, 198, 0.6),
+                -8px -8px 16px rgba(255, 255, 255, 0.7);
             --neu-shadow-raised-lg:
-                12px 12px 24px rgba(163,177,198,0.6),
-               -12px -12px 24px rgba(255,255,255,0.7);
+                12px 12px 24px rgba(163, 177, 198, 0.6),
+                -12px -12px 24px rgba(255, 255, 255, 0.7);
             --neu-shadow-inset:
-                inset 6px 6px 12px rgba(163,177,198,0.5),
-                inset -6px -6px 12px rgba(255,255,255,0.7);
+                inset 6px 6px 12px rgba(163, 177, 198, 0.5),
+                inset -6px -6px 12px rgba(255, 255, 255, 0.7);
             --neu-shadow-inset-sm:
-                inset 3px 3px 6px rgba(163,177,198,0.4),
-                inset -3px -3px 6px rgba(255,255,255,0.6);
+                inset 3px 3px 6px rgba(163, 177, 198, 0.4),
+                inset -3px -3px 6px rgba(255, 255, 255, 0.6);
             --neu-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-        html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            -webkit-text-size-adjust: 100%;
+        }
 
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -59,8 +79,8 @@
             min-height: 100vh;
             background: var(--neu-bg);
             background-image:
-                radial-gradient(ellipse at 20% 20%, rgba(139,92,246,0.05) 0%, transparent 50%),
-                radial-gradient(ellipse at 80% 80%, rgba(59,130,246,0.05) 0%, transparent 50%);
+                radial-gradient(ellipse at 20% 20%, rgba(139, 92, 246, 0.05) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(59, 130, 246, 0.05) 0%, transparent 50%);
             overflow-x: hidden;
             position: relative;
             -webkit-font-smoothing: antialiased;
@@ -71,7 +91,12 @@
             padding: 24px 16px;
         }
 
-        h1, h2, h3, h4, h5, h6 {
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
             font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
             font-weight: 700;
             line-height: 1.2;
@@ -79,41 +104,74 @@
             color: var(--neu-text);
         }
 
-        a { color: inherit; text-decoration: none; }
-        img { max-width: 100%; height: auto; display: block; }
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
 
         /* Animated background shapes */
         .neu-bg-shapes {
-            position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
         }
+
         .neu-shape {
             position: absolute;
             border-radius: 50%;
             opacity: 0.08;
         }
+
         .neu-shape-1 {
-            width: 400px; height: 400px;
+            width: 400px;
+            height: 400px;
             background: var(--neu-accent);
-            top: -100px; left: -80px;
+            top: -100px;
+            left: -80px;
             animation: neu-drift 22s ease-in-out infinite;
         }
+
         .neu-shape-2 {
-            width: 300px; height: 300px;
+            width: 300px;
+            height: 300px;
             background: var(--neu-accent-2);
-            top: 50%; right: -60px;
+            top: 50%;
+            right: -60px;
             animation: neu-drift 18s ease-in-out infinite reverse;
         }
+
         .neu-shape-3 {
-            width: 220px; height: 220px;
+            width: 220px;
+            height: 220px;
             background: var(--neu-success);
-            bottom: -60px; left: 25%;
+            bottom: -60px;
+            left: 25%;
             animation: neu-drift 25s ease-in-out infinite;
             animation-delay: -8s;
         }
+
         @keyframes neu-drift {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            33%      { transform: translate(40px, -30px) scale(1.05); }
-            66%      { transform: translate(-20px, 50px) scale(0.95); }
+
+            0%,
+            100% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            33% {
+                transform: translate(40px, -30px) scale(1.05);
+            }
+
+            66% {
+                transform: translate(-20px, 50px) scale(0.95);
+            }
         }
 
         /* Alert styles */
@@ -124,11 +182,13 @@
             margin-bottom: 20px;
             box-shadow: var(--neu-shadow-inset-sm);
         }
+
         .neu-alert-danger {
             background: var(--neu-bg);
             color: var(--neu-danger);
             border-left: 4px solid var(--neu-danger);
         }
+
         .neu-alert-success {
             background: var(--neu-bg);
             color: var(--neu-success);
@@ -137,8 +197,10 @@
 
         /* Login card */
         .neu-login-wrap {
-            position: relative; z-index: 1;
-            width: 100%; max-width: 440px;
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 440px;
         }
 
         .neu-login-card {
@@ -154,8 +216,11 @@
             text-align: center;
             margin-bottom: 28px;
         }
+
         .neu-login-logo img {
-            width: 80px; height: 80px; margin: 0 auto 16px;
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 16px;
             border-radius: 22px;
             object-fit: contain;
             background: var(--neu-bg);
@@ -163,43 +228,75 @@
             box-shadow: var(--neu-shadow-raised);
             animation: neu-float 5s ease-in-out infinite;
         }
+
         @keyframes neu-float {
-            0%, 100% { transform: translateY(0); }
-            50%      { transform: translateY(-8px); }
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-8px);
+            }
         }
+
         .neu-login-app-name {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: 1.3rem; font-weight: 800;
-            text-align: center; margin-bottom: 6px;
+            font-size: 1.3rem;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 6px;
         }
+
         .neu-login-app-title {
-            font-size: 0.82rem; color: var(--neu-text-muted);
-            text-align: center; text-transform: uppercase;
-            letter-spacing: 0.1em; font-weight: 600;
+            font-size: 0.82rem;
+            color: var(--neu-text-muted);
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-weight: 600;
         }
 
         /* Divider */
         .neu-divider {
-            display: flex; align-items: center; gap: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
             margin: 24px 0;
             color: var(--neu-text-muted);
-            font-size: 0.78rem; font-weight: 600;
-            text-transform: uppercase; letter-spacing: 0.1em;
+            font-size: 0.78rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
         }
-        .neu-divider::before, .neu-divider::after {
-            content: ''; flex: 1; height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(163,177,198,0.5), transparent);
+
+        .neu-divider::before,
+        .neu-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(163, 177, 198, 0.5), transparent);
         }
 
         /* Form inputs */
-        .neu-field { margin-bottom: 20px; }
-        .neu-label {
-            display: block; font-size: 0.78rem; font-weight: 600;
-            color: var(--neu-text-dim); margin-bottom: 6px;
-            text-transform: uppercase; letter-spacing: 0.06em;
+        .neu-field {
+            margin-bottom: 20px;
         }
+
+        .neu-label {
+            display: block;
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--neu-text-dim);
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
         .neu-input {
-            width: 100%; padding: 13px 18px;
+            width: 100%;
+            padding: 13px 18px;
             background: var(--neu-bg);
             border: none;
             border-radius: var(--neu-radius-sm);
@@ -210,57 +307,87 @@
             transition: var(--neu-transition);
             outline: none;
         }
+
         .neu-input:focus {
             box-shadow:
-                inset 4px 4px 8px rgba(163,177,198,0.45),
-                inset -4px -4px 8px rgba(255,255,255,0.65),
-                0 0 0 3px rgba(59,130,246,0.15);
+                inset 4px 4px 8px rgba(163, 177, 198, 0.45),
+                inset -4px -4px 8px rgba(255, 255, 255, 0.65),
+                0 0 0 3px rgba(59, 130, 246, 0.15);
         }
-        .neu-input::placeholder { color: var(--neu-text-muted); }
+
+        .neu-input::placeholder {
+            color: var(--neu-text-muted);
+        }
+
         .neu-error {
-            font-size: 0.78rem; color: var(--neu-danger);
-            margin-top: 4px; min-height: 18px;
+            font-size: 0.78rem;
+            color: var(--neu-danger);
+            margin-top: 4px;
+            min-height: 18px;
         }
 
         /* Password toggle */
         .neu-pw-group {
             position: relative;
         }
-        .neu-pw-group .neu-input { padding-right: 50px; }
-        .neu-pw-toggle {
-            position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
-            background: none; border: none; cursor: pointer;
-            color: var(--neu-text-muted); font-size: 1.3rem;
-            padding: 4px; transition: var(--neu-transition);
+
+        .neu-pw-group .neu-input {
+            padding-right: 50px;
         }
-        .neu-pw-toggle:hover { color: var(--neu-accent); }
+
+        .neu-pw-toggle {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--neu-text-muted);
+            font-size: 1.3rem;
+            padding: 4px;
+            transition: var(--neu-transition);
+        }
+
+        .neu-pw-toggle:hover {
+            color: var(--neu-accent);
+        }
 
         /* Button */
         .neu-btn {
-            display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
             padding: 14px 26px;
             border-radius: var(--neu-radius-full);
-            font-weight: 600; font-size: 0.92rem;
-            border: none; cursor: pointer;
+            font-weight: 600;
+            font-size: 0.92rem;
+            border: none;
+            cursor: pointer;
             transition: var(--neu-transition);
-            font-family: inherit; white-space: nowrap;
+            font-family: inherit;
+            white-space: nowrap;
         }
+
         .neu-btn-primary {
             width: 100%;
             background: linear-gradient(135deg, var(--neu-accent), var(--neu-accent-2));
             color: white;
             box-shadow:
-                6px 6px 12px rgba(163,177,198,0.5),
-               -4px -4px 10px rgba(255,255,255,0.6),
-                inset 0 0 0 1px rgba(255,255,255,0.2);
+                6px 6px 12px rgba(163, 177, 198, 0.5),
+                -4px -4px 10px rgba(255, 255, 255, 0.6),
+                inset 0 0 0 1px rgba(255, 255, 255, 0.2);
         }
+
         .neu-btn-primary:hover {
             box-shadow:
-                8px 8px 20px rgba(163,177,198,0.6),
-               -6px -6px 16px rgba(255,255,255,0.7),
-                inset 0 0 0 1px rgba(255,255,255,0.25);
+                8px 8px 20px rgba(163, 177, 198, 0.6),
+                -6px -6px 16px rgba(255, 255, 255, 0.7),
+                inset 0 0 0 1px rgba(255, 255, 255, 0.25);
             transform: translateY(-2px);
         }
+
         .neu-btn-primary:active {
             box-shadow: var(--neu-shadow-inset-sm);
             transform: translateY(0);
@@ -268,38 +395,93 @@
 
         /* Forgot password link */
         .neu-forgot {
-            display: flex; align-items: center; justify-content: center; gap: 8px;
-            font-size: 0.88rem; color: var(--neu-text-dim);
-            margin-top: 20px; transition: var(--neu-transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 0.88rem;
+            color: var(--neu-text-dim);
+            margin-top: 20px;
+            transition: var(--neu-transition);
         }
-        .neu-forgot:hover { color: var(--neu-accent); }
+
+        .neu-forgot:hover {
+            color: var(--neu-accent);
+        }
 
         /* CAPTCHA section */
         .neu-captcha-area {
-            display: flex; justify-content: center;
+            display: flex;
+            justify-content: center;
             margin: 8px 0 20px;
         }
 
         /* Footer */
         .neu-login-footer {
-            text-align: center; margin-top: 24px;
-            font-size: 0.82rem; color: var(--neu-text-muted);
+            text-align: center;
+            margin-top: 24px;
+            font-size: 0.82rem;
+            color: var(--neu-text-muted);
         }
 
         /* Reveal animation */
         .neu-reveal {
-            opacity: 0; transform: translateY(24px);
+            opacity: 0;
+            transform: translateY(24px);
             transition: opacity 0.7s ease-out, transform 0.7s ease-out;
         }
-        .neu-reveal.visible { opacity: 1; transform: translateY(0); }
+
+        .neu-reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
 
         /* Reduced motion */
         @media (prefers-reduced-motion: reduce) {
-            *, *::before, *::after {
+
+            *,
+            *::before,
+            *::after {
                 animation-duration: 0.01ms !important;
                 transition-duration: 0.01ms !important;
             }
-            .neu-shape { animation: none; }
+
+            .neu-shape {
+                animation: none;
+            }
+        }
+
+        .neu-brand-sub {
+            color: var(--neu-text-dim) !important;
+            font-weight: 700 !important;
+        }
+
+        .neu-hero-badge {
+            color: var(--neu-accent) !important;
+            background: #ffffff !important;
+            /* tadinya sama kayak bg jadi gak kontras */
+            box-shadow: var(--neu-shadow-raised) !important;
+            border: 1px solid rgba(29, 78, 216, 0.15);
+        }
+
+        .neu-stat-label {
+            color: var(--neu-text-dim) !important;
+            font-weight: 700 !important;
+        }
+
+        .neu-app-domain {
+            color: #4a5e73 !important;
+            /* tadinya muted */
+        }
+
+        .neu-footer p {
+            color: var(--neu-text-dim) !important;
+        }
+
+        .neu-hero-sub,
+        .neu-section-sub,
+        .neu-feature-desc {
+            color: var(--neu-text-dim) !important;
         }
     </style>
 </head>
@@ -336,14 +518,12 @@
             <?php } ?>
 
             <!-- Form -->
-            <form action="validasi" id="loginForm" method="POST"
-                onsubmit="return showLoaderSweetalert2(this)">
+            <form action="validasi" id="loginForm" method="POST" onsubmit="return showLoaderSweetalert2(this)">
 
                 <div class="neu-field">
                     <label class="neu-label" for="username">Username</label>
-                    <input type="text" class="neu-input" id="username" name="username"
-                        placeholder="Masukkan Username" autofocus autocomplete="off"
-                        value="<?= set_value('username'); ?>" />
+                    <input type="text" class="neu-input" id="username" name="username" placeholder="Masukkan Username"
+                        autofocus autocomplete="off" value="<?= set_value('username'); ?>" />
                     <div class="neu-error"><?= $validation_errors ?? ''; ?></div>
                 </div>
 
@@ -351,9 +531,9 @@
                     <label class="neu-label" for="password">Password</label>
                     <div class="neu-pw-group">
                         <input type="password" id="password" class="neu-input" name="password"
-                            placeholder="Masukkan Password"
-                            autocomplete="off" />
-                        <button type="button" class="neu-pw-toggle" onclick="togglePassword()" aria-label="Tampilkan password">
+                            placeholder="Masukkan Password" autocomplete="off" />
+                        <button type="button" class="neu-pw-toggle" onclick="togglePassword()"
+                            aria-label="Tampilkan password">
                             <i class="bx bx-hide" id="pwIcon"></i>
                         </button>
                     </div>
@@ -364,8 +544,7 @@
                     <div class="neu-field">
                         <label class="neu-label">Verifikasi</label>
                         <div class="neu-captcha-area">
-                            <div class="g-recaptcha"
-                                data-sitekey="6LfWeOMpAAAAADEva2cBc61p8-sIgPbo34R_76wY"></div>
+                            <div class="g-recaptcha" data-sitekey="6LfWeOMpAAAAADEva2cBc61p8-sIgPbo34R_76wY"></div>
                         </div>
                     </div>
                 <?php endif; ?>
